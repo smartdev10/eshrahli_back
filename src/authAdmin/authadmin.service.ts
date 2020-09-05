@@ -15,13 +15,14 @@ export class AuthAdminService  {
 
   createUser = async (adminUserDto: AdminUser) : Promise<AdminUser> => {
     const entity = Object.assign(new AdminUser(), adminUserDto);
+    console.log(entity)
     return await this.adminRepository.save(entity);
   };
 
   findOneUserById = async (id : number ): Promise<AdminUser> => {
     return await this.adminRepository.findOne({
       where : { id },
-      select:['id','username' , 'role','status']
+      select:['id','username','role','status']
     })
   };
 

@@ -11,6 +11,11 @@ export class AdminUserDto {
     @IsNotEmpty()
     @Length(9)
     public password: string;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    public mobile: string;
   
     public  role: string;
 }

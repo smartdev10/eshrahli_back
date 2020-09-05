@@ -16,6 +16,7 @@ import { ConfigModule } from '@nestjs/config';
 import { FavoriteModule } from './favorites/favorites.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { AuthAdminModule } from './authAdmin/auth.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { join } from 'path';
     CityModule,
     MessageModule,
     FavoriteModule,
+    AuthAdminModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,

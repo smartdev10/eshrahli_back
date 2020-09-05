@@ -1,0 +1,39 @@
+{
+  "files": {
+    "static/js/0.3e795b9a.chunk.js": "/static/js/0.3e795b9a.chunk.js",
+    "static/js/0.3e795b9a.chunk.js.map": "/static/js/0.3e795b9a.chunk.js.map",
+    "main.css": "/static/css/main.4c05bee2.chunk.css",
+    "main.js": "/static/js/main.2f052339.chunk.js",
+    "main.js.map": "/static/js/main.2f052339.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.f02dfeef.js",
+    "runtime-main.js.map": "/static/js/runtime-main.f02dfeef.js.map",
+    "static/css/3.a86ddefb.chunk.css": "/static/css/3.a86ddefb.chunk.css",
+    "static/js/3.8993c7cd.chunk.js": "/static/js/3.8993c7cd.chunk.js",
+    "static/js/3.8993c7cd.chunk.js.map": "/static/js/3.8993c7cd.chunk.js.map",
+    "static/js/4.04f67d35.chunk.js": "/static/js/4.04f67d35.chunk.js",
+    "static/js/4.04f67d35.chunk.js.map": "/static/js/4.04f67d35.chunk.js.map",
+    "static/js/5.01ace30f.chunk.js": "/static/js/5.01ace30f.chunk.js",
+    "static/js/5.01ace30f.chunk.js.map": "/static/js/5.01ace30f.chunk.js.map",
+    "static/js/6.3a046c71.chunk.js": "/static/js/6.3a046c71.chunk.js",
+    "static/js/6.3a046c71.chunk.js.map": "/static/js/6.3a046c71.chunk.js.map",
+    "static/js/7.2db7e8a2.chunk.js": "/static/js/7.2db7e8a2.chunk.js",
+    "static/js/7.2db7e8a2.chunk.js.map": "/static/js/7.2db7e8a2.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.e427b89991cdd2d0341fe81e1b57d6e5.js": "/precache-manifest.e427b89991cdd2d0341fe81e1b57d6e5.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/3.a86ddefb.chunk.css.map": "/static/css/3.a86ddefb.chunk.css.map",
+    "static/css/main.4c05bee2.chunk.css.map": "/static/css/main.4c05bee2.chunk.css.map",
+    "static/js/3.8993c7cd.chunk.js.LICENSE.txt": "/static/js/3.8993c7cd.chunk.js.LICENSE.txt",
+    "static/media/styles.css": "/static/media/gaxon.b1a63de8.svg",
+    "static/media/loader.svg": "/static/media/loader.74caa41d.svg",
+    "static/media/notifications.css": "/static/media/notification.c0d3c94c.eot",
+    "static/media/sprite-flags-24x24.css": "/static/media/sprite-flags-24x24.7ed12ca4.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f02dfeef.js",
+    "static/css/3.a86ddefb.chunk.css",
+    "static/js/3.8993c7cd.chunk.js",
+    "static/css/main.4c05bee2.chunk.css",
+    "static/js/main.2f052339.chunk.js"
+  ]
+}

@@ -1,5 +1,5 @@
 import {  Entity, Column, PrimaryGeneratedColumn , CreateDateColumn , UpdateDateColumn , BeforeInsert , BeforeUpdate, ManyToOne , OneToMany} from 'typeorm';
-import * as bcrypt from 'bcryptjs';
+import { hashSync , genSaltSync } from 'bcryptjs';
 
 
 @Entity('adminusers')
@@ -13,10 +13,10 @@ export class AdminUser  {
   @Column({ length: 250 , unique : true})
   mobile: string;
 
-  @Column({ length: 250 , select:false })
+  @Column({ length: 250 })
   password: string;
 
-  @Column({ length: 250 })
+  @Column({ length: 250 , default:"admin" })
   role: string;
 
   @Column({ default : "Active" })
@@ -31,6 +31,6 @@ export class AdminUser  {
   @BeforeInsert()
   async generatePasswordHash(): Promise<void> {
     console.log('GENERATE');
-    this.password = await bcrypt.hashSync(this.password, bcrypt.genSaltSync(10));
+    this.password = await hashSync(this.password, genSaltSync(10));
   }
 }
