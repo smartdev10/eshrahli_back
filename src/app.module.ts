@@ -21,7 +21,7 @@ import { AuthAdminModule } from './authAdmin/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath:'.development.env'
+      envFilePath:'.env'
     }),
     TeacherModule,
     StudentModule,
