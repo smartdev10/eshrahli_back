@@ -37,8 +37,11 @@ export class AuthStudentController {
     async forgotPassword(@Body() data : ForgotPaswordStudentDto , @Res() res: Response): Promise<Response> {
       try {
           const student = await this.studentService.findOneStudentByPhone(data.mobile)
-          await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verifications.create({to:student.mobile,channel:'sms'})
-          return res.status(200).json({message: 'Verification Code Sent'});
+          if(student){
+            await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verifications.create({to:student.mobile,channel:'sms'})
+            return res.status(200).json({message: 'Verification Code Sent'});
+          }
+          return res.status(HttpStatus.BAD_REQUEST).json({message: 'Student Not Found'});
       } catch (error) {
         console.log(error)
           throw new HttpException({

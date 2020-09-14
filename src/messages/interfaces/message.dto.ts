@@ -16,11 +16,9 @@ export class MessageDto {
     @IsEmail()
     readonly email: string;
 
-
     @IsDefined()
     @IsNotEmpty()
     @IsString()
-    @IsEmail()
     readonly message: string;
 
     @IsDefined()
