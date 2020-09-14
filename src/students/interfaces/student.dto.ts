@@ -1,4 +1,4 @@
-import {IsDefined , IsString , IsNotEmpty} from "class-validator";
+import {IsDefined , IsString , IsNotEmpty, IsNumber} from "class-validator";
 
 
 export class StudentDto {
@@ -14,6 +14,14 @@ export class StudentDto {
     readonly mobile: string;
 }
 
+export class ForgotPaswordStudentDto {
+    
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly mobile: string;
+  
+}
 
 
 export class LoginStudentDto {
@@ -32,6 +40,11 @@ export class LoginStudentDto {
 
 export class CreatePaswordStudentDto {
 
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly mobile: string;
+    
     @IsDefined()
     @IsNotEmpty()
     @IsString()

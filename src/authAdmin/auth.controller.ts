@@ -48,8 +48,9 @@ export class AuthAdminController {
         if (!valid) {
           return res.status(404).json({message: 'Password not Correct'});
         }
+        delete user.password
         const access_token  = sign({ userId: user.id , role:user.role , username: user.username }, process.env.ACCESS_TOKEN_SECRET);
-        return res.status(200).json({ result : true , token : { access_token , token_type : 'bearer' } });
+        return res.status(200).json({ result : true , user , token : { access_token , token_type : 'bearer' } });
      } catch (error) {
        return res.status(404).json({message: error.message});
      }

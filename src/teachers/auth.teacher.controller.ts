@@ -1,7 +1,7 @@
-import { Controller , Post , Body , Res , HttpStatus, HttpException, UnauthorizedException, UseInterceptors, UploadedFiles , Put, Param } from '@nestjs/common';
+import { Controller , Post , Body , Res , HttpStatus, HttpException, UnauthorizedException, UseInterceptors, UploadedFiles , Put, Param, Inject } from '@nestjs/common';
 import { TeacherService } from './teachers.service';
 import { Response } from 'express';
-import { LoginTeacherDto , UpdateTeacherDto, TeacherDto, CreatePassTeacherDto } from './interfaces/teacher.dto';
+import { LoginTeacherDto , UpdateTeacherDto, TeacherDto, CreatePassTeacherDto , ForgotPassTeacherDto } from './interfaces/teacher.dto';
 import { compare } from 'bcryptjs';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { sign } from 'jsonwebtoken';
@@ -9,17 +9,23 @@ import { extname } from 'path';
 import { diskStorage } from  'multer';
 import { LevelsService } from 'src/levels/levels.service';
 import { SubjectsService } from 'src/subjects/subjects.service';
+import { TwilioService } from 'src/twilio/twilio.service';
 
 @Controller('/auth/teachers')
 export class AuthTeacherController {
-    constructor(private readonly teacherService: TeacherService, private readonly levelService: LevelsService, private readonly subjectService: SubjectsService) {}
+    constructor(
+      private readonly teacherService: TeacherService, 
+      private readonly levelService: LevelsService, 
+      private readonly subjectService: SubjectsService,
+      private readonly twilioService: TwilioService
+      ) {}
    
     @Post('login')
     async login(@Body() data : LoginTeacherDto , @Res() res: Response): Promise<Response> {
       try {
           const teacher =  await this.teacherService.findOneTeacherByPhone(data.mobile);
           if (!teacher) {
-            throw new UnauthorizedException('could not find teacher with this phone number');
+            throw new UnauthorizedException('phone number not found');
           }else{
             const valid = await compare(data.password,teacher.password)
             const token  = sign({teacher} , process.env.ACCESS_TOKEN_SECRET);
@@ -36,11 +42,25 @@ export class AuthTeacherController {
       }
     }
 
-    @Post('create')
+    @Post('register')
     async start(@Body() data : TeacherDto , @Res() res: Response): Promise<Response> {
       try {
           const teacher = await this.teacherService.registerTeacher(data);
           return res.status(200).json({message: 'Teacher Created' , teacher});
+      } catch (error) {
+          throw new HttpException({
+              status: HttpStatus.BAD_REQUEST,
+              error: error.message,
+          }, 400);
+      }
+    }
+
+    @Post('forgot-password')
+    async forgotPassword(@Body() data : ForgotPassTeacherDto , @Res() res: Response): Promise<Response> {
+      try {
+          const teacher = await this.teacherService.findOneTeacherByPhone(data.mobile)
+          await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verifications.create({to:teacher.mobile,channel:'sms'})
+          return res.status(200).json({message: 'Verification Code Sent'});
       } catch (error) {
         console.log(error)
           throw new HttpException({
@@ -50,10 +70,10 @@ export class AuthTeacherController {
       }
     }
 
-    @Post('create-password/:id')
-    async createPassword(@Param('id') id: number , @Body() data : CreatePassTeacherDto , @Res() res: Response): Promise<Response> {
+    @Post('create-password')
+    async createPassword(@Body() data : CreatePassTeacherDto , @Res() res: Response): Promise<Response> {
       try {
-          const teacher = await this.teacherService.findOneTeacher(id)
+          const teacher = await this.teacherService.findOneTeacher(data.id)
           const formData = Object.assign(teacher , { ...data })
           await this.teacherService.updateTeacher(formData);
           return res.status(200).json({message: 'Password Created'});
@@ -66,7 +86,7 @@ export class AuthTeacherController {
       }
     }
 
-    @Put('register/:id')
+    @Put('update/:id')
     @UseInterceptors(FileFieldsInterceptor([
       { name: 'personalcard', maxCount: 1 },
       { name: 'certificate', maxCount: 1 },
@@ -96,7 +116,7 @@ export class AuthTeacherController {
           formData.levels = levels
           formData.materials = materials
           await this.teacherService.updateTeacher(formData);
-          return res.status(200).json({message: 'Teacher Updated'});
+          return res.status(HttpStatus.OK).json({message: 'Teacher Updated'});
       } catch (error) {
         console.log(error)
           throw new HttpException({
@@ -107,10 +127,16 @@ export class AuthTeacherController {
     }
 
     @Post('verify')
-    async verify(@Body('mobile') mobile : string , @Res() res: Response): Promise<Response> {
+    async verify(@Body('mobile') mobile : string ,@Body('code') code : string , @Res() res: Response): Promise<Response> {
       try {
           const teacher = await this.teacherService.findOneTeacherByPhone(mobile);
-          return res.status(200).json({message: 'Verification Code Sent'});
+          const verificationCheck = await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID)
+          .verificationChecks
+          .create({to:teacher.mobile , code})
+          if(verificationCheck.valid){
+            return res.status(200).json({message: 'Code is Valid'});
+          }
+          return res.status(HttpStatus.BAD_REQUEST).json({message: 'Code is Not Valid'});
       } catch (error) {
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,

@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import Twilio = require('twilio');
-import { TWILIO_CONFIG_TOKEN, TwilioConfig } from './interface/twilio.config';
+import { TWILIO_CONFIG_TOKEN } from './constants';
+import { TwilioConfig } from './interface/twilio.config';
 
 @Injectable()
 export class TwilioService {

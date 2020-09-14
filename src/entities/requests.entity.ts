@@ -53,6 +53,9 @@ export class SRequest {
   @Column('varchar'  ,{ length: 250 })
   paymentMethod: string;
 
+  @Column('varchar'  ,{ length: 250 })
+  zoomLink: string;
+
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;
 

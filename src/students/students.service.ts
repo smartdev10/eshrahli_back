@@ -30,6 +30,11 @@ export class StudentService {
         return await this.teacherRepository.save(entity);
     }
 
+
+    async saveStudent(data : StudentDto ) {
+        return await this.teacherRepository.save(data);
+    }
+
     async findAllStudents() {
        return await this.teacherRepository.find({});
     }

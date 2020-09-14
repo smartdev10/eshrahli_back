@@ -17,6 +17,7 @@ import { FavoriteModule } from './favorites/favorites.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthAdminModule } from './authAdmin/auth.module';
+import { TwilioModule } from './twilio/twilio.module';
 
 @Module({
   imports: [
@@ -35,6 +36,10 @@ import { AuthAdminModule } from './authAdmin/auth.module';
     MessageModule,
     FavoriteModule,
     AuthAdminModule,
+    TwilioModule.register({
+      accountSid:process.env.TWILIO_ACCOUNT_SID,
+      authToken:process.env.TWILIO_AUTH_TOKEN,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,

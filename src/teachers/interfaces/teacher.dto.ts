@@ -32,8 +32,22 @@ export class LoginTeacherDto {
     readonly password: string;
 }
 
+export class ForgotPassTeacherDto {
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly mobile: string;
+  
+}
+
 
 export class CreatePassTeacherDto {
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsNumber()
+    readonly id: number;
     
     @IsDefined()
     @IsNotEmpty()

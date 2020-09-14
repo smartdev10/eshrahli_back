@@ -17,13 +17,13 @@ export class Student {
   @Column('varchar'  ,{ length: 250 , default:"active" })
   status: string;
 
-  @Column('varchar'  ,{ length: 250 })
+  @Column('varchar'  ,{ length: 250 , default: "" })
   gender: string;
 
-  @Column('varchar'  ,{ length: 250 })
+  @Column('varchar'  ,{ length: 250 , default: ""  })
   push_id: string;
 
-  @Column('varchar'  ,{ length: 250 })
+  @Column('varchar'  ,{ length: 250 , default: ""  })
   password: string;
 
   @OneToMany(type => Favorite, favorites => favorites.student)

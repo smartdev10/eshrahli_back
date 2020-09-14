@@ -1,0 +1,1 @@
+export const TWILIO_CONFIG_TOKEN = '__twilioCfg__';

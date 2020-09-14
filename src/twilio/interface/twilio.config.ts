@@ -5,5 +5,3 @@ export interface TwilioConfig {
   authToken: string;
   options?: Twilio.TwilioClientOptions;
 }
-
-export const TWILIO_CONFIG_TOKEN = '__twilioCfg__';

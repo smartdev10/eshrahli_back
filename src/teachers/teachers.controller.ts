@@ -22,7 +22,7 @@ export class TeacherController {
     }
 
     @Get(':id')
-    async findOneCategory(@Param('id') id: number  ,  @Res() res: Response) : Promise<Response>  {
+    async findOneTeacher(@Param('id') id: number  ,  @Res() res: Response) : Promise<Response>  {
       try {
             const teacher =  await this.teacherService.findOneTeacher(id);
             return res.status(HttpStatus.OK).json(teacher);

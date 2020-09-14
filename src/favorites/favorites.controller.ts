@@ -13,7 +13,7 @@ export class FavoriteController {
     }
 
     @Get(':id')
-    async findOneNationalty(@Param('id') id: number  ,  @Res() res: Response) : Promise<Response>  {
+    async findOneFavorite(@Param('id') id: number  ,  @Res() res: Response) : Promise<Response>  {
       try {
             const nationality =  await this.favoriteService.findOneFavorite(id);
             return res.status(HttpStatus.OK).json(nationality);
@@ -26,7 +26,7 @@ export class FavoriteController {
     }
 
     @Post('create')
-    async createNationalty(@Body() body : FavoriteDto , @Res() res: Response): Promise<Response> {
+    async createFavorite(@Body() body : FavoriteDto , @Res() res: Response): Promise<Response> {
       try {
           await this.favoriteService.insertFavorite(body);
           return res.status(200).json({message: 'Favorite Created'});
@@ -38,7 +38,7 @@ export class FavoriteController {
       }
     }
     @Delete('delete')
-    async deleteNationalty(@Query('filter') filter, @Res() res: Response): Promise<Response> {
+    async deleteFavorite(@Query('filter') filter, @Res() res: Response): Promise<Response> {
         try {
           const { ids } = JSON.parse(filter)
           await this.favoriteService.deleteFavorite(ids);
@@ -51,7 +51,7 @@ export class FavoriteController {
         }
     }
     @Put('update/:id')
-    async updateNationalty(@Param('id') id: number , @Body() body: FavoriteDto, @Res() res: Response): Promise<Response> {
+    async updateFavorite(@Param('id') id: number , @Body() body: FavoriteDto, @Res() res: Response): Promise<Response> {
         try {
           await this.favoriteService.updateFavorite(id, body);
           return res.status(200).json({message: 'Favorite Updated'});

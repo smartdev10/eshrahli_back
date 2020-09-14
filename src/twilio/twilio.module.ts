@@ -1,6 +1,7 @@
-import { Module, DynamicModule } from '@nestjs/common';
+import { Module, DynamicModule, Global } from '@nestjs/common';
 import { TwilioService } from './twilio.service';
-import { TwilioConfig, TWILIO_CONFIG_TOKEN } from './interface/twilio.config';
+import { TwilioConfig } from './interface/twilio.config';
+import { TWILIO_CONFIG_TOKEN } from './constants';
 
 @Module({})
 export class TwilioModule {

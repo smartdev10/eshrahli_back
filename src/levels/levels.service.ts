@@ -21,7 +21,11 @@ export class LevelsService {
     }
 
     async findAllLevels() {
-       return await this.levelRepository.find({});
+       return await this.levelRepository.find({
+           order :{
+               createdAt:"DESC"
+           }
+       });
     }
 
     async findByIds(ids : Level[]) {
