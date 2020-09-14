@@ -1,4 +1,4 @@
-import { Controller , Post , Body , Res , HttpStatus, HttpException , UnauthorizedException, Param } from '@nestjs/common';
+import { Controller , Post , Body , Res , HttpStatus, HttpException , UnauthorizedException } from '@nestjs/common';
 import { StudentService } from './students.service';
 import { Response } from 'express';
 import { LoginStudentDto ,StudentDto, CreatePaswordStudentDto , ForgotPaswordStudentDto } from './interfaces/student.dto';
@@ -41,9 +41,8 @@ export class AuthStudentController {
             await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verifications.create({to:student.mobile,channel:'sms'})
             return res.status(200).json({message: 'Verification Code Sent'});
           }
-          return res.status(HttpStatus.BAD_REQUEST).json({message: 'Student Not Found'});
+          throw new HttpException('Student Not Found' ,400);
       } catch (error) {
-        console.log(error)
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
               error: error.message,
@@ -60,9 +59,8 @@ export class AuthStudentController {
             await this.studentService.updateStudent(formData);
             return res.status(200).json({message: 'Password Created'});
           }
-          return res.status(HttpStatus.BAD_REQUEST).json({message: 'Student Not Found'});
+          throw new HttpException('Student Not Found' ,400);
       } catch (error) {
-        console.log(error)
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
               error: error.message,
@@ -93,9 +91,9 @@ export class AuthStudentController {
             if(verificationCheck.valid){
               return res.status(HttpStatus.OK).json({message: 'Code is Valid'});
             }
-            return res.status(HttpStatus.BAD_REQUEST).json({message: 'Code is Not Valid'});
+            throw new HttpException('Code is Not Valid' ,400);
           }else{
-            return res.status(HttpStatus.BAD_REQUEST).json({message: 'Student Not Found'});
+            throw new HttpException('Student Not Found' ,400);
           }
       } catch (error) {
         console.log(error)

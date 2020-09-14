@@ -18,7 +18,7 @@ export class StudentService {
     }
 
     async findOneStudentByPhone(mobile: string) {
-        return await this.teacherRepository.findOneOrFail({
+        return await this.teacherRepository.findOne({
             where:{
                 mobile
             }
