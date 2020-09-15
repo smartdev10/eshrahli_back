@@ -8,7 +8,7 @@ export class Student {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('varchar' , { length: 250 , nullable : false })
+  @Column('varchar' , { length: 250 ,default: "" })
   name: string;
 
   @Column('varchar'  ,{ length: 250 , unique:true })
@@ -23,7 +23,7 @@ export class Student {
   @Column('varchar'  ,{ length: 250 , default: ""  })
   push_id: string;
 
-  @Column('varchar'  ,{ length: 250 , default: ""  })
+  @Column('varchar'  ,{ length: 250 , default: "" , select:false  })
   password: string;
 
   @Column('varchar' ,{ length: 250 , default:"" })

@@ -56,11 +56,12 @@ export class AuthStudentController {
           const student = await this.studentService.findOneStudentByPhone(data.mobile)
           if(student){
             const formData = Object.assign(student , { ...data })
-            await this.studentService.updateStudent(formData);
+            await this.studentService.updateStudentPassword(formData);
             return res.status(200).json({message: 'Password Created'});
           }
           throw new HttpException('Student Not Found' ,400);
       } catch (error) {
+          console.log(error)
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
               error: error.message,
