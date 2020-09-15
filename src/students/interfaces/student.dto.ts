@@ -1,4 +1,4 @@
-import {IsDefined , IsString , IsNotEmpty, IsNumber} from "class-validator";
+import {IsDefined , IsString , IsNotEmpty, IsNumber, IsPhoneNumber, IsMobilePhone} from "class-validator";
 
 
 export class StudentDto {
@@ -14,12 +14,34 @@ export class StudentDto {
     readonly mobile: string;
 }
 
+export class UpdateBankInfoStudentDto {
+    
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly bankname: string;
+  
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly bankiban: string;
+}
+
 export class ForgotPaswordStudentDto {
     
     @IsDefined()
     @IsNotEmpty()
     @IsString()
     readonly mobile: string;
+  
+}
+
+export class UpdateStudentPushId {
+    
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly push_id: string;
   
 }
 
