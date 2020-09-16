@@ -1,9 +1,8 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
-import { StudentDto } from './interfaces/student.dto';
+import { CreatePaswordStudentDto, StudentDto } from './interfaces/student.dto';
 import { Student } from 'src/entities/students.entity';
-import { CreatePassTeacherDto } from 'src/teachers/interfaces/teacher.dto';
 
 
 @Injectable()
@@ -32,11 +31,6 @@ export class StudentService {
         return await this.studentRepository.save(entity);
     }
 
-
-    async saveStudent(data : StudentDto ) {
-        return await this.studentRepository.save(data);
-    }
-
     async findAllStudents() {
        return await this.studentRepository.find();
     }
@@ -49,7 +43,7 @@ export class StudentService {
         return await this.studentRepository.save(data);
     }
 
-    async updateStudentPassword(data: CreatePassTeacherDto) {
+    async updateStudentPassword(data: CreatePaswordStudentDto) {
         return await this.studentRepository.save(data);
     }
       

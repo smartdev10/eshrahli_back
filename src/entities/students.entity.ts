@@ -52,8 +52,10 @@ export class Student {
 
   @BeforeUpdate()
   async generatePasswordHash2(): Promise<void> {
-    console.log('GENERATE UPDATE');
-    this.password = await hashSync(this.password, genSaltSync(10));
+    if(this.password){
+      console.log('GENERATE UPDATE');
+      this.password = await hashSync(this.password, genSaltSync(10));
+    }
   }
 
 }

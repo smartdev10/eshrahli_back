@@ -1,7 +1,7 @@
 import { Controller , Post , Body , Res , HttpStatus, HttpException , UnauthorizedException } from '@nestjs/common';
 import { StudentService } from './students.service';
 import { Response } from 'express';
-import { LoginStudentDto ,StudentDto, CreatePaswordStudentDto , ForgotPaswordStudentDto } from './interfaces/student.dto';
+import { LoginStudentDto , StudentDto , CreatePaswordStudentDto , ForgotPaswordStudentDto , CheckStudentDto } from './interfaces/student.dto';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { TwilioService } from 'src/twilio/twilio.service';
@@ -25,6 +25,32 @@ export class AuthStudentController {
             const token  = sign({student} , process.env.ACCESS_TOKEN_SECRET);
             return res.status(200).json({message: 'you are logged in' , token});
           }
+      } catch (error) {
+          throw new HttpException({
+              status: HttpStatus.BAD_REQUEST,
+              error: error.message,
+          }, 400);
+      }
+    }
+
+    @Post('register')
+    async register(@Body() data : StudentDto , @Res() res: Response): Promise<Response> {
+      try {
+          const student = await this.studentService.insertStudent(data);
+          return res.status(200).json({ message: 'Student Created' , student });
+      } catch (error) {
+          throw new HttpException({
+              status: HttpStatus.BAD_REQUEST,
+              error: error.message,
+          }, 400);
+      }
+    }
+
+    @Post('check_number')
+    async check(@Body() data : CheckStudentDto , @Res() res: Response): Promise<Response> {
+      try {
+          await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verifications.create({to:data.mobile,channel:'sms'})
+          return res.status(200).json({ message: 'SMS Created' });
       } catch (error) {
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
@@ -61,21 +87,6 @@ export class AuthStudentController {
           }
           throw new HttpException('Student Not Found' ,400);
       } catch (error) {
-          console.log(error)
-          throw new HttpException({
-              status: HttpStatus.BAD_REQUEST,
-              error: error.message,
-          }, 400);
-      }
-    }
-
-    @Post('register')
-    async register(@Body() data : StudentDto , @Res() res: Response): Promise<Response> {
-      try {
-          await this.studentService.saveStudent(data);
-          await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verifications.create({to:data.mobile,channel:'sms'})
-          return res.status(200).json({message: 'Student Created'});
-      } catch (error) {
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
               error: error.message,
@@ -97,7 +108,6 @@ export class AuthStudentController {
             throw new HttpException('Student Not Found' ,400);
           }
       } catch (error) {
-        console.log(error)
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
               error: error.message,

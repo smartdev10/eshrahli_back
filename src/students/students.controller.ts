@@ -98,6 +98,7 @@ export class StudentController {
             }
             throw new HttpException('Student not found' , HttpStatus.BAD_REQUEST)
         } catch (error) {
+            console.log(error)
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,
                 error: error.message,
