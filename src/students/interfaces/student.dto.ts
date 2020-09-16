@@ -12,6 +12,11 @@ export class StudentDto {
     @IsNotEmpty()
     @IsString()
     readonly mobile: string;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly password: string;
 }
 
 export class CheckStudentDto {
@@ -80,3 +85,22 @@ export class CreatePaswordStudentDto {
     @IsString()
     readonly password: string;
 }
+
+export class ChangePaswordStudentDto {
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly mobile: string;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly currentPassword: string;
+    
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly password: string;
+}
+

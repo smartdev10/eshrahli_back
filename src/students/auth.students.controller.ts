@@ -1,7 +1,7 @@
-import { Controller , Post , Body , Res , HttpStatus, HttpException , UnauthorizedException } from '@nestjs/common';
+import { Controller , Post , Body , Res , HttpStatus, HttpException , UnauthorizedException, Query } from '@nestjs/common';
 import { StudentService } from './students.service';
 import { Response } from 'express';
-import { LoginStudentDto , StudentDto , CreatePaswordStudentDto , ForgotPaswordStudentDto , CheckStudentDto } from './interfaces/student.dto';
+import { LoginStudentDto , StudentDto , CreatePaswordStudentDto , ForgotPaswordStudentDto , CheckStudentDto, ChangePaswordStudentDto } from './interfaces/student.dto';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { TwilioService } from 'src/twilio/twilio.service';
@@ -94,8 +94,31 @@ export class AuthStudentController {
       }
     }
 
+    @Post('change-password')
+    async changePassword(@Body() data : ChangePaswordStudentDto , @Res() res: Response): Promise<Response> {
+      try {
+          const student = await this.studentService.findOneStudentByPhone(data.mobile)
+          if(student){
+            const valid = await compare(data.currentPassword,student.password)
+            if(!valid){
+              throw new HttpException('Current Password Not Correct' ,400);
+            }
+            const { password } = data
+            const formData = Object.assign(student , { password })
+            await this.studentService.updateStudentPassword(formData);
+            return res.status(HttpStatus.OK).json({message: 'Password Changed'});
+          }
+          throw new HttpException('Student Not Found' ,400);
+      } catch (error) {
+          throw new HttpException({
+              status: HttpStatus.BAD_REQUEST,
+              error: error.message,
+          }, 400);
+      }
+    }
+
     @Post('verify')
-    async verify(@Body('mobile') mobile : string ,@Body('code') code : string , @Res() res: Response): Promise<Response> {
+    async verify(@Query('newMobile') newMobile : string , @Body('mobile') mobile : string , @Body('code') code : string , @Res() res: Response): Promise<Response> {
       try {
           const student = await this.studentService.findOneStudentByPhone(mobile);
           if(student){
