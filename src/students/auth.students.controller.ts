@@ -118,17 +118,25 @@ export class AuthStudentController {
     }
 
     @Post('verify')
-    async verify(@Query('newMobile') newMobile : string , @Body('mobile') mobile : string , @Body('code') code : string , @Res() res: Response): Promise<Response> {
+    async verify(@Body('mobile') mobile : string , @Body('type') type : string , @Body('code') code : string , @Res() res: Response): Promise<Response> {
       try {
-          const student = await this.studentService.findOneStudentByPhone(mobile);
-          if(student){
-            const verificationCheck = await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verificationChecks.create({to:student.mobile , code})
+          if(type && type === 'new'){
+            const verificationCheck = await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verificationChecks.create({to:mobile , code})
             if(verificationCheck.valid){
               return res.status(HttpStatus.OK).json({message: 'Code is Valid'});
             }
             throw new HttpException('Code is Not Valid' ,400);
           }else{
-            throw new HttpException('Student Not Found' ,400);
+            const student = await this.studentService.findOneStudentByPhone(mobile);
+            if(student){
+              const verificationCheck = await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verificationChecks.create({to:student.mobile , code})
+              if(verificationCheck.valid){
+                return res.status(HttpStatus.OK).json({message: 'Code is Valid'});
+              }
+              throw new HttpException('Code is Not Valid' ,400);
+            }else{
+              throw new HttpException('Student Not Found' ,400);
+            }
           }
       } catch (error) {
           throw new HttpException({

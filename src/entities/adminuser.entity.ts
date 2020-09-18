@@ -13,7 +13,7 @@ export class AdminUser  {
   @Column({ length: 250 , unique : true})
   mobile: string;
 
-  @Column({ length: 250 })
+  @Column({ length: 250 , select:false })
   password: string;
 
   @Column({ length: 250 , default:"admin" })

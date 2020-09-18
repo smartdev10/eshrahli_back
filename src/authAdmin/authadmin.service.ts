@@ -7,11 +7,12 @@ import { AdminUser } from 'src/entities/adminuser.entity';
 @Injectable()
 export class AuthAdminService  {
 
-  constructor(
-    @InjectRepository(AdminUser)
-    private adminRepository: Repository<AdminUser>,
-   ) {}
+  constructor(@InjectRepository(AdminUser) private adminRepository: Repository<AdminUser>) {}
 
+
+  findAllUsers = async () => {
+    return await this.adminRepository.find({});
+  }
 
   createUser = async (adminUserDto: AdminUser) : Promise<AdminUser> => {
     const entity = Object.assign(new AdminUser(), adminUserDto);
@@ -32,4 +33,5 @@ export class AuthAdminService  {
       select:['id','username','status' , 'role','password']
     })
   };
+
 }
