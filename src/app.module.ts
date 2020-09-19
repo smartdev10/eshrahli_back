@@ -18,6 +18,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthAdminModule } from './authAdmin/auth.module';
 import { TwilioModule } from './twilio/twilio.module';
+import { SuperAuthModule } from './superuser/superauth.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { TwilioModule } from './twilio/twilio.module';
     MessageModule,
     FavoriteModule,
     AuthAdminModule,
+    SuperAuthModule,
     TwilioModule.register({
       accountSid:process.env.TWILIO_ACCOUNT_SID,
       authToken:process.env.TWILIO_AUTH_TOKEN,

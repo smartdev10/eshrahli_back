@@ -9,16 +9,17 @@ export class AuthGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    const token = request.headers.authorization.split(" ")[1];
+    const accessToken = request.cookies.assence_admin_access;
+    const jid = request.cookies.assence_admin_jid;
 
     try {
-        const decoded = verify(`${token}`, process.env.ACCESS_TOKEN_SECRET);
+        const decoded = verify(`${accessToken}.${jid}`, 'ACCESS_TOKEN_SECRET');
         if (decoded) {
           return true;
         }
         return false;
     } catch(error) {
-        throw new UnauthorizedException(403,"Please Log In First")
+        throw new UnauthorizedException(error.message)
     }
   }
 }

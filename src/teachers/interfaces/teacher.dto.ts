@@ -18,6 +18,59 @@ export class TeacherDto {
     readonly mobile: string;
 }
 
+export class CreateTeacherDto {
+    
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly name: string;
+  
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly mobile: string;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly nationality: Nationality;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly city : City;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsArray()
+    readonly levels : Level[];
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsArray()
+    readonly subjects : Subject[];
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly bankname : string;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly bankiban : string;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly gender: string;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly qualification: string;
+}
+
 
 export class LoginTeacherDto {
     
@@ -53,6 +106,7 @@ export class CreatePassTeacherDto {
     @IsNotEmpty()
     @IsString()
     readonly password: string;
+    
   
 }
 
@@ -60,6 +114,19 @@ export class CreatePassTeacherDto {
 
 export class UpdateTeacherDto {
 
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly id: number;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly name: string;
+
+    @IsDefined()
+    @IsString()
+    password: string;
 
     @IsDefined()
     @IsNotEmpty()
@@ -79,7 +146,7 @@ export class UpdateTeacherDto {
     @IsDefined()
     @IsNotEmpty()
     @IsArray()
-    readonly materials : Subject[];
+    readonly subjects : Subject[];
 
     @IsDefined()
     @IsNotEmpty()

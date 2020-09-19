@@ -19,6 +19,23 @@ export class StudentDto {
     readonly password: string;
 }
 
+export class UpdateStudentDto {
+    
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly name: string;
+  
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly mobile: string;
+
+    @IsDefined()
+    @IsString()
+    password: string;
+}
+
 export class CheckStudentDto {
       
     @IsDefined()

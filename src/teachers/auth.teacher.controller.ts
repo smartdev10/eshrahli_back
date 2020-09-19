@@ -102,6 +102,9 @@ export class AuthTeacherController {
     }))
     async register(@UploadedFiles() files ,@Param('id') id: number , @Body() data : UpdateTeacherDto , @Res() res: Response): Promise<Response> {
       try {
+         if(data.password === ''){
+           delete data.password
+         }
           const teacher = await this.teacherService.findOneTeacher(id)
 
           const formData = Object.assign(teacher , {
@@ -110,15 +113,13 @@ export class AuthTeacherController {
             certificate:files["certificate"][0].filename ,
             image:files["image"][0].filename,
           })
-          console.log(formData)
           const levels = await this.levelService.findByIds(formData.levels)
-          const materials = await this.subjectService.findByIds(formData.materials)
+          const subjects = await this.subjectService.findByIds(formData.subjects)
           formData.levels = levels
-          formData.materials = materials
+          formData.subjects = subjects
           await this.teacherService.updateTeacher(formData);
           return res.status(HttpStatus.OK).json({message: 'Teacher Updated'});
       } catch (error) {
-        console.log(error)
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
               error: error.message,

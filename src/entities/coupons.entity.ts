@@ -5,17 +5,20 @@ export class Coupon {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('varchar' , { length: 250 , nullable : false })
+  @Column('varchar' , { length: 250 , default:"" })
   name: string;
 
-  @Column('varchar' , { length: 250 , nullable : false })
+  @Column('varchar' , { length: 250 , default:"" })
   code: string;
 
-  @Column('varchar' , { length: 250 , nullable : false })
+  @Column('varchar' , { length: 250 , default:"" })
   description: string;
 
-  @Column('varchar' , { length: 250 , nullable : false })
+  @Column('varchar' , { length: 250 , default:"" })
   discount: string;
+
+  @Column('varchar' , { length: 250 , default:"inactive" })
+  status: string;
 
   @CreateDateColumn({ type: "timestamp"})
   start: Date;

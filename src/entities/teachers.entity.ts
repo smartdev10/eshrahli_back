@@ -31,7 +31,7 @@ export class Teacher {
   @Column('varchar'  ,{ length: 250 , default:"" })
   gender: string;
 
-  @Column('varchar' ,{ length: 250 , default:"" })
+  @Column('text' ,{ default:"" })
   qualification :string
 
   @ManyToMany(type => Level)
@@ -40,12 +40,12 @@ export class Teacher {
 
   @ManyToMany(type => Subject)
   @JoinTable()
-  materials:Subject[]
+  subjects:Subject[]
 
   @OneToMany(type => SRequest, srequest => srequest.teacher)
   requests:SRequest[]
 
-  @Column('varchar' ,{ length: 250 , default: "disapproved" })
+  @Column('varchar' ,{ length: 250 , default: "inactive" })
   status: string;
 
   @Column('varchar' ,{ length: 250 , default:"" })
@@ -54,7 +54,7 @@ export class Teacher {
   @Column('varchar' ,{ length: 250 , default:"" })
   bankiban: string;
 
-  @Column('varchar'  ,{ length: 250 , default:"" })
+  @Column('varchar'  ,{ length: 250 , default:"" , select:false })
   password: string;
 
   @Column('varchar' ,{ length: 250 , default:"" })
@@ -80,8 +80,10 @@ export class Teacher {
 
   @BeforeUpdate()
   async generatePasswordHash2(): Promise<void> {
-    console.log('GENERATE UPDATE');
-    this.password = await hashSync(this.password, genSaltSync(10));
+    if(this.password){
+      console.log('GENERATE UPDATE');
+      this.password = await hashSync(this.password, genSaltSync(10));
+    }
   }
 
 }

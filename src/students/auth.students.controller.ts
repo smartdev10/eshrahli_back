@@ -37,12 +37,14 @@ export class AuthStudentController {
     async register(@Body() data : StudentDto , @Res() res: Response): Promise<Response> {
       try {
           const student = await this.studentService.insertStudent(data);
-          return res.status(200).json({ message: 'Student Created' , student });
+          const foundStudent = await this.studentService.findOneStudent(student.id);
+          
+          return res.status(200).json({ message: 'Student Created' , foundStudent });
       } catch (error) {
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
-              error: error.message,
-          }, 400);
+              error: error.detail,
+          },  HttpStatus.BAD_REQUEST);
       }
     }
 

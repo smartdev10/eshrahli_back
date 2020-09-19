@@ -32,7 +32,9 @@ export class StudentService {
     }
 
     async findAllStudents() {
-       return await this.studentRepository.find();
+       return await this.studentRepository.find({
+           relations:['favorites' , 'requests']
+       });
     }
 
     async deleteStudent(ids: number[]) {

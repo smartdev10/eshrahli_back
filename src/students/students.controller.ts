@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Res, Delete, Put , Param, Query, HttpStatus, HttpException } from '@nestjs/common';
 import { StudentService } from './students.service';
 import { Response } from 'express';
-import { StudentDto , UpdateStudentPushId , UpdateBankInfoStudentDto } from './interfaces/student.dto';
+import { StudentDto , UpdateStudentPushId , UpdateBankInfoStudentDto , UpdateStudentDto } from './interfaces/student.dto';
 import { Student } from 'src/entities/students.entity';
 
 @Controller('api/students')
@@ -88,8 +88,11 @@ export class StudentController {
     }
 
     @Put('update/:id')
-    async updateStudent(@Param('id') id: number , @Body() body: StudentDto, @Res() res: Response): Promise<Response> {
+    async updateStudent(@Param('id') id: number , @Body() body: UpdateStudentDto, @Res() res: Response): Promise<Response> {
         try {
+            if(body.password === ''){
+                delete body.password
+            }
             const student = await this.studentService.findOneStudent(id)
             if(student){
                 const formData = Object.assign(student , { ...body })

@@ -40,7 +40,7 @@ export class TeacherService {
 
     async findAllTeachers() {
        return await this.teacherRepository.find({
-           relations:['materials' , 'levels']
+           relations:['subjects' , 'levels' , 'city' , 'nationality']
        });
     }
 

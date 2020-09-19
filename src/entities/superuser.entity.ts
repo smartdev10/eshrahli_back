@@ -2,8 +2,8 @@ import {  Entity, Column, PrimaryGeneratedColumn , CreateDateColumn , UpdateDate
 import { hashSync , genSaltSync } from 'bcryptjs';
 
 
-@Entity('adminusers')
-export class AdminUser  {
+@Entity('superusers')
+export class SuperUser  {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,9 +19,6 @@ export class AdminUser  {
   @Column({ length: 250 , select:false })
   password: string;
 
-  @Column({ length: 250 , default:"admin" })
-  role: string;
-
   @Column({ default : "active" })
   status: string;
 
@@ -36,6 +33,7 @@ export class AdminUser  {
     console.log('GENERATE');
     this.password = await hashSync(this.password, genSaltSync(10));
   }
+
   @BeforeUpdate()
   async generatePasswordHash2(): Promise<void> {
     if(this.password){
