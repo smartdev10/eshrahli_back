@@ -21,7 +21,11 @@ export class CityService {
     }
 
     async findAllCities() {
-       return await this.cityRepository.find({});
+       return await this.cityRepository.find({
+        order :{
+            createdAt:"DESC"
+          }
+       });
     }
 
     async deleteCity(ids: number[]) {

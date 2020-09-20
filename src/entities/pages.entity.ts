@@ -8,6 +8,9 @@ export class Page {
   @Column('varchar' , { length: 250 , nullable : false })
   name: string;
 
+  @Column('varchar' , { length: 250 , nullable : false })
+  slug: string;
+
   @Column('text')
   content: string;
 

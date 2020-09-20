@@ -22,7 +22,11 @@ export class RequestService {
     }
 
     async findAllRequests() {
-       return await this.requestRepository.find({});
+       return await this.requestRepository.find({
+          order :{
+            createdAt:"DESC"
+          }
+       });
     }
 
     async deleteRequest(ids: number[]) {

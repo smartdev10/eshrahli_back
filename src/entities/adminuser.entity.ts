@@ -19,7 +19,7 @@ export class AdminUser  {
   @Column({ length: 250 , select:false })
   password: string;
 
-  @Column({ length: 250 , default:"admin" })
+  @Column({ length: 250 , default:"superuser" })
   role: string;
 
   @Column({ default : "active" })

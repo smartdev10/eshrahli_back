@@ -21,7 +21,11 @@ export class CouponService {
     }
 
     async findAllCoupons() {
-       return await this.couponRepository.find({});
+       return await this.couponRepository.find({
+          order :{
+            createdAt:"DESC"
+          }
+       });
     }
 
     async deleteCoupon(ids: number[]) {

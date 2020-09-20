@@ -1,9 +1,9 @@
-import { Controller  , Body , Res , Get , Post, HttpException , HttpStatus } from '@nestjs/common';
+import { Controller  , Body , Res , Get , Post, HttpException , HttpStatus, Put, Param, Query } from '@nestjs/common';
 import { AuthAdminService } from './authadmin.service';
 import { Response } from 'express';
 import { AdminUser } from 'src/entities/adminuser.entity';
 import { TwilioService } from 'src/twilio/twilio.service';
-import { AdminUserForgot , AdminUserReset } from './interfaces/adminusers.dto';
+import { AdminUserForgot , AdminUserReset , UpdateAdminUserDto } from './interfaces/adminusers.dto';
 import { sign } from 'jsonwebtoken';
 
 
@@ -12,8 +12,33 @@ export class UserAdminController {
   constructor(private readonly authService: AuthAdminService ,  private readonly twilioService: TwilioService) {}
 
   @Get()
-  findAllUsers() : Promise<AdminUser[]>{
+  findAllUsers(@Query('filter') filter) : Promise<AdminUser[]>{
+    const data = JSON.parse(filter)
+    if(Object.keys(data).length !== 0){
+      return this.authService.findAllUsersFilter(data.id);
+    }
     return this.authService.findAllUsers();
+  }
+
+  @Put('update/:id')
+  async updateUser(@Param('id') id: number , @Body() data : UpdateAdminUserDto , @Res() res: Response): Promise<Response> {
+    try {
+        if(data.password === ''){
+          delete data.password
+        }
+        const user = await this.authService.findOneUserById(id)
+        if(user){
+          const userData = Object.assign(user , { ...data })
+          await this.authService.updateUser(userData)
+          return res.status(200).json({ result:true , message: 'Updated Success'});
+        }
+        return res.status(404).json({message: 'User Not Found'});
+    } catch (error) {
+        throw new HttpException({
+            status: HttpStatus.BAD_REQUEST,
+            error: error.message,
+        }, 400);
+    }
   }
 
   @Post('forgot-password')

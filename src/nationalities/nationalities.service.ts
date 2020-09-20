@@ -22,7 +22,11 @@ export class NationalityService {
     }
 
     async findAllNationalities() {
-       return await this.nationalityRepository.find();
+       return await this.nationalityRepository.find({
+          order :{
+            createdAt:"DESC"
+          }
+       });
     }
 
     async deleteNationality(ids: number[]) {

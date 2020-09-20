@@ -21,7 +21,11 @@ export class PageService {
     }
 
     async findAllPages() {
-       return await this.pageRepository.find({});
+       return await this.pageRepository.find({
+          order :{
+            createdAt:"DESC"
+          }
+       });
     }
 
     async deletePage(ids: number[]) {

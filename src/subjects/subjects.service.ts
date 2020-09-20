@@ -21,7 +21,11 @@ export class SubjectsService {
     }
 
     async findAllMaterials() {
-       return await this.subjectRepository.find({});
+       return await this.subjectRepository.find({
+          order :{
+            createdAt:"DESC"
+          }
+       });
     }
 
     async findByIds(ids : Subject[]) {

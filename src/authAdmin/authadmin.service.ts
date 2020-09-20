@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdminUser } from 'src/entities/adminuser.entity';
@@ -10,9 +10,23 @@ export class AuthAdminService  {
 
   constructor(@InjectRepository(AdminUser) private adminRepository: Repository<AdminUser>) {}
 
+  findAllUsersFilter = async (id:number) => {
+    return await this.adminRepository.find({
+      where :{
+        id: Not(id)
+      },
+      order :{
+        createdAt:"DESC"
+      }
+    });
+  }
 
   findAllUsers = async () => {
-    return await this.adminRepository.find({});
+    return await this.adminRepository.find({
+      order :{
+        createdAt:"DESC"
+      }
+    });
   }
 
   createUser = async (adminUserDto: AdminUser) : Promise<AdminUser> => {
@@ -37,7 +51,7 @@ export class AuthAdminService  {
 
   findOneUser = async (username: string ): Promise<AdminUser> => {
     return await this.adminRepository.findOne({
-      where : { username },
+      where : { username , status:"active" },
       select:['id', 'username' , 'status' , 'role' , 'password']
     })
   };

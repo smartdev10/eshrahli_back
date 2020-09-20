@@ -21,7 +21,11 @@ export class MessageService {
     }
 
     async findAllMessages() {
-       return await this.messageRepository.find({});
+       return await this.messageRepository.find({
+        order :{
+            createdAt:"DESC"
+          }
+       });
     }
 
     async deleteMessage(ids: number[]) {

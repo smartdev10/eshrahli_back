@@ -22,8 +22,9 @@ export class AuthStudentController {
             if(!valid){
                throw new UnauthorizedException('password is not correct');
             }
+            const fstudent =  await this.studentService.findOneStudent(student.id);
             const token  = sign({student} , process.env.ACCESS_TOKEN_SECRET);
-            return res.status(200).json({message: 'you are logged in' , token});
+            return res.status(200).json({message: 'you are logged in' , token , student:fstudent});
           }
       } catch (error) {
           throw new HttpException({
