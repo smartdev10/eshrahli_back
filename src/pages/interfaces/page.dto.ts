@@ -8,10 +8,6 @@ export class PageDto {
     @IsString()
     readonly name: string;
 
-
-    @IsDefined()
-    @IsNotEmpty()
-    @IsString()
     readonly slug: string;
   
     @IsDefined()
