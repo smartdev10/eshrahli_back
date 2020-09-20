@@ -40,7 +40,7 @@ export class AuthStudentController {
           const student = await this.studentService.insertStudent(data);
           const foundStudent = await this.studentService.findOneStudent(student.id);
           
-          return res.status(200).json({ message: 'Student Created' , foundStudent });
+          return res.status(200).json({ message: 'Student Created' , student:foundStudent });
       } catch (error) {
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
