@@ -59,8 +59,11 @@ export class AuthTeacherController {
     async forgotPassword(@Body() data : ForgotPassTeacherDto , @Res() res: Response): Promise<Response> {
       try {
           const teacher = await this.teacherService.findOneTeacherByPhone(data.mobile)
-          await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verifications.create({to:teacher.mobile,channel:'sms'})
-          return res.status(200).json({message: 'Verification Code Sent'});
+          if(teacher){
+            await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verifications.create({to:teacher.mobile,channel:'sms'})
+            return res.status(200).json({message: 'Verification Code Sent'});
+          }
+          throw new HttpException('Teacher Not Found' ,400);
       } catch (error) {
         console.log(error)
           throw new HttpException({
@@ -74,11 +77,13 @@ export class AuthTeacherController {
     async createPassword(@Body() data : CreatePassTeacherDto , @Res() res: Response): Promise<Response> {
       try {
           const teacher = await this.teacherService.findOneTeacher(data.id)
-          const formData = Object.assign(teacher , { ...data })
-          await this.teacherService.updateTeacher(formData);
-          return res.status(200).json({message: 'Password Created'});
+          if(teacher){
+            const formData = Object.assign(teacher , { ...data })
+            await this.teacherService.updateTeacher(formData);
+            return res.status(200).json({message: 'Password Created'});
+          }
+          throw new HttpException('Teacher Not Found' ,400);
       } catch (error) {
-        console.log(error)
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
               error: error.message,
@@ -131,13 +136,16 @@ export class AuthTeacherController {
     async verify(@Body('mobile') mobile : string ,@Body('code') code : string , @Res() res: Response): Promise<Response> {
       try {
           const teacher = await this.teacherService.findOneTeacherByPhone(mobile);
-          const verificationCheck = await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID)
-          .verificationChecks
-          .create({to:teacher.mobile , code})
-          if(verificationCheck.valid){
-            return res.status(200).json({message: 'Code is Valid'});
+          if(teacher){
+            const verificationCheck = await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID)
+            .verificationChecks
+            .create({to:teacher.mobile , code})
+            if(verificationCheck.valid){
+              return res.status(200).json({message: 'Code is Valid'});
+            }
+            return res.status(HttpStatus.BAD_REQUEST).json({message: 'Code is Not Valid'});
           }
-          return res.status(HttpStatus.BAD_REQUEST).json({message: 'Code is Not Valid'});
+          throw new HttpException('Teacher Not Found' ,400);
       } catch (error) {
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,

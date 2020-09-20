@@ -18,6 +18,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthAdminModule } from './authAdmin/auth.module';
 import { TwilioModule } from './twilio/twilio.module';
+import { OneSignalModule } from './onesignal/onesignal.module';
 
 @Module({
   imports: [
@@ -39,6 +40,10 @@ import { TwilioModule } from './twilio/twilio.module';
     TwilioModule.register({
       accountSid:process.env.TWILIO_ACCOUNT_SID,
       authToken:process.env.TWILIO_AUTH_TOKEN,
+    }),
+    OneSignalModule.register({
+     appId:process.env.APP_ID,
+     restApiKey:process.env.REST_API_KEY,
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',

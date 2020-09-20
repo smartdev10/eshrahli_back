@@ -10,11 +10,11 @@ export class SRequest {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('varchar' , { length: 250 , nullable : false })
-  name: string;
+  @ManyToOne(type => Student, student => student.requests)
+  student: Student;
 
-  @Column('float'  , { nullable : false })
-  amount: number;
+  @ManyToOne(type => Teacher, teacher => teacher.requests)
+  teacher: Teacher;
 
   @Column('varchar'  ,{ length: 250 })
   type: string;
@@ -27,7 +27,11 @@ export class SRequest {
   @JoinColumn()
   material: Subject;
 
+  @OneToOne(type => Coupon)
   coupon: Coupon;
+
+  @Column('float'  , { default : 0})
+  amount: number;
 
   @Column('varchar'  ,{ length: 250 })
   latitude: string;
@@ -41,20 +45,23 @@ export class SRequest {
   @CreateDateColumn({ type: "time"})
   time: Date;
 
-  @Column('text')
-  details: string;
-
-  @ManyToOne(type => Student, student => student.requests)
-  student: Student;
-
-  @ManyToOne(type => Teacher, teacher => teacher.requests)
-  teacher: Teacher;
-
-  @Column('varchar'  ,{ length: 250 })
+  @Column('varchar'  ,{ length: 250 , default : "" })
   paymentMethod: string;
 
-  @Column('varchar'  ,{ length: 250 })
+  @Column('varchar'  ,{ length: 250 , default : "" })
   zoomLink: string;
+
+  @Column('varchar'  ,{ length: 250 , default : "" })
+  status: string;
+
+  @Column('text' , { default : ""})
+  details: string;
+
+  @CreateDateColumn({ type: "timestamp" , default:null})
+  cancelleationDate: Date;
+
+  @Column('integer' ,{ default:null })
+  canceledBy: Student | Teacher;
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;

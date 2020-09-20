@@ -13,9 +13,11 @@ export class UserAdminController {
 
   @Get()
   findAllUsers(@Query('filter') filter) : Promise<AdminUser[]>{
-    const data = JSON.parse(filter)
-    if(Object.keys(data).length !== 0){
-      return this.authService.findAllUsersFilter(data.id);
+    if(filter){
+      const data = JSON.parse(filter)
+      if(Object.keys(data).length !== 0){
+        return this.authService.findAllUsersFilter(data.id);
+      }
     }
     return this.authService.findAllUsers();
   }
