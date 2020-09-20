@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Res, Delete, Put , Param, Query, HttpStatus, HttpException, UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { TeacherService } from './teachers.service';
 import { Response } from 'express';
-import { TeacherDto, UpdateTeacherDto , CreateTeacherDto } from './interfaces/teacher.dto';
+import { UpdateTeacherDto , CreateTeacherDto } from './interfaces/teacher.dto';
 import { Teacher } from 'src/entities/teachers.entity';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';

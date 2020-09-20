@@ -2,6 +2,7 @@ import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdminUser } from 'src/entities/adminuser.entity';
+import { UpdateAdminUserDto } from './interfaces/adminusers.dto';
 
 
 @Injectable()
@@ -27,11 +28,22 @@ export class AuthAdminService  {
     })
   };
 
+  findOneUserByPhone = async (mobile : string ): Promise<AdminUser> => {
+    return await this.adminRepository.findOne({
+      where : { mobile },
+      select:['id','username','mobile','status']
+    })
+  };
+
   findOneUser = async (username: string ): Promise<AdminUser> => {
     return await this.adminRepository.findOne({
       where : { username },
-      select:['id','username','status' , 'role','password']
+      select:['id', 'username' , 'status' , 'role' , 'password']
     })
+  };
+
+  updateUser = async (data: UpdateAdminUserDto): Promise<AdminUser> => {
+    return await this.adminRepository.save(data)
   };
 
 }
