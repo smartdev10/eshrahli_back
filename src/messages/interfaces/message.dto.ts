@@ -21,8 +21,6 @@ export class MessageDto {
     @IsString()
     readonly message: string;
 
-    @IsDefined()
-    @IsNotEmpty()
     readonly sender: Student | Teacher;
 
 }

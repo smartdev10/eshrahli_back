@@ -16,7 +16,7 @@ export class Message {
   @Column('text')
   message: string;
 
-  @Column('integer')
+  @Column('integer' , {default:0})
   sender: Student | Teacher;
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
