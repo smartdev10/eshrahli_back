@@ -8,7 +8,7 @@ export class Page {
   @Column('varchar' , { length: 250 , nullable : false })
   name: string;
 
-  @Column('varchar' , { length: 250 , nullable : false })
+  @Column('varchar' , { length: 250 , nullable : false , default:"" })
   slug: string;
 
   @Column('text')
