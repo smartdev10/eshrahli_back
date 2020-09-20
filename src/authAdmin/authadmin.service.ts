@@ -52,7 +52,7 @@ export class AuthAdminService  {
   findOneUser = async (username: string ): Promise<AdminUser> => {
     return await this.adminRepository.findOne({
       where : { username , status:"active" },
-      select:['id', 'username' , 'status' , 'role' , 'password']
+      select:['id', 'username' , "mobile" , "name" ,'status' , 'role' , 'password']
     })
   };
 

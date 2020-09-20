@@ -33,7 +33,7 @@ async register(@Body() adminUserDto : AdminUser, @Res() res: Response): Promise<
         return res.status(404).json({message: 'Password not Correct'});
       }
       delete user.password
-      const access_token  = sign({ userId: user.id , role:user.role , username: user.username }, process.env.ACCESS_TOKEN_SECRET);
+      const access_token  = sign({ userId: user.id , role:user.role , username: user.username , mobile:user.mobile , name:user.name }, process.env.ACCESS_TOKEN_SECRET);
       return res.status(200).json({ result : true , user , token : { access_token , token_type : 'bearer' } });
     } catch (error) {
       return res.status(404).json({message: error.message});
