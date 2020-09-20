@@ -16,6 +16,13 @@ export class PageService {
     async findOnePage(id: number) {
         return await this.pageRepository.findOneOrFail(id)
     }
+    async findOnePageBySlug(slug: string) {
+        return await this.pageRepository.findOne({
+            where :{
+                slug
+            }
+        })
+    }
     async insertPage(data : PageDto ) {
         return await this.pageRepository.save(data);
     }
