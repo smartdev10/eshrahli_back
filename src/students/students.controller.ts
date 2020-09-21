@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Res, Delete, Put , Param, Query, HttpStatus, HttpException } from '@nestjs/common';
 import { StudentService } from './students.service';
 import { Response } from 'express';
-import { StudentDto , UpdateStudentPushId , UpdateBankInfoStudentDto , UpdateStudentDto } from './interfaces/student.dto';
+import { StudentDto , UpdateStudentPushId  , UpdateStudentDto } from './interfaces/student.dto';
 import { Student } from 'src/entities/students.entity';
 
 @Controller('api/students')
@@ -43,24 +43,6 @@ export class StudentController {
           const { ids } = JSON.parse(filter)
           await this.studentService.deleteStudent(ids);
           return res.status(200).json({message: 'Student Deleted'});
-        } catch (error) {
-            throw new HttpException({
-                status: HttpStatus.BAD_REQUEST,
-                error: error.message,
-            }, 400);
-        }
-    }
-
-    @Put('update/bankinfo/:id')
-    async updateStudentBankInfo(@Param('id') id: number , @Body() body: UpdateBankInfoStudentDto , @Res() res: Response): Promise<Response> {
-        try {
-            const student = await this.studentService.findOneStudent(id)
-            if(student){
-                const formData = Object.assign(student , { ...body })
-                await this.studentService.updateStudent(formData);
-                return res.status(200).json({message: 'Student Updated'});
-            }
-            throw new HttpException('Student not found' , HttpStatus.BAD_REQUEST)
         } catch (error) {
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,

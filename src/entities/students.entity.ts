@@ -26,12 +26,6 @@ export class Student {
   @Column('varchar'  ,{ length: 250 , default: "" , select:false  })
   password: string;
 
-  @Column('varchar' ,{ length: 250 , default:"" })
-  bankname: string;
-
-  @Column('varchar' ,{ length: 250 , default:"" })
-  bankiban: string;
-
   @OneToMany(type => Favorite, favorites => favorites.student)
   favorites:Favorite[]
 

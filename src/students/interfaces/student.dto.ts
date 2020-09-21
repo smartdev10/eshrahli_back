@@ -44,19 +44,6 @@ export class CheckStudentDto {
     readonly mobile: string;
 }
 
-export class UpdateBankInfoStudentDto {
-    
-    @IsDefined()
-    @IsNotEmpty()
-    @IsString()
-    readonly bankname: string;
-  
-    @IsDefined()
-    @IsNotEmpty()
-    @IsString()
-    readonly bankiban: string;
-}
-
 export class ForgotPaswordStudentDto {
     
     @IsDefined()
