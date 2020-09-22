@@ -16,8 +16,8 @@ export class SRequest {
   @ManyToOne(type => Teacher, teacher => teacher.requests)
   teacher: Teacher;
 
-  @Column('varchar'  ,{ length: 250 })
-  type: string;
+  @Column('varchar'  ,{ length: 250  })
+  search_type: string;
 
   @OneToOne(type => Level)
   @JoinColumn()
@@ -35,6 +35,9 @@ export class SRequest {
 
   @Column('varchar'  ,{ length: 250 })
   latitude: string;
+
+  @Column('integer'  ,{ default : 1  })
+  nstudents: string;
 
   @Column('varchar'  ,{ length: 250 })
   longitude: string;
@@ -54,8 +57,11 @@ export class SRequest {
   @Column('varchar'  ,{ length: 250 , default : "" })
   status: string;
 
-  @Column('text' , { default : ""})
+  @Column('text' , { default : "" })
   details: string;
+
+  @Column('varchar' , { length: 250 , default : "" })
+  other: string;
 
   @CreateDateColumn({ type: "timestamp" , default:null})
   cancelleationDate: Date;

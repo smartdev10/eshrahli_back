@@ -52,4 +52,14 @@ export class RequestDto {
     @IsString()
     readonly details: string;
 
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly search_type : string;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly other : string;
+
 }
