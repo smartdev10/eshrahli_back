@@ -63,6 +63,12 @@ export class SRequest {
   @Column('varchar' , { length: 250 , default : "" })
   other: string;
 
+  @Column('varchar' , { length: 250 , default : "male" })
+  student_gender: string;
+
+  @Column('varchar' , { length: 250 , default : "male" })
+  teacher_gender: string;
+
   @CreateDateColumn({ type: "timestamp" , default:null})
   cancelleationDate: Date;
 
