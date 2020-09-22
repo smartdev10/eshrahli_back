@@ -37,7 +37,7 @@ export class SRequest {
   latitude: string;
 
   @Column('integer'  ,{ default : 1  })
-  nstudents: string;
+  nstudents: number;
 
   @Column('varchar'  ,{ length: 250 })
   longitude: string;
