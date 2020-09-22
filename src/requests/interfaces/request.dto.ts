@@ -1,4 +1,4 @@
-import { IsDefined , IsString , IsNotEmpty, IsLongitude, IsLatitude, IsNumber, IsDate, IsEnum } from "class-validator";
+import { IsDefined , IsString , IsNotEmpty, IsLongitude, IsLatitude, IsNumber, IsDate, IsEnum, IsOptional } from "class-validator";
 import { Student } from "src/entities/students.entity";
 import { Teacher } from "src/entities/teachers.entity";
 
@@ -41,6 +41,7 @@ export class RequestDto {
     @IsNumber()
     readonly student: Student;
 
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsString()
