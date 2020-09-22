@@ -1,5 +1,7 @@
 import { IsDefined , IsString , IsNotEmpty, IsLongitude, IsLatitude, IsNumber, IsDate, IsEnum, IsOptional } from "class-validator";
+import { Level } from "src/entities/levels.entity";
 import { Student } from "src/entities/students.entity";
+import { Subject } from "src/entities/subjects.entity";
 import { Teacher } from "src/entities/teachers.entity";
 
 
@@ -41,6 +43,16 @@ export class RequestDto {
     @IsNumber()
     readonly student: Student;
 
+    @IsDefined()
+    @IsNotEmpty()
+    @IsNumber()
+    readonly subject: Subject;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsNumber()
+    readonly level: Level;
+
     @IsOptional()
     @IsDefined()
     @IsNotEmpty()
@@ -68,5 +80,11 @@ export class RequestDto {
     @IsNotEmpty()
     @IsString()
     readonly other : string;
+
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsNumber()
+    readonly nstudents : string;
 
 }
