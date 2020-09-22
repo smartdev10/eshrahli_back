@@ -5,12 +5,6 @@ import { Teacher } from "src/entities/teachers.entity";
 
 export class RequestDto {
 
-
-    @IsDefined()
-    @IsNotEmpty()
-    @IsString()
-    readonly type: string;
-
     @IsDefined()
     @IsNotEmpty()
     @IsString()
