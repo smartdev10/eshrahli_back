@@ -63,9 +63,10 @@ export class TeacherController {
           await this.teacherService.insertTeacher(formData);
           return res.status(200).json({message: 'Teacher Created'});
       } catch (error) {
+          console.log(error.detail)
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
-              error: error.message,
+              error: error.detail,
           }, 400);
       }
     }

@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany } from 'typeorm';
 import { Teacher } from './teachers.entity';
 
 @Entity('nationalities')
@@ -9,7 +9,9 @@ export class Nationality {
   @Column('varchar' , { length: 250 , nullable : false })
   name: string;
 
-  
+  @OneToMany(() => Teacher, teachers => teachers.nationality)
+  teachers:Teacher[]
+
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;
 

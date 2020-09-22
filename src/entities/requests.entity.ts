@@ -1,9 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , JoinColumn , OneToOne , ManyToOne} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany , OneToOne , ManyToOne} from 'typeorm';
 import { Level } from './levels.entity';
 import { Subject } from './subjects.entity';
 import { Coupon } from './coupons.entity';
 import { Student } from './students.entity';
 import { Teacher } from './teachers.entity';
+import { Bid } from './bids.entity';
 
 @Entity('srequests')
 export class SRequest {
@@ -24,6 +25,9 @@ export class SRequest {
 
   @ManyToOne(type => Subject, subject => subject.requests)
   subject: Subject;
+
+  @OneToMany(type => Bid, bid => bid.request)
+  bids:Bid[]
 
   @OneToOne(type => Coupon)
   coupon: Coupon;

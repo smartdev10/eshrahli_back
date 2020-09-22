@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany } from 'typeorm';
+import { Student } from './students.entity';
 import { Teacher } from './teachers.entity';
 
 @Entity('cities')
@@ -8,6 +9,12 @@ export class City {
 
   @Column('varchar' , { length: 250 , nullable : false })
   name: string;
+
+  @OneToMany(() => Teacher, teachers => teachers.city)
+  teachers:Teacher[]
+
+  @OneToMany(() => Student, student => student.city)
+  students:Student[]
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;

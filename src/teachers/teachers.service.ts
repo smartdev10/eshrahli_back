@@ -38,6 +38,12 @@ export class TeacherService {
         return await this.teacherRepository.save(teacherDto);
     }
 
+    async searchTeachers() {
+        return await this.teacherRepository.find({
+            relations:['subjects' , 'levels' , 'city' , 'nationality'],
+        });
+     }
+
     async findAllTeachers() {
        return await this.teacherRepository.find({
            relations:['subjects' , 'levels' , 'city' , 'nationality'],

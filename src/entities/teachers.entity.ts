@@ -1,10 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany , OneToOne , JoinColumn , BeforeUpdate , BeforeInsert , ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany , ManyToOne , OneToOne , JoinColumn , BeforeUpdate , BeforeInsert , ManyToMany, JoinTable } from 'typeorm';
 import { Nationality } from './nationalities.entity';
 import { City } from './cities.entity';
 import { Level } from './levels.entity';
 import { Subject } from './subjects.entity';
 import { hashSync , genSaltSync } from 'bcryptjs';
 import { SRequest } from './requests.entity';
+import { Bid } from './bids.entity';
 
 @Entity('teachers')
 export class Teacher {
@@ -20,13 +21,11 @@ export class Teacher {
   @Column('varchar'  ,{ length: 250 , default:"" })
   push_id: string;
 
-  @OneToOne(type => Nationality) // specify inverse side as a second parameter
-  @JoinColumn()
-  nationality: Nationality;
-
-  @OneToOne(type => City) // specify inverse side as a second parameter
-  @JoinColumn()
+  @ManyToOne(() => City, city => city.teachers)
   city: City;
+
+  @ManyToOne(() => Nationality, nationality => nationality.teachers)
+  nationality: Nationality;
 
   @Column('varchar'  ,{ length: 250 , default:"" })
   gender: string;
@@ -34,16 +33,19 @@ export class Teacher {
   @Column('text' ,{ default:"" })
   qualification :string
 
-  @ManyToMany(type => Level)
+  @ManyToMany(() => Level)
   @JoinTable()
   levels:Level[]
 
-  @ManyToMany(type => Subject)
+  @ManyToMany(() => Subject)
   @JoinTable()
   subjects:Subject[]
 
-  @OneToMany(type => SRequest, srequest => srequest.teacher)
+  @OneToMany(() => SRequest, srequest => srequest.teacher)
   requests:SRequest[]
+
+  @OneToMany(() => Bid, bid => bid.teacher)
+  bids:Bid[]
 
   @Column('varchar' ,{ length: 250 , default: "inactive" })
   status: string;

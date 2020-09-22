@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , BeforeInsert , BeforeUpdate , OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , BeforeInsert , BeforeUpdate , OneToMany , ManyToOne } from 'typeorm';
 import { hashSync , genSaltSync } from 'bcryptjs';
 import { SRequest } from './requests.entity';
 import { Favorite } from './favorites.entity';
+import { City } from './cities.entity';
 
 @Entity('students')
 export class Student {
@@ -25,6 +26,9 @@ export class Student {
 
   @Column('varchar'  ,{ length: 250 , default: "" , select:false  })
   password: string;
+
+  @ManyToOne(() => City, city => city.students)
+  city: City;
 
   @OneToMany(type => Favorite, favorites => favorites.student)
   favorites:Favorite[]

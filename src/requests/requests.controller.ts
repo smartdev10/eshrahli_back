@@ -3,10 +3,11 @@ import { RequestService } from './requests.service';
 import { Response } from 'express';
 import { RequestDto } from './interfaces/request.dto';
 import { SRequest } from 'src/entities/requests.entity';
+import { TeacherService } from 'src/teachers/teachers.service';
 
 @Controller('api/requests')
 export class RequestController {
-    constructor(private readonly requestService: RequestService) {}
+    constructor(private readonly requestService: RequestService , private readonly teacherService: TeacherService) {}
     @Get()
     findAllCategory() : Promise<SRequest[]>{
       return this.requestService.findAllRequests();
@@ -28,13 +29,14 @@ export class RequestController {
     @Post('create')
     async createRequest(@Body() body : RequestDto , @Res() res: Response): Promise<Response> {
       try {
-          await this.requestService.insertRequest(body);
+          const request = await this.requestService.insertRequest(body);
+          const teachers = await this.teacherService.searchTeachers()
           return res.status(200).json({message: 'Request Created'});
       } catch (error) {
           console.log(error.detail)
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
-              error: error.message,
+              error: error.detail,
           }, 400);
       }
     }

@@ -41,6 +41,7 @@ export class RequestDto {
     @IsNumber()
     readonly student: Student;
 
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsNumber()
@@ -74,6 +75,8 @@ export class RequestDto {
     @IsString()
     readonly search_type : string;
 
+
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsString()
@@ -85,6 +88,13 @@ export class RequestDto {
     @IsNumber()
     readonly nstudents : number;
 
+}
+
+
+export interface searchTeacher {
+    gender : Gender
+    subject :Subject
+    level :Level
 }
 
 
