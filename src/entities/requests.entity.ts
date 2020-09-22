@@ -43,10 +43,7 @@ export class SRequest {
   longitude: string;
   
   @CreateDateColumn({ type: "timestamp"})
-  date: Date;
-
-  @CreateDateColumn({ type: "time"})
-  time: Date;
+  sessionDate: Date;
 
   @Column('varchar'  ,{ length: 250 , default : "" })
   paymentMethod: string;

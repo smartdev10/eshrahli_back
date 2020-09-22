@@ -27,11 +27,7 @@ export class RequestDto {
     @IsDefined()
     @IsNotEmpty()
     @IsDate()
-    readonly date: Date;
-
-    @IsDefined()
-    @IsNotEmpty()
-    readonly time: Date;
+    readonly sessionDate: Date;
 
     @IsOptional()
     @IsDefined()
@@ -64,13 +60,13 @@ export class RequestDto {
     @IsNotEmpty()
     @IsString()
     @IsEnum(Gender)
-    readonly student_gender : string;
+    readonly student_gender : Gender;
 
     @IsDefined()
     @IsNotEmpty()
     @IsString()
     @IsEnum(Gender)
-    readonly teacher_gender : string;
+    readonly teacher_gender : Gender;
 
     @IsDefined()
     @IsNotEmpty()
@@ -89,3 +85,5 @@ export class RequestDto {
     readonly nstudents : number;
 
 }
+
+
