@@ -1,7 +1,12 @@
-import { IsDefined , IsString , IsNotEmpty, IsLongitude, IsLatitude, IsNumber, IsDate } from "class-validator";
+import { IsDefined , IsString , IsNotEmpty, IsLongitude, IsLatitude, IsNumber, IsDate, IsEnum } from "class-validator";
 import { Student } from "src/entities/students.entity";
 import { Teacher } from "src/entities/teachers.entity";
 
+
+enum Gender {
+    male = 'male',
+    female = 'female',
+}
 
 export class RequestDto {
 
@@ -40,6 +45,18 @@ export class RequestDto {
     @IsNotEmpty()
     @IsString()
     readonly details: string;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    @IsEnum(Gender)
+    readonly student_gender : string;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    @IsEnum(Gender)
+    readonly teacher_gender : string;
 
     @IsDefined()
     @IsNotEmpty()
