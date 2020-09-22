@@ -1,4 +1,4 @@
-import { IsDefined , IsString , IsNotEmpty, IsLongitude, IsLatitude, IsNumber, IsDate, IsEnum, IsOptional } from "class-validator";
+import { IsDefined , IsString , IsNotEmpty, IsLongitude, IsLatitude, IsNumber, IsDateString , IsEnum, IsOptional } from "class-validator";
 import { Level } from "src/entities/levels.entity";
 import { Student } from "src/entities/students.entity";
 import { Subject } from "src/entities/subjects.entity";
@@ -24,9 +24,10 @@ export class RequestDto {
     @IsLongitude()
     readonly longitude: string;
 
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
-    @IsDate()
+    @IsDateString()
     readonly sessionDate: Date;
 
     @IsOptional()
