@@ -64,8 +64,8 @@ export class SRequest {
   @Column('varchar' , { length: 250 , default : "male" })
   teacher_gender: string;
 
-  @CreateDateColumn({ type: "timestamp" , default:""})
-  cancelleationDate: Date;
+  @CreateDateColumn({ type: "timestamp" , nullable:true , default: () => "NULL"  })
+  cancellationDate: Date;
 
   @Column('integer' ,{ default:null })
   canceledBy: Student | Teacher;
