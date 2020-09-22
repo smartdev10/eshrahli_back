@@ -23,6 +23,7 @@ export class RequestService {
 
     async findAllRequests() {
        return await this.requestRepository.find({
+          relations:['subject' , 'level'],
           order :{
             createdAt:"DESC"
           }

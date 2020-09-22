@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn  } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany } from 'typeorm';
+import { SRequest } from './requests.entity';
 
 @Entity('subjects')
 export class Subject {
@@ -7,6 +8,9 @@ export class Subject {
 
   @Column('varchar' , { length: 250 , nullable : false })
   name: string;
+
+  @OneToMany(type => SRequest, request => request.subject)
+  requests: SRequest[];
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;

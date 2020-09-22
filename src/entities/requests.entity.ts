@@ -19,13 +19,11 @@ export class SRequest {
   @Column('varchar'  ,{ length: 250  })
   search_type: string;
 
-  @OneToOne(type => Level)
-  @JoinColumn()
+  @ManyToOne(type => Level, level => level.requests)
   level: Level;
 
-  @OneToOne(type => Subject)
-  @JoinColumn()
-  material: Subject;
+  @ManyToOne(type => Subject, subject => subject.requests)
+  subject: Subject;
 
   @OneToOne(type => Coupon)
   coupon: Coupon;
@@ -51,7 +49,7 @@ export class SRequest {
   @Column('varchar'  ,{ length: 250 , default : "" })
   zoomLink: string;
 
-  @Column('varchar'  ,{ length: 250 , default : "" })
+  @Column('varchar'  ,{ length: 250 , default : "pending" })
   status: string;
 
   @Column('text' , { default : "" })
@@ -66,7 +64,7 @@ export class SRequest {
   @Column('varchar' , { length: 250 , default : "male" })
   teacher_gender: string;
 
-  @CreateDateColumn({ type: "timestamp" , default:null})
+  @CreateDateColumn({ type: "timestamp" , default:""})
   cancelleationDate: Date;
 
   @Column('integer' ,{ default:null })

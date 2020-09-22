@@ -31,6 +31,7 @@ export class RequestController {
           await this.requestService.insertRequest(body);
           return res.status(200).json({message: 'Request Created'});
       } catch (error) {
+          console.log(error.detail)
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
               error: error.message,
