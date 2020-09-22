@@ -14,15 +14,15 @@ export class RequestDto {
 
     @IsDefined()
     @IsNotEmpty()
-    @IsString()
+    @IsNumber()
     @IsLatitude()
-    readonly lalititude: string;
+    readonly lalititude: number;
 
     @IsDefined()
     @IsNotEmpty()
-    @IsString()
+    @IsNumber()
     @IsLongitude()
-    readonly longitude: string;
+    readonly longitude: number;
 
     @IsDefined()
     @IsNotEmpty()
@@ -86,6 +86,6 @@ export class RequestDto {
     @IsDefined()
     @IsNotEmpty()
     @IsNumber()
-    readonly nstudents : string;
+    readonly nstudents : number;
 
 }
