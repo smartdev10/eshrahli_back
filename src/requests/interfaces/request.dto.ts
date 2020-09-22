@@ -33,6 +33,7 @@ export class RequestDto {
     @IsNotEmpty()
     readonly time: Date;
 
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsNumber()
