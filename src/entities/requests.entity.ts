@@ -30,7 +30,7 @@ export class SRequest {
   @OneToOne(type => Coupon)
   coupon: Coupon;
 
-  @Column('float'  , { default : 0})
+  @Column('float'  , { default : null})
   amount: number;
 
   @Column('varchar'  ,{ length: 250 })

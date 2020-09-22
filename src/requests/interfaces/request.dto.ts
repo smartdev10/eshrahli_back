@@ -13,11 +13,6 @@ export class RequestDto {
 
     @IsDefined()
     @IsNotEmpty()
-    @IsNumber()
-    readonly amount: number;
-
-    @IsDefined()
-    @IsNotEmpty()
     @IsString()
     @IsLatitude()
     readonly lalititude: string;
