@@ -1,4 +1,6 @@
 import { IsDefined , IsString , IsNotEmpty, IsLongitude, IsLatitude, IsNumber, IsDateString , IsEnum, IsOptional } from "class-validator";
+import { City } from "src/entities/cities.entity";
+import { Coupon } from "src/entities/coupons.entity";
 import { Level } from "src/entities/levels.entity";
 import { Student } from "src/entities/students.entity";
 import { Subject } from "src/entities/subjects.entity";
@@ -90,11 +92,66 @@ export class RequestDto {
 
 }
 
+export class UpdateRequestDto {
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsNumber()
+    readonly teacher: Teacher;
+
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly status : string;
+}
+
+export class CheckOutRequestDto {
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsNumber()
+    readonly teacher: Teacher;
+
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly status : string;
+
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsNumber()
+    readonly amount : number;
+
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsNumber()
+    readonly discount_amount : number;
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsNumber()
+    readonly coupon : Coupon;
+
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly payementReference : string;
+}
 
 export interface searchTeacher {
     gender : Gender
     subject :Subject
     level :Level
+    city:City
 }
 
 

@@ -13,7 +13,7 @@ export class BidsDto {
     @IsDefined()
     @IsNotEmpty()
     @IsString()
-    readonly student: SRequest;
+    readonly request: SRequest;
 
 
     @IsDefined()

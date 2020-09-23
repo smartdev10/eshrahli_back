@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany } from 'typeorm';
+import { SRequest } from './requests.entity';
 
 @Entity('coupons')
 export class Coupon {
@@ -19,6 +20,9 @@ export class Coupon {
 
   @Column('varchar' , { length: 250 , default:"inactive" })
   status: string;
+
+  @OneToMany(type => SRequest, request => request.coupon)
+  requests: SRequest[];
 
   @CreateDateColumn({ type: "timestamp"})
   start: Date;

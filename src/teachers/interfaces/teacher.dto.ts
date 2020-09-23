@@ -1,8 +1,35 @@
-import {IsDefined , IsString , IsNotEmpty, IsNumber, IsArray} from "class-validator";
+import {IsDefined , IsString , IsNotEmpty, IsNumber, IsArray, IsEnum, IsOptional} from "class-validator";
 import { Nationality } from "src/entities/nationalities.entity";
 import { City } from "src/entities/cities.entity";
 import { Level } from "src/entities/levels.entity";
 import { Subject } from "src/entities/subjects.entity";
+
+
+
+enum Gender {
+    male = 'male',
+    female = 'female',
+}
+
+export class searchTeacher {
+
+    @IsOptional()
+    @IsEnum(Gender)
+    @IsString()
+    readonly gender :Gender
+
+    @IsOptional()
+    @IsNumber()
+    subject :Subject
+
+    @IsOptional()
+    @IsNumber()
+    level :Level
+
+    @IsOptional()
+    @IsNumber()
+    city :City
+}
 
 
 export class TeacherDto {

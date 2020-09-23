@@ -2,7 +2,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { Teacher } from 'src/entities/teachers.entity';
-import { TeacherDto, UpdateTeacherDto } from './interfaces/teacher.dto';
+import { TeacherDto, UpdateTeacherDto , searchTeacher } from './interfaces/teacher.dto';
 
 
 @Injectable()
@@ -38,9 +38,12 @@ export class TeacherService {
         return await this.teacherRepository.save(teacherDto);
     }
 
-    async searchTeachers() {
+    async searchTeachers(searchData : searchTeacher) {
         return await this.teacherRepository.find({
             relations:['subjects' , 'levels' , 'city' , 'nationality'],
+            where : {
+               ...searchData
+            }
         });
      }
 

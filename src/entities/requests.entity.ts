@@ -20,20 +20,26 @@ export class SRequest {
   @Column('varchar'  ,{ length: 250  })
   search_type: string;
 
-  @ManyToOne(type => Level, level => level.requests)
+  @ManyToOne(() => Level, level => level.requests)
   level: Level;
 
-  @ManyToOne(type => Subject, subject => subject.requests)
+  @ManyToOne(() => Subject, subject => subject.requests)
   subject: Subject;
 
-  @OneToMany(type => Bid, bid => bid.request)
+  @OneToMany(() => Bid, bid => bid.request)
   bids:Bid[]
 
-  @OneToOne(type => Coupon)
+  @ManyToOne(() => Coupon, coupon => coupon.requests)
   coupon: Coupon;
 
   @Column('float'  , { default : null})
   amount: number;
+
+  @Column('float'  , { default : null})
+  discount_amount: number;
+
+  @Column('float'  , { default : null})
+  total: number;
 
   @Column('varchar'  ,{ length: 250 })
   latitude: string;
@@ -49,6 +55,9 @@ export class SRequest {
 
   @Column('varchar'  ,{ length: 250 , default : "" })
   paymentMethod: string;
+
+  @Column('varchar'  ,{ length: 250 , default : "" })
+  payementReference: string;
 
   @Column('varchar'  ,{ length: 250 , default : "" })
   zoomLink: string;
