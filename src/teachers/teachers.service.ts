@@ -14,7 +14,7 @@ export class TeacherService {
     ) {}
 
     async findOneTeacher(id: number) {
-        return await this.teacherRepository.findOne(id ,{relations:['requests']})
+        return await this.teacherRepository.findOne(id ,{relations:['requests' , 'levels' , 'subjects' , 'city' , 'nationality']})
     }
 
     async findOne(id: Teacher) {
