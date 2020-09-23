@@ -30254,10 +30254,9 @@ h6,
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  -webkit-align-items: center;
-  -ms-align-items: center;
-  align-items: center;
   justify-content: space-between;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
 }
 .gx-header-horizontal-top-left {
   display: -webkit-flex;
