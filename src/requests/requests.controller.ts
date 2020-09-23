@@ -48,7 +48,7 @@ export class RequestController {
             },
             include_player_ids: [...pushIds],
             data:{
-              RideInfo:"test"
+              RequestInfo:"test"
             }
           };
           const response =  await this.onesignalService.client.createNotification(notification)
