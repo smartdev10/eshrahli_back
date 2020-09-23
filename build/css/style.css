@@ -30257,6 +30257,7 @@ h6,
   -webkit-align-items: center;
   -ms-align-items: center;
   align-items: center;
+  justify-content: space-between;
 }
 .gx-header-horizontal-top-left {
   display: -webkit-flex;
