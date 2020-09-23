@@ -8,7 +8,7 @@ import { Favorite } from 'src/entities/favorites.entity';
 export class FavoriteController {
     constructor(private readonly favoriteService: FavoriteService) {}
     @Get()
-    findAllNationalties() : Promise<Favorite[]>{
+    findAllFavorites() : Promise<Favorite[]>{
       return this.favoriteService.findAllFavorites();
     }
 
@@ -38,9 +38,8 @@ export class FavoriteController {
       }
     }
     @Delete('delete')
-    async deleteFavorite(@Query('filter') filter, @Res() res: Response): Promise<Response> {
+    async deleteFavorite(@Body('ids') ids :number[], @Res() res: Response): Promise<Response> {
         try {
-          const { ids } = JSON.parse(filter)
           await this.favoriteService.deleteFavorite(ids);
           return res.status(200).json({message: 'Favorite Deleted'});
         } catch (error) {

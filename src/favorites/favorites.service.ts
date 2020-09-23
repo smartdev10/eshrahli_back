@@ -21,7 +21,9 @@ export class FavoriteService {
     }
 
     async findAllFavorites() {
-       return await this.favoriteRepository.find();
+       return await this.favoriteRepository.find({
+           relations :['teacher']
+       });
     }
 
     async deleteFavorite(ids: number[]) {
