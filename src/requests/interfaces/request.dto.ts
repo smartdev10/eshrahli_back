@@ -106,6 +106,18 @@ export class UpdateRequestDto {
     @IsNotEmpty()
     @IsString()
     readonly status : string;
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsDateString()
+    readonly cancellationDate : Date;
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly canceledBy : Student | Teacher;
 }
 
 export class CheckOutRequestDto {
