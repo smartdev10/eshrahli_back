@@ -78,6 +78,19 @@ export class RequestController {
     async updateRequest(@Param('id') id: number , @Body() body: UpdateRequestDto, @Res() res: Response): Promise<Response> {
         try {
           await this.requestService.updateRequest(id, body);
+          if(body.status === 'canceled'){
+              const teacher = await this.teacherService.findOne(body.teacher)
+              const notification = {
+                contents: {
+                  'en': `Request Canceled`
+                },
+                include_player_ids: [teacher.push_id],
+                data:{
+                  RequestInfo:"test"
+                }
+              };
+              await this.onesignalService.client.createNotification(notification)
+          }
           return res.status(200).json({message: 'Request Updated'});
         } catch (error) {
             throw new HttpException({
@@ -91,6 +104,17 @@ export class RequestController {
     async checkout(@Param('id') id: number , @Body() body: CheckOutRequestDto, @Res() res: Response): Promise<Response> {
         try {
           await this.requestService.checkoutRequest(id, body);
+          const teacher = await this.teacherService.findOne(body.teacher)
+          const notification = {
+            contents: {
+              'en': `Request Comfirmed`
+            },
+            include_player_ids: [teacher.push_id],
+            data:{
+              RequestInfo:"test"
+            }
+          };
+          await this.onesignalService.client.createNotification(notification)
           return res.status(200).json({message: 'Request Updated'});
         } catch (error) {
             throw new HttpException({
