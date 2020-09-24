@@ -22,6 +22,7 @@ export class BidsService {
 
     async findAllBids(request:number) {
        return await this.bidsRepository.find({
+           relations:['request' , 'teacher'],
            where :{
                request
            }

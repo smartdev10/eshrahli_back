@@ -19,6 +19,7 @@ import { join } from 'path';
 import { AuthAdminModule } from './authAdmin/auth.module';
 import { TwilioModule } from './twilio/twilio.module';
 import { OneSignalModule } from './onesignal/onesignal.module';
+import { BidsModule } from './bids/bids.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { OneSignalModule } from './onesignal/onesignal.module';
     MessageModule,
     FavoriteModule,
     AuthAdminModule,
+    BidsModule,
     TwilioModule.register({
       accountSid:process.env.TWILIO_ACCOUNT_SID,
       authToken:process.env.TWILIO_AUTH_TOKEN,
