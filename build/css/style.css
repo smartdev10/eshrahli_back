@@ -7809,9 +7809,7 @@ textarea.ant-picker-input > input {
     text-align: right;
   }
 }
-.ant-form-item {
-  /* Some non-status related component style is in `components.less` */
-}
+
 .ant-form-item-has-feedback .ant-input {
   padding-right: 24px;
 }
@@ -17457,9 +17455,7 @@ textarea.ant-pagination-options-quick-jumper input {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.15) \9;
 }
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  .ant-popover {
-    /* IE10+ */
-  }
+  
   .ant-popover-inner {
     box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
   }
@@ -20388,10 +20384,7 @@ span.ant-radio + * {
   margin-right: 67px;
   margin-left: 0;
 }
-.ant-steps-dot .ant-steps-item-icon .ant-steps-icon-dot,
-.ant-steps-dot.ant-steps-small .ant-steps-item-icon .ant-steps-icon-dot {
-  /* expand hover area */
-}
+
 .ant-steps-rtl.ant-steps-dot .ant-steps-item-icon .ant-steps-icon-dot,
 .ant-steps-rtl.ant-steps-dot.ant-steps-small .ant-steps-item-icon .ant-steps-icon-dot {
   float: right;
@@ -21202,11 +21195,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
     box-shadow: none !important;
   }
 }
-.ant-table {
-  /* title + table */
-  /* table */
-  /* table + footer */
-}
+
 .ant-table-title {
   border-radius: 6px 6px 0 0;
 }
@@ -23272,9 +23261,7 @@ span.ant-transfer-list-search-action {
 .ant-tree .ant-tree-treenode.drag-over-gap-bottom > [draggable] {
   border-bottom-color: #038fde;
 }
-.ant-tree-show-line {
-  /* Motion should hide line of measure */
-}
+
 .ant-tree-show-line .ant-tree-indent-unit {
   position: relative;
   height: 100%;
@@ -23697,9 +23684,6 @@ span.ant-transfer-list-search-action {
 .ant-select-tree .ant-select-tree-treenode.drag-over-gap-bottom > [draggable] {
   border-bottom-color: #038fde;
 }
-.ant-select-tree-show-line {
-  /* Motion should hide line of measure */
-}
 .ant-select-tree-show-line .ant-select-tree-indent-unit {
   position: relative;
   height: 100%;
@@ -23941,6 +23925,7 @@ div.ant-typography-edit-content {
 }
 .ant-typography-edit-content textarea {
   -moz-transition: none;
+  transition: none;
 }
 .ant-typography ul,
 .ant-typography ol {
@@ -30005,7 +29990,6 @@ h6,
 }
 .gx-header-notifications {
   list-style: none;
-  margin: 0;
   padding-left: 0;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -30014,12 +29998,12 @@ h6,
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
   -webkit-align-items: center;
   -ms-align-items: center;
-  align-items: center;
+   align-items: center;
 }
 .gx-header-notifications > li {
   font-size: 18px;
@@ -30251,9 +30235,7 @@ h6,
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
+ 
   justify-content: space-between;
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;

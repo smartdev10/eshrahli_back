@@ -42,13 +42,25 @@ export class TeacherService {
         return await this.teacherRepository.save(teacherDto);
     }
 
-    async searchTeachers(searchData : searchTeacher) {
-        return await this.teacherRepository.find({
-            relations:['subjects' , 'levels' , 'city' , 'nationality'],
-            where : {
-               ...searchData
-            }
-        });
+    async searchTeachers(searchData : searchTeacher) { 
+
+        return await this.teacherRepository
+                .createQueryBuilder('teacher')
+                .leftJoin('teacher.subjects', 'subject')
+                .leftJoin('teacher.levels', 'level')
+                .where('subject.id = :id', { id: searchData.subjects })
+                .where('level.id = :id', { id: searchData.levels })
+                .where('city = :id', { id: searchData.city })
+                .where('gender = :id', { id: searchData.gender })
+                .getMany();
+
+        // return await this.teacherRepository.find({
+        //     relations:['subjects' , 'levels' , 'city' , 'nationality'],
+        //     where : {
+        //        ...searchData,
+        //     }
+        // });
+
      }
 
     async findAllTeachers() {

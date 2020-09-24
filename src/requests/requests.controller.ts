@@ -5,12 +5,14 @@ import { RequestDto , CheckOutRequestDto , UpdateRequestDto } from './interfaces
 import { SRequest } from 'src/entities/requests.entity';
 import { TeacherService } from 'src/teachers/teachers.service';
 import { OneSignalService } from 'src/onesignal/onesignal.service';
+import { StudentService } from 'src/students/students.service';
 
 @Controller('api/requests')
 export class RequestController {
     constructor(
         private readonly requestService: RequestService , 
         private readonly teacherService: TeacherService , 
+        private readonly studentService: StudentService , 
         private readonly onesignalService: OneSignalService , 
         ) {}
     @Get()
@@ -34,30 +36,30 @@ export class RequestController {
     @Post('create')
     async createRequest(@Body() body : RequestDto , @Res() res: Response): Promise<Response> {
       try {
-          const request = await this.requestService.insertRequest(body);
+          // const request = await this.requestService.insertRequest(body);
+          const student = await this.studentService.findOne(body.student);
           const teachers = await this.teacherService.searchTeachers({
-              city:body.student.city,
+              city:student.city,
               gender:body.teacher_gender,
-              level:body.level,
-              subject:body.subject
+              levels:body.level,
+              subjects:body.subject
           })
-          const pushIds = teachers.map((teacher) => teacher.push_id )
-          const notification = {
-            contents: {
-              'en': `New Request`
-            },
-            include_player_ids: [...pushIds],
-            data:{
-              RequestInfo:"test"
-            }
-          };
-          const response =  await this.onesignalService.client.createNotification(notification)
-          return res.status(200).json({message: 'Request Created' , request , notificationResponse : response});
+          // const notification = {
+          //   contents: {
+          //     'en': `New Request`
+          //   },
+          //   include_player_ids: [...pushIds],
+          //   data:{
+          //     RequestInfo:"test"
+          //   }
+          // };
+          // const response =  await this.onesignalService.client.createNotification(notification)
+          return res.status(200).json({message: 'Request Created' , teachers });
       } catch (error) {
-          console.log(error.detail)
+          console.log(error)
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
-              error: error.detail,
+              error: error.messge,
           }, 400);
       }
     }

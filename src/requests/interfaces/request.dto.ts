@@ -159,11 +159,4 @@ export class CheckOutRequestDto {
     readonly payementReference : string;
 }
 
-export interface searchTeacher {
-    gender : Gender
-    subject :Subject
-    level :Level
-    city:City
-}
-
 

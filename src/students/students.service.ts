@@ -17,6 +17,10 @@ export class StudentService {
         return await this.studentRepository.findOneOrFail(id)
     }
 
+    async findOne(student: Student) {
+        return await this.studentRepository.findOne(student , {relations:['city']})
+    }
+
     async findOneStudentByPhone(mobile: string) {
         return await this.studentRepository.findOne({
             select:['id','password' ,'name','mobile','gender' ,'push_id','status'],

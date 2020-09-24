@@ -12,24 +12,13 @@ enum Gender {
 }
 
 export class searchTeacher {
-
-    @IsOptional()
-    @IsEnum(Gender)
-    @IsString()
-    readonly gender :Gender
-
-    @IsOptional()
-    @IsNumber()
-    subject :Subject
-
-    @IsOptional()
-    @IsNumber()
-    level :Level
-
-    @IsOptional()
-    @IsNumber()
-    city :City
+    readonly gender? : Gender
+    readonly subjects? :Subject
+    readonly levels?:Level
+    readonly city?:City
 }
+
+
 
 
 export class TeacherDto {
