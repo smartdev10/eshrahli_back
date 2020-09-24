@@ -43,24 +43,14 @@ export class TeacherService {
     }
 
     async searchTeachers(searchData : searchTeacher) { 
-
         return await this.teacherRepository
                 .createQueryBuilder('teacher')
-                .leftJoin('teacher.subjects', 'subject')
-                .leftJoin('teacher.levels', 'level')
-                .where('subject.id = :id', { id: searchData.subjects })
-                .where('level.id = :id', { id: searchData.levels })
-                .where('city = :id', { id: searchData.city })
-                .where('gender = :id', { id: searchData.gender })
-                .getMany();
-
-        // return await this.teacherRepository.find({
-        //     relations:['subjects' , 'levels' , 'city' , 'nationality'],
-        //     where : {
-        //        ...searchData,
-        //     }
-        // });
-
+                .where('gender = :gender', { gender: searchData.gender })
+                .innerJoinAndSelect('teacher.subjects', 'subject' , 'subject.id = :subject' , { subject: searchData.subjects })
+                .innerJoinAndSelect('teacher.levels', 'level' , 'level.id = :level', { level: searchData.levels })
+                .innerJoinAndSelect('teacher.city','city')
+                .where('city.id = :city' , { city: searchData.city.id })
+                .getManyAndCount();
      }
 
     async findAllTeachers() {

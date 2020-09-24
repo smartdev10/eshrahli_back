@@ -154,11 +154,14 @@ export class UpdateTeacherDto {
     @IsString()
     readonly city : City;
 
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsArray()
     readonly levels : Level[];
 
+
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsArray()

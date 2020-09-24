@@ -6,6 +6,7 @@ import { SRequest } from 'src/entities/requests.entity';
 import { TeacherService } from 'src/teachers/teachers.service';
 import { OneSignalService } from 'src/onesignal/onesignal.service';
 import { StudentService } from 'src/students/students.service';
+import { ClientResponse } from 'onesignal-node/lib/types';
 
 @Controller('api/requests')
 export class RequestController {
@@ -36,7 +37,7 @@ export class RequestController {
     @Post('create')
     async createRequest(@Body() body : RequestDto , @Res() res: Response): Promise<Response> {
       try {
-          const request = await this.requestService.insertRequest(body);
+          // const request = await this.requestService.insertRequest(body);
           const student = await this.studentService.findOne(body.student);
           const teachers = await this.teacherService.searchTeachers({
               city:student.city,
@@ -44,17 +45,21 @@ export class RequestController {
               levels:body.level,
               subjects:body.subject
           })
-          // const notification = {
-          //   contents: {
-          //     'en': `New Request`
-          //   },
-          //   include_player_ids: [...pushIds],
-          //   data:{
-          //     RequestInfo:"test"
-          //   }
-          // };
-          // const response =  await this.onesignalService.client.createNotification(notification)
-          return res.status(200).json({message: 'Request Created' , teachers , request });
+          const push_ids = teachers[0].map(({push_id})=> push_id ? push_id : '')
+          let response : ClientResponse 
+          if(push_ids.every((push)=> push)){
+            const notification = {
+              contents: {
+                'en': `New Request`
+              },
+              include_player_ids: [...push_ids],
+              data:{
+                RequestInfo:"test"
+              }
+            };
+            response =  await this.onesignalService.client.createNotification(notification)
+          }
+          return res.status(200).json({message: 'Request Created' , teachers , oneSignalResponse:response ? response.body : null });
       } catch (error) {
           console.log(error)
           throw new HttpException({

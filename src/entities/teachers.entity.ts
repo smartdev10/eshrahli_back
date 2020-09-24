@@ -33,11 +33,11 @@ export class Teacher {
   @Column('text' ,{ default:"" })
   qualification :string
 
-  @ManyToMany(() => Level)
+  @ManyToMany(() => Level ,{onUpdate:'CASCADE'})
   @JoinTable()
   levels:Level[]
 
-  @ManyToMany(() => Subject)
+  @ManyToMany(() => Subject , {onUpdate:'CASCADE'})
   @JoinTable()
   subjects:Subject[]
 

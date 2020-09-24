@@ -138,8 +138,14 @@ export class TeacherController {
                 personalcard:teacher.personalcard , 
                 image:teacher.image })
             }
-            const levels = await this.levelService.findByIds(formData.levels)
-            const subjects = await this.subjectService.findByIds(formData.subjects)
+            let levels = []
+            let subjects = []
+            if(data.levels){
+                levels = await this.levelService.findByIds(formData.levels)
+            }
+            if(data.subjects){
+                subjects = await this.subjectService.findByIds(formData.subjects)
+            }
             formData.levels = levels
             formData.subjects = subjects
             await this.teacherService.updateTeacher(formData);
