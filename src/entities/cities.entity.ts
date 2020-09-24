@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany } from 'typeorm';
-import { Student } from './students.entity';
+import { SRequest } from './requests.entity';
 import { Teacher } from './teachers.entity';
 
 @Entity('cities')
@@ -13,8 +13,8 @@ export class City {
   @OneToMany(() => Teacher, teachers => teachers.city)
   teachers:Teacher[]
 
-  @OneToMany(() => Student, student => student.city)
-  students:Student[]
+  @OneToMany(type => SRequest, request => request.city)
+  requests: SRequest[];
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;

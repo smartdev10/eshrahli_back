@@ -41,6 +41,11 @@ export class RequestDto {
     @IsDefined()
     @IsNotEmpty()
     @IsNumber()
+    readonly city: City;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsNumber()
     readonly student: Student;
 
     @IsOptional()

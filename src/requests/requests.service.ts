@@ -15,15 +15,27 @@ export class RequestService {
     ) {}
 
     async findOneRequest(id: number) {
-        return await this.requestRepository.findOneOrFail(id)
+        return await this.requestRepository.findOne({
+            where :{
+                id
+            },
+            relations:['subject' , 'level' , 'student' , 'teacher' , 'city'],
+        })
     }
+
+    async findOne(request: number) {
+        return await this.requestRepository.findOne(request,{
+            relations:['subject' , 'level' , 'student' , 'teacher' , 'city'],
+        })
+    }
+
     async insertRequest(data : RequestDto ) {
         return await this.requestRepository.save(data);
     }
 
     async findAllRequests() {
        return await this.requestRepository.find({
-          relations:['subject' , 'level' , 'student' , 'teacher'],
+          relations:['subject' , 'level' , 'student' , 'teacher' , 'city'],
           order :{
             createdAt:"DESC"
           }

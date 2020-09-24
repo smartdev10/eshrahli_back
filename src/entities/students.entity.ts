@@ -27,9 +27,6 @@ export class Student {
   @Column('varchar'  ,{ length: 250 , default: "" , select:false  })
   password: string;
 
-  @ManyToOne(() => City, city => city.students)
-  city: City;
-
   @OneToMany(type => Favorite, favorites => favorites.student)
   favorites:Favorite[]
 

@@ -5,6 +5,7 @@ import { Coupon } from './coupons.entity';
 import { Student } from './students.entity';
 import { Teacher } from './teachers.entity';
 import { Bid } from './bids.entity';
+import { City } from './cities.entity';
 
 @Entity('srequests')
 export class SRequest {
@@ -25,6 +26,9 @@ export class SRequest {
 
   @ManyToOne(() => Subject, subject => subject.requests)
   subject: Subject;
+
+  @ManyToOne(() => City, city => city.requests)
+  city: City;
 
   @OneToMany(() => Bid, bid => bid.request)
   bids:Bid[]

@@ -5,7 +5,6 @@ import { RequestDto , CheckOutRequestDto , UpdateRequestDto } from './interfaces
 import { SRequest } from 'src/entities/requests.entity';
 import { TeacherService } from 'src/teachers/teachers.service';
 import { OneSignalService } from 'src/onesignal/onesignal.service';
-import { StudentService } from 'src/students/students.service';
 import { ClientResponse } from 'onesignal-node/lib/types';
 
 @Controller('api/requests')
@@ -13,7 +12,6 @@ export class RequestController {
     constructor(
         private readonly requestService: RequestService , 
         private readonly teacherService: TeacherService , 
-        private readonly studentService: StudentService , 
         private readonly onesignalService: OneSignalService , 
         ) {}
     @Get()
@@ -24,7 +22,7 @@ export class RequestController {
     @Get(':id')
     async findOneRequest(@Param('id') id: number  ,  @Res() res: Response) : Promise<Response>  {
       try {
-            const request =  await this.requestService.findOneRequest(id);
+            const request =  await this.requestService.findOne(id);
             return res.status(HttpStatus.OK).json(request);
         } catch (error) {
             throw new HttpException({
@@ -38,9 +36,9 @@ export class RequestController {
     async createRequest(@Body() body : RequestDto , @Res() res: Response): Promise<Response> {
       try {
           const request = await this.requestService.insertRequest(body);
-          const student = await this.studentService.findOne(body.student);
+          const frequest = await this.requestService.findOneRequest(request.id);
           const teachers = await this.teacherService.searchTeachers({
-              city:student.city,
+              city:frequest.city,
               gender:body.teacher_gender,
               levels:body.level,
               subjects:body.subject
@@ -59,7 +57,7 @@ export class RequestController {
             };
             response =  await this.onesignalService.client.createNotification(notification)
           }
-          return res.status(200).json({message: 'Request Created' , request , teachers , oneSignalResponse:response ? response.body : null });
+          return res.status(200).json({message: 'Request Created' , request : frequest , teachers , oneSignalResponse:response ? response.body : null });
       } catch (error) {
           console.log(error)
           throw new HttpException({
