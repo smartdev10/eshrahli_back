@@ -36,7 +36,7 @@ export class RequestController {
     @Post('create')
     async createRequest(@Body() body : RequestDto , @Res() res: Response): Promise<Response> {
       try {
-          // const request = await this.requestService.insertRequest(body);
+          const request = await this.requestService.insertRequest(body);
           const student = await this.studentService.findOne(body.student);
           const teachers = await this.teacherService.searchTeachers({
               city:student.city,
@@ -54,7 +54,7 @@ export class RequestController {
           //   }
           // };
           // const response =  await this.onesignalService.client.createNotification(notification)
-          return res.status(200).json({message: 'Request Created' , teachers });
+          return res.status(200).json({message: 'Request Created' , teachers , request });
       } catch (error) {
           console.log(error)
           throw new HttpException({
