@@ -41,28 +41,26 @@ export class RequestController {
               city:frequest.city,
               gender:body.teacher_gender,
               levels:body.level,
-              subjects:body.subject
+              subjects:body.subject 
           })
-          const push_ids = teachers[0].map(({push_id})=> push_id ? push_id : '')
-          let response : ClientResponse 
-          if(push_ids.every((push)=> push)){
-            const notification = {
-              contents: {
-                'en': `New Request`
-              },
-              include_player_ids: [...push_ids],
-              data:{
-                RequestInfo:"test"
-              }
-            };
-            response =  await this.onesignalService.client.createNotification(notification)
-          }
-          return res.status(200).json({message: 'Request Created' , request : frequest , teachers , oneSignalResponse:response ? response.body : null });
+          // if(push_ids.every((push)=> push)){
+          //   const notification = {
+          //     contents: {
+          //       'en': `New Request`
+          //     },
+          //     include_player_ids: [...push_ids],
+          //     data:{
+          //       RequestInfo:"test"
+          //     }
+          //   };
+          //   response =  await this.onesignalService.client.createNotification(notification)
+          // }
+          return res.status(200).json({ teachers  });
       } catch (error) {
           console.log(error)
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
-              error: error.messge,
+              error: error.message,
           }, 400);
       }
     }

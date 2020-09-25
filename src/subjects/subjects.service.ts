@@ -28,6 +28,28 @@ export class SubjectsService {
        });
     }
 
+    async findAllMainSubjects() {
+        return await this.subjectRepository.find({
+           where: {
+              type:'main'
+          },
+           order :{
+             createdAt:"DESC"
+           }
+        });
+     }
+
+     async findAllOtherSubjects() {
+        return await this.subjectRepository.find({
+           where: {
+              type:'other'
+          },
+           order :{
+             createdAt:"DESC"
+           }
+        });
+     }
+
     async findByIds(ids : Subject[]) {
         return await this.subjectRepository.findByIds(ids);
      }

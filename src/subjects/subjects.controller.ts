@@ -8,8 +8,18 @@ import { Subject } from 'src/entities/subjects.entity';
 export class SubjectsController {
     constructor(private readonly subjectService: SubjectsService) {}
     @Get()
-    findAllMaterials() : Promise<Subject[]>{
+    findAllSubjects() : Promise<Subject[]>{
       return this.subjectService.findAllMaterials();
+    }
+
+    @Get('main')
+    findAllMainSubjects() : Promise<Subject[]>{
+        return this.subjectService.findAllMainSubjects();
+    }
+
+    @Get('other')
+    findAllOtherSubjects() : Promise<Subject[]>{
+        return this.subjectService.findAllOtherSubjects();
     }
 
     @Get(':id')

@@ -7,6 +7,8 @@ import { ONESIGNAL_MODULE_OPTIONS } from 'src/onesignal/interface/onesignal.conf
 import { OneSignalService } from 'src/onesignal/onesignal.service';
 import { TeacherService } from 'src/teachers/teachers.service';
 import { Teacher } from 'src/entities/teachers.entity';
+import { Level } from 'src/entities/levels.entity';
+import { Subject } from 'src/entities/subjects.entity';
 
 
 
@@ -16,7 +18,11 @@ const OneSignalProvider = {
 };
 
 @Module({
-    imports: [TypeOrmModule.forFeature([SRequest]) , TypeOrmModule.forFeature([Teacher])],
+    imports: [
+        TypeOrmModule.forFeature([SRequest]) , 
+        TypeOrmModule.forFeature([Teacher]) , 
+        TypeOrmModule.forFeature([Level]), 
+        TypeOrmModule.forFeature([Subject]),],
     controllers: [RequestController],
     providers: [RequestService , OneSignalService , OneSignalProvider , TeacherService ],
 })

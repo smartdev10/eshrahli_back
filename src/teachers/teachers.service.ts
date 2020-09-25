@@ -1,8 +1,10 @@
-import { Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { Teacher } from 'src/entities/teachers.entity';
 import { TeacherDto, UpdateTeacherDto , searchTeacher } from './interfaces/teacher.dto';
+import { Subject } from 'src/entities/subjects.entity';
+import { Level } from 'src/entities/levels.entity';
 
 
 @Injectable()
@@ -11,6 +13,10 @@ export class TeacherService {
     constructor(
         @InjectRepository(Teacher)
         private teacherRepository: Repository<Teacher>,
+        @InjectRepository(Subject)
+        private subjectRepository: Repository<Subject>,
+        @InjectRepository(Level)
+        private levelRepository: Repository<Level>,
     ) {}
 
     async findOneTeacher(id: number) {
@@ -43,19 +49,26 @@ export class TeacherService {
     }
 
     async searchTeachers(searchData : searchTeacher) { 
-        return await this.teacherRepository
+        return  await this.teacherRepository
                 .createQueryBuilder('teacher')
-                .where('gender = :gender', { gender: searchData.gender })
-                .innerJoinAndSelect('teacher.subjects', 'subject' , 'subject.id = :subject' , { subject: searchData.subjects })
-                .innerJoinAndSelect('teacher.levels', 'level' , 'level.id = :level', { level: searchData.levels })
                 .innerJoinAndSelect('teacher.city','city')
-                .where('city.id = :city' , { city: searchData.city.id })
-                .getManyAndCount();
+                .leftJoinAndSelect('teacher.levels', 'level')
+                .leftJoinAndSelect('teacher.other_subjects', 'other')
+                .leftJoinAndSelect('teacher.subjects', 'subject')
+                .where('gender = :gender', { gender: searchData.gender })
+                .andWhere('city.id = :city' , { city: searchData.city.id })
+                .andWhere('level.id = :level', { level: searchData.levels })
+                .andWhere(new Brackets(qb => {
+                   qb.andWhere('other.id = :other' , { other: searchData.subjects })
+                   .orWhere('subject.id = :subject' , { subject: searchData.subjects })
+                }))
+                .getMany();
+
      }
 
     async findAllTeachers() {
        return await this.teacherRepository.find({
-           relations:['subjects' , 'levels' , 'city' , 'nationality'],
+           relations:['subjects' , 'other_subjects' , 'levels' , 'city' , 'nationality'],
            order :{
             createdAt:"DESC"
            }

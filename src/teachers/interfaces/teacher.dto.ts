@@ -68,6 +68,11 @@ export class CreateTeacherDto {
 
     @IsDefined()
     @IsNotEmpty()
+    @IsArray()
+    readonly other_subjects : Subject[];
+
+    @IsDefined()
+    @IsNotEmpty()
     @IsString()
     readonly bankname : string;
 
@@ -166,6 +171,12 @@ export class UpdateTeacherDto {
     @IsNotEmpty()
     @IsArray()
     readonly subjects : Subject[];
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsArray()
+    readonly other_subjects : Subject[];
 
     @IsDefined()
     @IsNotEmpty()

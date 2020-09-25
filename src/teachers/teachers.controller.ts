@@ -58,8 +58,10 @@ export class TeacherController {
           })
           const levels = await this.levelService.findByIds(formData.levels)
           const subjects = await this.subjectService.findByIds(formData.subjects)
+          const other_subjects = await this.subjectService.findByIds(formData.other_subjects)
           formData.levels = levels
           formData.subjects = subjects
+          formData.other_subjects = other_subjects
           await this.teacherService.insertTeacher(formData);
           return res.status(200).json({message: 'Teacher Created'});
       } catch (error) {
@@ -140,14 +142,21 @@ export class TeacherController {
             }
             let levels = []
             let subjects = []
+            let other_subjects = []
             if(data.levels){
                 levels = await this.levelService.findByIds(formData.levels)
             }
+            
             if(data.subjects){
                 subjects = await this.subjectService.findByIds(formData.subjects)
             }
+
+            if(data.other_subjects){
+                other_subjects = await this.subjectService.findByIds(formData.other_subjects)
+            }
             formData.levels = levels
             formData.subjects = subjects
+            formData.other_subjects = other_subjects
             await this.teacherService.updateTeacher(formData);
             return res.status(200).json({message: 'Teacher Updated'});
         } catch (error) {
