@@ -97,6 +97,16 @@ export class RequestDto {
 
 }
 
+
+export class RetryDto {
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsNumber()
+    readonly id: number;
+
+}
+
 export class UpdateRequestDto {
 
     @IsOptional()

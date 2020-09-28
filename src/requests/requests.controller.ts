@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Res, Delete, Put , Param, Query, HttpStatus, HttpException } from '@nestjs/common';
 import { RequestService } from './requests.service';
 import { Response } from 'express';
-import { RequestDto , CheckOutRequestDto , UpdateRequestDto } from './interfaces/request.dto';
+import { RequestDto , CheckOutRequestDto , UpdateRequestDto, RetryDto } from './interfaces/request.dto';
 import { SRequest } from 'src/entities/requests.entity';
 import { TeacherService } from 'src/teachers/teachers.service';
 import { OneSignalService } from 'src/onesignal/onesignal.service';
@@ -32,6 +32,40 @@ export class RequestController {
         }
     }
 
+    @Post('retry')
+    async retryRequest(@Body() data : RetryDto , @Res() res: Response): Promise<Response> {
+      try {
+          const frequest = await this.requestService.findOneRequest(data.id);
+          const teachers = await this.teacherService.searchTeachers({
+              city:frequest.city,
+              gender:frequest.teacher_gender,
+              levels:frequest.level,
+              subjects:frequest.subject 
+          })
+          const push_ids = teachers.map(({push_id})=> push_id ? push_id : '')
+          let response : ClientResponse 
+          if(push_ids.length !== 0 && push_ids.every((push) => push)){
+            const notification = {
+              contents: {
+                'en': `New Request`
+              },
+              include_player_ids: [...push_ids],
+              data:{
+                RequestInfo:"test"
+              }
+            };
+            response =  await this.onesignalService.client.createNotification(notification)
+          }
+          return res.status(200).json({message: 'Request Created' , request : frequest , teachers , oneSignalResponse:response ? response.body : null });
+      } catch (error) {
+          console.log(error)
+          throw new HttpException({
+              status: HttpStatus.BAD_REQUEST,
+              error: error.messge,
+          }, 400);
+      }
+    }
+
     @Post('create')
     async createRequest(@Body() body : RequestDto , @Res() res: Response): Promise<Response> {
       try {
@@ -45,7 +79,7 @@ export class RequestController {
           })
           const push_ids = teachers.map(({push_id})=> push_id ? push_id : '')
           let response : ClientResponse 
-          if(push_ids.every((push)=> push)){
+          if(push_ids.length !== 0 && push_ids.every((push) => push)){
             const notification = {
               contents: {
                 'en': `New Request`

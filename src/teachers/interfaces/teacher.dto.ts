@@ -12,7 +12,7 @@ enum Gender {
 }
 
 export class searchTeacher {
-    readonly gender? : Gender
+    readonly gender? : Gender | string
     readonly subjects? :Subject
     readonly levels?:Level
     readonly city?:City
