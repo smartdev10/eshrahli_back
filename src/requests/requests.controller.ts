@@ -32,6 +32,19 @@ export class RequestController {
         }
     }
 
+    @Get('apply-coupon')
+    async applyCoupon(@Param('id') id: number  ,  @Res() res: Response) : Promise<Response>  {
+      try {
+            const request =  await this.requestService.findOne(id);
+            return res.status(HttpStatus.OK).json(request);
+        } catch (error) {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: error.message,
+            }, 400);
+        }
+    }
+
     @Post('retry')
     async retryRequest(@Body() data : RetryDto , @Res() res: Response): Promise<Response> {
       try {

@@ -14,7 +14,19 @@ export class StudentService {
     ) {}
 
     async findOneStudent(id: number) {
-        return await this.studentRepository.findOneOrFail(id)
+        return await this.studentRepository.findOne(id , {
+            relations:[
+            'requests' , 
+            'requests.city' , 
+            'requests.subject' , 
+            'requests.level' , 
+            'requests.teacher' , 
+            'requests.teacher.city' , 
+            'requests.teacher.nationality',
+            'requests.teacher.levels' , 
+            'requests.teacher.subjects'
+        ]
+        })
     }
 
     async findOne(student: Student) {

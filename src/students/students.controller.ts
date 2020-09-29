@@ -25,6 +25,22 @@ export class StudentController {
         }
     }
 
+    @Get(':id/requests')
+    async findOneStudentRequests(@Param('id') id: number  ,  @Res() res: Response) : Promise<Response>  {
+      try {
+            const student =  await this.studentService.findOneStudent(id);
+            if(student){
+                return res.status(HttpStatus.OK).json(student.requests);
+            }
+            throw new HttpException('Student Not Found',  HttpStatus.BAD_REQUEST);
+        } catch (error) {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: error.message,
+            }, 400);
+        }
+    }
+
     @Post('create')
     async createStudent(@Body() body : StudentDto , @Res() res: Response): Promise<Response> {
       try {

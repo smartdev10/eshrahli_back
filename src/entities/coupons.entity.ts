@@ -9,7 +9,7 @@ export class Coupon {
   @Column('varchar' , { length: 250 , default:"" })
   name: string;
 
-  @Column('varchar' , { length: 250 , default:"" })
+  @Column('varchar' , { length: 250 , default:"" , unique:true })
   code: string;
 
   @Column('varchar' , { length: 250 , default:"" })
