@@ -6,6 +6,7 @@ import { SRequest } from 'src/entities/requests.entity';
 import { TeacherService } from 'src/teachers/teachers.service';
 import { OneSignalService } from 'src/onesignal/onesignal.service';
 import { ClientResponse } from 'onesignal-node/lib/types';
+import { CouponService } from 'src/coupons/coupons.service';
 
 @Controller('api/requests')
 export class RequestController {
@@ -21,19 +22,6 @@ export class RequestController {
 
     @Get(':id')
     async findOneRequest(@Param('id') id: number  ,  @Res() res: Response) : Promise<Response>  {
-      try {
-            const request =  await this.requestService.findOne(id);
-            return res.status(HttpStatus.OK).json(request);
-        } catch (error) {
-            throw new HttpException({
-                status: HttpStatus.BAD_REQUEST,
-                error: error.message,
-            }, 400);
-        }
-    }
-
-    @Get('apply-coupon')
-    async applyCoupon(@Param('id') id: number  ,  @Res() res: Response) : Promise<Response>  {
       try {
             const request =  await this.requestService.findOne(id);
             return res.status(HttpStatus.OK).json(request);

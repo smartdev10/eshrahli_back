@@ -1,4 +1,4 @@
-import {IsDefined , IsString , IsNotEmpty} from "class-validator";
+import {IsDefined , IsString , IsNotEmpty, IsNumber} from "class-validator";
 
 
 export class CouponDto {
@@ -20,8 +20,8 @@ export class CouponDto {
 
     @IsDefined()
     @IsNotEmpty()
-    @IsString()
-    readonly discount: string;
+    @IsNumber()
+    readonly discount: number;
 
     @IsDefined()
     @IsNotEmpty()

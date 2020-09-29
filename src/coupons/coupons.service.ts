@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { CouponDto } from './interfaces/coupon.dto';
@@ -16,6 +16,16 @@ export class CouponService {
     async findOneCoupon(id: number) {
         return await this.couponRepository.findOneOrFail(id)
     }
+
+    async verifyCoupon(code: string) {
+        return await this.couponRepository.findOne({
+            where : {
+                code ,
+                status:'active',
+            }
+        })
+    }
+
     async insertCoupon(data : CouponDto ) {
         return await this.couponRepository.save(data);
     }

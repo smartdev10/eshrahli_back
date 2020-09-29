@@ -154,7 +154,7 @@ export class CheckOutRequestDto {
     @IsNumber()
     readonly amount : number;
 
-
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsNumber()

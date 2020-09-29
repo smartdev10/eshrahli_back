@@ -25,6 +25,22 @@ export class CouponController {
         }
     }
 
+    @Post('verify')
+    async VerifyCoupon(@Body('code') code: string  ,  @Res() res: Response) : Promise<Response>  {
+      try {
+            const coupon =  await this.couponService.verifyCoupon(code);
+            if(coupon){
+             return res.status(HttpStatus.OK).json(coupon);
+            }
+            throw new HttpException('Coupon not valid' , HttpStatus.BAD_REQUEST)
+        } catch (error) {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: error.message,
+            }, 400);
+        }
+    }
+
     @Post('create')
     async createCoupon(@Body() data : CouponDto , @Res() res: Response): Promise<Response> {
       try {

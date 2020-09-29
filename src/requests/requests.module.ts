@@ -9,6 +9,8 @@ import { TeacherService } from 'src/teachers/teachers.service';
 import { Teacher } from 'src/entities/teachers.entity';
 import { Level } from 'src/entities/levels.entity';
 import { Subject } from 'src/entities/subjects.entity';
+import { CouponService } from 'src/coupons/coupons.service';
+import { Coupon } from 'src/entities/coupons.entity';
 
 
 
@@ -22,7 +24,8 @@ const OneSignalProvider = {
         TypeOrmModule.forFeature([SRequest]) , 
         TypeOrmModule.forFeature([Teacher]) , 
         TypeOrmModule.forFeature([Level]), 
-        TypeOrmModule.forFeature([Subject]),],
+        TypeOrmModule.forFeature([Subject]),
+    ],
     controllers: [RequestController],
     providers: [RequestService , OneSignalService , OneSignalProvider , TeacherService ],
 })

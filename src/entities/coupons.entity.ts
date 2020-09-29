@@ -15,8 +15,8 @@ export class Coupon {
   @Column('varchar' , { length: 250 , default:"" })
   description: string;
 
-  @Column('varchar' , { length: 250 , default:"" })
-  discount: string;
+  @Column('float' , { default:null , nullable :true })
+  discount: number;
 
   @Column('varchar' , { length: 250 , default:"inactive" })
   status: string;
