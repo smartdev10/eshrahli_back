@@ -36,32 +36,35 @@ export class RequestController {
     async retryRequest(@Body() data : RetryDto , @Res() res: Response): Promise<Response> {
       try {
           const frequest = await this.requestService.findOneRequest(data.id);
-          const teachers = await this.teacherService.retrySearchTeachers({
+          if(frequest){
+            const teachers = await this.teacherService.retrySearchTeachers({
               city:frequest.city,
               gender:frequest.teacher_gender,
               levels:frequest.level,
               subjects:frequest.subject 
-          })
-          const push_ids = teachers.map(({push_id})=> push_id ? push_id : '')
-          let response : ClientResponse 
-          if(push_ids.length !== 0 && push_ids.every((push) => push)){
-            const notification = {
-              contents: {
-                'en': `New Request`
-              },
-              include_player_ids: [...push_ids],
-              data:{
-                RequestInfo:"test"
-              }
-            };
-            response =  await this.onesignalService.client.createNotification(notification)
+            })
+            const push_ids = teachers.map(({push_id})=> push_id ? push_id : '')
+            let response : ClientResponse 
+            if(push_ids.length !== 0 && push_ids.every((push) => push)){
+              const notification = {
+                contents: {
+                  'en': `New Request`
+                },
+                include_player_ids: [...push_ids],
+                data:{
+                  RequestInfo:"test"
+                }
+              };
+              response =  await this.onesignalService.client.createNotification(notification)
+            }
+            return res.status(200).json({message: 'Request Dispatched' , request : frequest , teachers , oneSignalResponse:response ? response.body : null });
           }
-          return res.status(200).json({message: 'Request Created' , request : frequest , teachers , oneSignalResponse:response ? response.body : null });
+            throw new HttpException('Request Not Found', HttpStatus.BAD_REQUEST);
       } catch (error) {
           console.log(error)
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
-              error: error.messge,
+              error: error.message,
           }, 400);
       }
     }
@@ -96,7 +99,7 @@ export class RequestController {
           console.log(error)
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
-              error: error.messge,
+              error: error.message,
           }, 400);
       }
     }
