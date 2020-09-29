@@ -37,7 +37,7 @@ export class StudentService {
 
     async findAllStudents() {
        return await this.studentRepository.find({
-           relations:['favorites' , 'requests' , 'city'],
+           relations:['favorites' , 'requests'],
            order :{
              createdAt:"DESC"
            }

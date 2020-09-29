@@ -36,7 +36,7 @@ export class RequestController {
     async retryRequest(@Body() data : RetryDto , @Res() res: Response): Promise<Response> {
       try {
           const frequest = await this.requestService.findOneRequest(data.id);
-          const teachers = await this.teacherService.searchTeachers({
+          const teachers = await this.teacherService.retrySearchTeachers({
               city:frequest.city,
               gender:frequest.teacher_gender,
               levels:frequest.level,

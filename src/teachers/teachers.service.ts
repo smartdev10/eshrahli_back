@@ -48,6 +48,24 @@ export class TeacherService {
         return await this.teacherRepository.save(teacherDto);
     }
 
+    async retrySearchTeachers(searchData : searchTeacher) { 
+        return  await this.teacherRepository
+                .createQueryBuilder('teacher')
+                .innerJoinAndSelect('teacher.city','city')
+                .leftJoinAndSelect('teacher.levels', 'level')
+                .leftJoinAndSelect('teacher.other_subjects', 'other')
+                .leftJoinAndSelect('teacher.subjects', 'subject')
+                .where('gender = :gender', { gender: searchData.gender })
+                .andWhere('city.id = :city' , { city: searchData.city.id })
+                .andWhere('level.id = :level', { level: searchData.levels.id })
+                .andWhere(new Brackets(qb => {
+                   qb.andWhere('other.id = :other' , { other: searchData.subjects.id })
+                   .orWhere('subject.id = :subject' , { subject: searchData.subjects.id })
+                }))
+                .getMany();
+
+     }
+
     async searchTeachers(searchData : searchTeacher) { 
         return  await this.teacherRepository
                 .createQueryBuilder('teacher')
