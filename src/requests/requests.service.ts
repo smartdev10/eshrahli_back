@@ -19,7 +19,7 @@ export class RequestService {
             where :{
                 id
             },
-            relations:['subject' , 'level' , 'student' , 'student' , 'teacher' , 'teacher.city' , 'teacher.nationality' , 'city'],
+            relations:['subject' , 'level' , 'student' , 'teacher'  , 'city'],
         })
     }
 
