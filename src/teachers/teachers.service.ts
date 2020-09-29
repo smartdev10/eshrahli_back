@@ -3,8 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { Teacher } from 'src/entities/teachers.entity';
 import { TeacherDto, UpdateTeacherDto , searchTeacher } from './interfaces/teacher.dto';
-import { Subject } from 'src/entities/subjects.entity';
-import { Level } from 'src/entities/levels.entity';
 
 
 @Injectable()
@@ -13,10 +11,6 @@ export class TeacherService {
     constructor(
         @InjectRepository(Teacher)
         private teacherRepository: Repository<Teacher>,
-        @InjectRepository(Subject)
-        private subjectRepository: Repository<Subject>,
-        @InjectRepository(Level)
-        private levelRepository: Repository<Level>,
     ) {}
 
     async findOneTeacher(id: number) {

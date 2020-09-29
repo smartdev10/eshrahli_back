@@ -22,7 +22,7 @@ export class FavoriteService {
 
     async findAllFavorites() {
        return await this.favoriteRepository.find({
-           relations :['teacher']
+           relations :['teacher' , 'teacher.city' , 'teacher.nationality' , 'teacher.subjects' , 'teacher.levels']
        });
     }
 
