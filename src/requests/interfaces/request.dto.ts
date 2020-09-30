@@ -170,7 +170,7 @@ export class CheckOutRequestDto {
     @IsOptional()
     @IsDefined()
     @IsNotEmpty()
-    @IsString()
+    @IsNumber()
     readonly total : number;
 
     @IsOptional()
@@ -178,6 +178,13 @@ export class CheckOutRequestDto {
     @IsNotEmpty()
     @IsString()
     readonly payementReference : string;
+
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly paymentMethod : string;
 }
 
 
