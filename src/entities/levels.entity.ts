@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany , ManyToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany , ManyToMany , JoinTable } from 'typeorm';
 import { SRequest } from './requests.entity';
 import { Subject } from './subjects.entity';
 import { Teacher } from './teachers.entity';
@@ -17,7 +17,8 @@ export class Level {
   @ManyToMany(type => Teacher, teacher => teacher.levels)
   teachers: Teacher[];
 
-  @OneToMany(() => Subject, subject => subject.level)
+  @ManyToMany(() => Subject , subject => subject.levels , {onUpdate:'CASCADE'})
+  @JoinTable()
   subjects:Subject[]
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })

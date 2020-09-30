@@ -23,8 +23,8 @@ export class Subject {
   @ManyToMany(type => Teacher, teacher => teacher.other_subjects)
   other_teachers: Teacher[];
 
-  @ManyToOne(() => Level, level => level.subjects)
-  level: Level;
+  @ManyToMany(() => Level, level => level.subjects)
+  levels: Level[];
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;

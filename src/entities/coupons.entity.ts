@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany, Index } from 'typeorm';
 import { SRequest } from './requests.entity';
 
 @Entity('coupons')
@@ -9,7 +9,8 @@ export class Coupon {
   @Column('varchar' , { length: 250 , default:"" })
   name: string;
 
-  @Column('varchar' , { length: 250 , default:"" , unique:true })
+  @Index('UQ_coupon_code', { unique: true })
+  @Column('varchar' , { length: 250 , default:""})
   code: string;
 
   @Column('varchar' , { length: 250 , default:"" })

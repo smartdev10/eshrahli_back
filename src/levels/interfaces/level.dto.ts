@@ -1,4 +1,5 @@
-import {IsDefined , IsString , IsNotEmpty} from "class-validator";
+import {IsDefined , IsString , IsNotEmpty , IsArray} from "class-validator";
+import { Subject } from "src/entities/subjects.entity";
 
 
 export class LevelDto {
@@ -7,5 +8,12 @@ export class LevelDto {
     @IsNotEmpty()
     @IsString()
     readonly name: string;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsArray()
+    subjects: Subject[];
+
+
 
 }

@@ -22,6 +22,7 @@ export class LevelsService {
 
     async findAllLevels() {
        return await this.levelRepository.find({
+           relations:['subjects'],
            order :{
                createdAt:"DESC"
            }
@@ -36,8 +37,8 @@ export class LevelsService {
         return await  this.levelRepository.delete(ids);
     }
 
-    async updateLevel(id: number, data: LevelDto) {
-        return await this.levelRepository.update(id, data);
+    async updateLevel(data: LevelDto) {
+        return await this.levelRepository.save(data);
     }
       
 }

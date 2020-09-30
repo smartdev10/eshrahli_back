@@ -48,8 +48,15 @@ export class CouponController {
           await this.couponService.insertCoupon(data);
           return res.status(200).json({message: 'Coupon Created'});
       } catch (error) {
+        if (error.code === '23505' && error.constraint === 'UQ_coupon_code') {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: 'Duplicate Code',
+            }, 400);
+        }
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
+              detail:error.detail,
               error: error.message,
           }, 400);
       }
