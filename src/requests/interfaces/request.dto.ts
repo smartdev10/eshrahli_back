@@ -171,6 +171,12 @@ export class CheckOutRequestDto {
     @IsDefined()
     @IsNotEmpty()
     @IsString()
+    readonly total : number;
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
     readonly payementReference : string;
 }
 
