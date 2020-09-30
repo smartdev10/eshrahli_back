@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany , ManyToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany , ManyToMany , ManyToOne } from 'typeorm';
+import { Level } from './levels.entity';
 import { SRequest } from './requests.entity';
 import { Teacher } from './teachers.entity';
 
@@ -21,6 +22,9 @@ export class Subject {
   
   @ManyToMany(type => Teacher, teacher => teacher.other_subjects)
   other_teachers: Teacher[];
+
+  @ManyToOne(() => Level, level => level.subjects)
+  level: Level;
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;

@@ -29,6 +29,7 @@ export class CouponController {
     async VerifyCoupon(@Body('code') code: string  ,  @Res() res: Response) : Promise<Response>  {
       try {
             const coupon =  await this.couponService.verifyCoupon(code);
+            console.log(coupon)
             if(coupon){
              return res.status(HttpStatus.OK).json(coupon);
             }

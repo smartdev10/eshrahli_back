@@ -18,12 +18,9 @@ export class CouponService {
     }
 
     async verifyCoupon(code: string) {
-        return await this.couponRepository.findOne({
-            where : {
-                code ,
-                status:'active',
-            }
-        })
+        return await this.couponRepository.createQueryBuilder('coupon')
+        .where('coupon.code = :code AND status= :status AND LOCALTIMESTAMP BETWEEN coupon.start AND coupon.end', { code , status:'active' })
+        .getOne();
     }
 
     async insertCoupon(data : CouponDto ) {
