@@ -1,4 +1,4 @@
-import { Controller , Post , Body , Res } from '@nestjs/common';
+import { Controller , Post , Body , Res , HttpException , HttpStatus } from '@nestjs/common';
 import { AuthAdminService } from './authadmin.service';
 import { Response } from 'express';
 import * as bcrypt from 'bcryptjs';
@@ -11,8 +11,35 @@ export class AuthAdminController {
 
 @Post('register')
 async register(@Body() adminUserDto : AdminUser, @Res() res: Response): Promise<Response> {
-  await this.authService.createUser(adminUserDto);
-  return res.status(200).json({message: 'registred'});
+  try {
+    await this.authService.createUser(adminUserDto);
+    return res.status(200).json({message: 'registred'});
+  } catch (error) {
+    console.log(error)
+    if (error.code === '23505' && error.constraint === 'UQ_admin_mobile' && error.code === '23505' && error.constraint === 'UQ_admin_username') {
+      throw new HttpException({
+          status: HttpStatus.BAD_REQUEST,
+          error: 'duplicate phonenumber and username',
+      }, 400);
+     }
+    if (error.code === '23505' && error.constraint === 'UQ_admin_username') {
+      throw new HttpException({
+          status: HttpStatus.BAD_REQUEST,
+          error: 'duplicate username',
+      }, 400);
+   }
+   if (error.code === '23505' && error.constraint === 'UQ_admin_mobile') {
+    throw new HttpException({
+        status: HttpStatus.BAD_REQUEST,
+        error: 'duplicate phonenumber',
+    }, 400);
+   }
+    throw new HttpException({
+        status: HttpStatus.BAD_REQUEST,
+        detail:error.detail,
+        error: error.message,
+    }, 400);
+  }
  }
 
  @Post('logout')

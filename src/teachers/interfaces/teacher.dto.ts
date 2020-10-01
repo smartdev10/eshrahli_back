@@ -66,6 +66,7 @@ export class CreateTeacherDto {
     @IsArray()
     readonly subjects : Subject[];
 
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsArray()

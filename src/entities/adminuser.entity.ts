@@ -1,4 +1,4 @@
-import {  Entity, Column, PrimaryGeneratedColumn , CreateDateColumn , UpdateDateColumn , BeforeInsert , BeforeUpdate } from 'typeorm';
+import {  Entity, Column, PrimaryGeneratedColumn , CreateDateColumn , UpdateDateColumn , BeforeInsert , BeforeUpdate , Index } from 'typeorm';
 import { hashSync , genSaltSync } from 'bcryptjs';
 
 
@@ -10,10 +10,12 @@ export class AdminUser  {
   @Column({ length: 250 , default:""})
   name: string;
 
-  @Column({ length: 250 , unique : true})
+  @Index('UQ_admin_username', { unique: true })
+  @Column({ length: 250 })
   username: string;
 
-  @Column({ length: 250 , unique : true})
+  @Index('UQ_admin_mobile', { unique: true })
+  @Column({ length: 250 })
   mobile: string;
 
   @Column({ length: 250 , select:false })

@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { LevelDto } from './interfaces/level.dto';
@@ -28,6 +28,18 @@ export class LevelsService {
            }
        });
     }
+
+    async findManyLevels(ids :number[]) {
+        return await this.levelRepository.find({
+            relations:['subjects'],
+            where:{
+                id:In(ids)
+            },
+            order :{
+                createdAt:"DESC"
+            }
+        });
+     }
 
     async findByIds(ids : Level[]) {
         return await this.levelRepository.findByIds(ids);

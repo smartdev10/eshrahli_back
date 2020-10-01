@@ -8,10 +8,31 @@ import { SubjectsService } from 'src/subjects/subjects.service';
 @Controller('api/levels')
 export class LevelController {
         
-        constructor(private readonly levelService: LevelsService , private readonly subjectService: SubjectsService) {}
+    constructor(private readonly levelService: LevelsService , private readonly subjectService: SubjectsService) {}
     @Get()
     findAllLevels() : Promise<Level[]>{
       return this.levelService.findAllLevels();
+    }
+
+    @Get('many')
+    async findManyLevels(@Query('filter') filter,  @Res() res: Response) : Promise<Response>  {
+      try {
+            if(filter){
+                const { ids } : {ids: number[]}  = JSON.parse(filter)
+                if(ids.length !== 0){
+                    const levels =  await this.levelService.findManyLevels(ids);
+                    return res.status(HttpStatus.OK).json(levels);
+                }
+                return res.status(HttpStatus.OK).json([]);
+            }
+            return res.status(HttpStatus.OK).json([]);
+        } catch (error) {
+            console.log(error)
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: error.message,
+            }, 400);
+        }
     }
 
     @Get(':id')

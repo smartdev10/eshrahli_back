@@ -56,9 +56,15 @@ export class TeacherController {
             certificate:files["certificate"][0].filename ,
             image:files["image"][0].filename,
           })
+
+          let other_subjects = []
+
+          if(formData.other_subjects){
+              other_subjects = await this.subjectService.findByIds(formData.other_subjects)
+          }
+
           const levels = await this.levelService.findByIds(formData.levels)
           const subjects = await this.subjectService.findByIds(formData.subjects)
-          const other_subjects = await this.subjectService.findByIds(formData.other_subjects)
           formData.levels = levels
           formData.subjects = subjects
           formData.other_subjects = other_subjects
@@ -68,7 +74,8 @@ export class TeacherController {
           console.log(error.detail)
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
-              error: error.detail,
+              detail: error.detail,
+              error: error.message,
           }, 400);
       }
     }

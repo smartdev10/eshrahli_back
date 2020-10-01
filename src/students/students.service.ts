@@ -36,11 +36,11 @@ export class StudentService {
     }
 
     async findOne(student: Student) {
-        return await this.studentRepository.findOne(student , {relations:['city']})
+        return await this.studentRepository.findOne(student)
     }
 
     async findOneById(id: number) {
-        return await this.studentRepository.findOne(id , {relations:['city']})
+        return await this.studentRepository.findOne(id)
     }
 
     async findOneStudentByPhone(mobile: string) {
