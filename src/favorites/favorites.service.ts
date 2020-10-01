@@ -20,8 +20,11 @@ export class FavoriteService {
         return await this.favoriteRepository.save(data);
     }
 
-    async findAllFavorites() {
+    async findAllFavorites(student:number) {
        return await this.favoriteRepository.find({
+           where:{
+               student
+           },
            relations :['teacher' , 'teacher.city' , 'teacher.nationality' , 'teacher.subjects' , 'teacher.levels']
        });
     }

@@ -1,15 +1,15 @@
-import { Controller, Get, Post, Body, Res, Delete, Put , Param, Query, HttpStatus, HttpException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Res, Delete, Put , Param , HttpStatus, HttpException } from '@nestjs/common';
 import { FavoriteService } from './favorites.service';
 import { Response } from 'express';
 import { FavoriteDto } from './interfaces/favorites.dto';
-import { Favorite } from 'src/entities/favorites.entity';
 
 @Controller('api/favorites')
 export class FavoriteController {
     constructor(private readonly favoriteService: FavoriteService) {}
-    @Get()
-    findAllFavorites() : Promise<Favorite[]>{
-      return this.favoriteService.findAllFavorites();
+    @Get(':id')
+    async findAllFavorites(@Param('id') id : number ,  @Res() res: Response) : Promise<Response>{
+      const favorites = await this.favoriteService.findAllFavorites(id);
+      return res.status(HttpStatus.OK).json(favorites ? favorites : []);
     }
 
     @Get(':id')
