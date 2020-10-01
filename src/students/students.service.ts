@@ -16,8 +16,11 @@ export class StudentService {
         private requestsRepository: Repository<SRequest>,
     ) {}
 
-    async findStudentRequests(id: number) {
-        return await this.requestsRepository.findOne(id , {
+    async findStudentRequests(student: number) {
+        return await this.requestsRepository.find({
+            where:{
+                student
+            },
             relations:[
             'city' , 
             'subject' , 
