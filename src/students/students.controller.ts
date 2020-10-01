@@ -15,7 +15,7 @@ export class StudentController {
     @Get(':id')
     async findOneStudent(@Param('id') id: number  ,  @Res() res: Response) : Promise<Response>  {
       try {
-            const student =  await this.studentService.findOneStudent(id);
+            const student =  await this.studentService.findOneById(id);
             return res.status(HttpStatus.OK).json(student);
         } catch (error) {
             throw new HttpException({
@@ -28,11 +28,8 @@ export class StudentController {
     @Get(':id/requests')
     async findOneStudentRequests(@Param('id') id: number  ,  @Res() res: Response) : Promise<Response>  {
       try {
-            const student =  await this.studentService.findOneStudent(id);
-            if(student){
-                return res.status(HttpStatus.OK).json(student.requests);
-            }
-            throw new HttpException('Student Not Found',  HttpStatus.BAD_REQUEST);
+            const requests = await this.studentService.findStudentRequests(id);
+            return res.status(HttpStatus.OK).json(requests ? requests : []);
         } catch (error) {
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,
@@ -70,7 +67,7 @@ export class StudentController {
     @Put('update/push/:id')
     async updateStudentPushId(@Param('id') id: number , @Body() body: UpdateStudentPushId , @Res() res: Response): Promise<Response> {
         try {
-            const student = await this.studentService.findOneStudent(id)
+            const student = await this.studentService.findOneById(id)
             if(student){
                 const formData = Object.assign(student , { ...body })
                 await this.studentService.updateStudent(formData);
@@ -91,7 +88,7 @@ export class StudentController {
             if(body.password === ''){
                 delete body.password
             }
-            const student = await this.studentService.findOneStudent(id)
+            const student = await this.studentService.findOneById(id)
             if(student){
                 const formData = Object.assign(student , { ...body })
                 await this.studentService.updateStudent(formData);

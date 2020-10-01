@@ -22,7 +22,7 @@ export class AuthStudentController {
             if(!valid){
                throw new UnauthorizedException('password is not correct');
             }
-            const fstudent =  await this.studentService.findOneStudent(student.id);
+            const fstudent =  await this.studentService.findOneById(student.id);
             const token  = sign({student} , process.env.ACCESS_TOKEN_SECRET);
             return res.status(200).json({message: 'you are logged in' , token , student:fstudent});
           }
@@ -38,7 +38,7 @@ export class AuthStudentController {
     async register(@Body() data : StudentDto , @Res() res: Response): Promise<Response> {
       try {
           const student = await this.studentService.insertStudent(data);
-          const foundStudent = await this.studentService.findOneStudent(student.id);
+          const foundStudent = await this.studentService.findOneById(student.id);
           
           return res.status(200).json({ message: 'Student Created' , student:foundStudent });
       } catch (error) {

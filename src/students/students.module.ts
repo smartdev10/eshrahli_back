@@ -6,6 +6,7 @@ import { AuthStudentController } from './auth.students.controller';
 import { Student } from 'src/entities/students.entity';
 import { TwilioService } from 'src/twilio/twilio.service';
 import { TWILIO_CONFIG_TOKEN } from 'src/twilio/constants';
+import { SRequest } from 'src/entities/requests.entity';
 
 
 const TwilioProvider = {
@@ -16,6 +17,7 @@ const TwilioProvider = {
 @Module({
     imports: [
         TypeOrmModule.forFeature([Student]),
+        TypeOrmModule.forFeature([SRequest]),
     ],
     controllers: [StudentController,AuthStudentController],
     providers: [StudentService , TwilioService , TwilioProvider],

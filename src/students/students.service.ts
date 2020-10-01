@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { CreatePaswordStudentDto, StudentDto } from './interfaces/student.dto';
 import { Student } from 'src/entities/students.entity';
+import { SRequest } from 'src/entities/requests.entity';
 
 
 @Injectable()
@@ -11,22 +12,24 @@ export class StudentService {
     constructor(
         @InjectRepository(Student)
         private studentRepository: Repository<Student>,
+        @InjectRepository(SRequest)
+        private requestsRepository: Repository<SRequest>,
     ) {}
 
-    async findOneStudent(id: number) {
-        return await this.studentRepository.findOne(id , {
+    async findStudentRequests(id: number) {
+        return await this.requestsRepository.findOne(id , {
             relations:[
-            'requests' , 
-            'requests.city' , 
-            'requests.subject' , 
-            'requests.level' , 
-            'requests.teacher' , 
-            'requests.teacher.city' , 
-            'requests.teacher.nationality',
-            'requests.teacher.levels' , 
-            'requests.teacher.subjects'
+            'city' , 
+            'subject' , 
+            'level' , 
+            'coupon' , 
+            'teacher' , 
+            'teacher.city' , 
+            'teacher.nationality',
+            'teacher.levels' , 
+            'teacher.subjects'
            ],
-           order:{
+           order :{
                createdAt:"DESC"
            }
         })
@@ -34,6 +37,10 @@ export class StudentService {
 
     async findOne(student: Student) {
         return await this.studentRepository.findOne(student , {relations:['city']})
+    }
+
+    async findOneById(id: number) {
+        return await this.studentRepository.findOne(id , {relations:['city']})
     }
 
     async findOneStudentByPhone(mobile: string) {
