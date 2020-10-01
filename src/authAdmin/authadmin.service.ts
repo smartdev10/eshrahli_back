@@ -31,7 +31,6 @@ export class AuthAdminService  {
 
   createUser = async (adminUserDto: AdminUser) : Promise<AdminUser> => {
     const entity = Object.assign(new AdminUser(), adminUserDto);
-    console.log(entity)
     return await this.adminRepository.save(entity);
   };
 
