@@ -152,7 +152,7 @@ export class CheckOutRequestDto {
     @IsDefined()
     @IsNotEmpty()
     @IsNumber()
-    readonly amount : number;
+    readonly total : number;
 
     @IsOptional()
     @IsDefined()
@@ -166,12 +166,6 @@ export class CheckOutRequestDto {
     @IsNumber()
     readonly coupon : Coupon;
 
-
-    @IsOptional()
-    @IsDefined()
-    @IsNotEmpty()
-    @IsNumber()
-    readonly total : number;
 
     @IsOptional()
     @IsDefined()

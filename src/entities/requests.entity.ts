@@ -37,9 +37,6 @@ export class SRequest {
   coupon: Coupon;
 
   @Column('float'  , { default : null})
-  amount: number;
-
-  @Column('float'  , { default : null})
   discount_amount: number;
 
   @Column('float'  , { default : null})
