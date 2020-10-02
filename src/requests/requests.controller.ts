@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Res, Delete, Put , Param, Query, HttpStatus, HttpException } from '@nestjs/common';
 import { RequestService } from './requests.service';
 import { Response } from 'express';
-import { RequestDto , CheckOutRequestDto , UpdateRequestDto, RetryDto } from './interfaces/request.dto';
+import { RequestDto , CheckOutRequestDto , UpdateRequestDto, RetryDto, ReCallDto } from './interfaces/request.dto';
 import { SRequest } from 'src/entities/requests.entity';
 import { TeacherService } from 'src/teachers/teachers.service';
 import { OneSignalService } from 'src/onesignal/onesignal.service';
@@ -61,6 +61,38 @@ export class RequestController {
             return res.status(200).json({message: 'Request Dispatched' , request : frequest , teachers , oneSignalResponse:response ? response.body : null });
           }
             throw new HttpException('Request Not Found', HttpStatus.BAD_REQUEST);
+      } catch (error) {
+          console.log(error)
+          throw new HttpException({
+              status: HttpStatus.BAD_REQUEST,
+              error: error.message,
+          }, 400);
+      }
+    }
+
+    @Post('recall')
+    async recreateRequest(@Body() data : ReCallDto , @Res() res: Response): Promise<Response> {
+      try {
+          const frequest = await this.requestService.findOneRequest(data.id);
+          if(frequest){
+            delete frequest.id
+            const request = await this.requestService.recallRequest(frequest);
+            let response : ClientResponse 
+            if(frequest.teacher && frequest.teacher.push_id){
+              const notification = {
+                contents: {
+                  'en': `Private Request`
+                },
+                include_player_ids: [frequest.teacher.push_id],
+                data:{
+                  RequestInfo:"test"
+                }
+              };
+              response =  await this.onesignalService.client.createNotification(notification)
+            }
+            return res.status(200).json({message: 'Request Created Again' , request , teacher:frequest.teacher , oneSignalResponse:response ? response.body : null });
+          }
+          throw new HttpException('Request Not Found', HttpStatus.BAD_REQUEST);
       } catch (error) {
           console.log(error)
           throw new HttpException({

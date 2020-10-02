@@ -97,6 +97,43 @@ export class RequestDto {
 
 }
 
+export class ReCallDto {
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsNumber()
+    readonly id: number;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsNumber()
+    readonly city: City
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsDateString()
+    readonly sessionDate: Date
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    @IsLatitude()
+    readonly latitude: string
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    @IsLongitude()
+    readonly longitude: string
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly details: string
+
+}
+
 
 export class RetryDto {
 
@@ -114,7 +151,6 @@ export class UpdateRequestDto {
     @IsNotEmpty()
     @IsNumber()
     readonly teacher: Teacher;
-
 
     @IsOptional()
     @IsDefined()

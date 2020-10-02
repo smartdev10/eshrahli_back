@@ -33,6 +33,10 @@ export class RequestService {
         return await this.requestRepository.save(data);
     }
 
+    async recallRequest(data : SRequest ) {
+        return await this.requestRepository.save(data);
+    }
+
     async findAllRequests() {
        return await this.requestRepository.find({
           relations:['subject' , 'level' , 'student' , 'teacher' ,'teacher.city' , 'teacher.nationality', 'city'],
