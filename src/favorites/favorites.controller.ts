@@ -37,10 +37,10 @@ export class FavoriteController {
           }, 400);
       }
     }
-    @Delete('delete')
-    async deleteFavorite(@Body('ids') ids :number[], @Res() res: Response): Promise<Response> {
+    @Delete('delete/:id')
+    async deleteFavorite(@Param('id') id :number, @Res() res: Response): Promise<Response> {
         try {
-          await this.favoriteService.deleteFavorite(ids);
+          await this.favoriteService.deleteFavorite(id);
           return res.status(200).json({message: 'Favorite Deleted'});
         } catch (error) {
             throw new HttpException({

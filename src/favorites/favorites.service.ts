@@ -29,8 +29,8 @@ export class FavoriteService {
        });
     }
 
-    async deleteFavorite(ids: number[]) {
-        return await  this.favoriteRepository.delete(ids);
+    async deleteFavorite(id: number) {
+        return await  this.favoriteRepository.delete(id);
     }
 
     async updateFavorite(id: number, data: FavoriteDto) {
