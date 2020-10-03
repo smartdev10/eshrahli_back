@@ -18,6 +18,7 @@ export class StudentService {
 
     async findStudentRequests(student: number) {
         return await this.requestsRepository.find({
+            take:30,
             where:{
                 student
             },
