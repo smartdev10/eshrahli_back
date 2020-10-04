@@ -28,7 +28,17 @@
        goSell.showResult({
            callback: response => {
            console.log("callback", response);
-           fetch('/api/requests/update/reference/'+response.callback.metadata.id , {method:'PUT' , body :JSON.stringify({payementReference:response.callback.reference.payment,status:"Paid"})})
+           const putMethod = {
+                method: 'PUT', // Method itself
+                headers: {
+                'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
+                },
+                body: JSON.stringify({
+                    payementReference:response.callback.reference.payment,
+                    status:"Paid"
+                }) 
+            }
+           fetch('/api/requests/update/reference/'+response.callback.metadata.id , putMethod)
             .then(response => response.json())  // convert to json
             .then(json => console.log(json))    //print data to console
             .catch(err => console.log('Request Failed', err)); // Catch errors
