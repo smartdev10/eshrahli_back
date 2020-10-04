@@ -35,7 +35,7 @@
                 },
                 body: JSON.stringify({
                     payementReference:response.callback.reference.payment,
-                    status:"Paid"
+                    status:"PAID"
                 }) 
             }
            fetch('/api/requests/update/reference/'+response.callback.metadata.id , putMethod)

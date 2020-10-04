@@ -63,7 +63,7 @@ export class SRequest {
   @Column('varchar'  ,{ length: 250 , default : "" })
   zoomLink: string;
 
-  @Column('varchar'  ,{ length: 250 , default : "pending" })
+  @Column('varchar'  ,{ length: 250 , default : "PENDING" })
   status: string;
 
   @Column('text' , { default : "" })
