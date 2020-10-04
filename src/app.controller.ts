@@ -8,7 +8,7 @@ export class AppController {
     return "Eshrahli";
   }
 
-  @Get('/payement/:id')
+  @Get('/payement')
   @Render('index')
   payement(@Param('id') id : number) {
     return { id };
