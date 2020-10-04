@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TeacherModule } from './teachers/teachers.module';
 import { StudentModule } from './students/students.module';
@@ -62,6 +61,6 @@ import { BidsModule } from './bids/bids.module';
     })
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [],
 })
 export class AppModule {}

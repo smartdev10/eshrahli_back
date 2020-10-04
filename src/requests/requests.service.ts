@@ -1,8 +1,7 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
-import { Teacher } from 'src/entities/teachers.entity';
-import { CheckOutRequestDto, RequestDto, UpdateRequestDto } from './interfaces/request.dto';
+import { CheckOutRequestDto, RequestDto, UpdateRequestDto , FinishRequestDto } from './interfaces/request.dto';
 import { SRequest } from 'src/entities/requests.entity';
 
 
@@ -51,6 +50,10 @@ export class RequestService {
     }
 
     async updateRequest(id: number, data: UpdateRequestDto) {
+        return await this.requestRepository.update(id, data);
+    }
+
+    async updateReference(id: number, data: FinishRequestDto) {
         return await this.requestRepository.update(id, data);
     }
 

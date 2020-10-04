@@ -28,6 +28,10 @@
        goSell.showResult({
            callback: response => {
            console.log("callback", response);
+           fetch('/api/requests/reference/'+response.callback.metadata.id , {method:'PUT' , body :{payementReference:response.callback.reference.payment,status:"Paid"}})
+            .then(response => response.json())  // convert to json
+            .then(json => console.log(json))    //print data to console
+            .catch(err => console.log('Request Failed', err)); // Catch errors
          }
       });
     </script>

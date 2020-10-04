@@ -1,14 +1,17 @@
-import { Controller, Get, Render } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, Param, Render } from '@nestjs/common';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
 
-  @Get('/payement')
+  @Get()
+  index() {
+    return "Eshrahli";
+  }
+
+  @Get('/payement/:id')
   @Render('index')
-  payement() {
-    return { message: 'Hello world!' };
+  payement(@Param('id') id : number) {
+    return { id };
   }
 
   @Get('/redirect')

@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Res, Delete, Put , Param, Query, HttpStatus, HttpException } from '@nestjs/common';
 import { RequestService } from './requests.service';
 import { Response } from 'express';
-import { RequestDto , CheckOutRequestDto , UpdateRequestDto, RetryDto, ReCallDto } from './interfaces/request.dto';
+import { RequestDto , CheckOutRequestDto , UpdateRequestDto, RetryDto, ReCallDto, FinishRequestDto } from './interfaces/request.dto';
 import { SRequest } from 'src/entities/requests.entity';
 import { TeacherService } from 'src/teachers/teachers.service';
 import { OneSignalService } from 'src/onesignal/onesignal.service';
@@ -136,6 +136,7 @@ export class RequestController {
           }, 400);
       }
     }
+
     @Delete('delete')
     async deleteRequest(@Query('filter') filter, @Res() res: Response): Promise<Response> {
         try {
@@ -149,6 +150,21 @@ export class RequestController {
             }, 400);
         }
     }
+
+
+    @Put('update/reference/:id')
+    async updateReference(@Param('id') id: number , @Body() body: FinishRequestDto, @Res() res: Response): Promise<Response> {
+        try {
+          await this.requestService.updateReference(id,body);
+          return res.status(HttpStatus.OK).json({message: 'Request Reference Updated'});
+        } catch (error) {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: error.message,
+            }, 400);
+        }
+    }
+
     @Put('update/:id')
     async updateRequest(@Param('id') id: number , @Body() body: UpdateRequestDto, @Res() res: Response): Promise<Response> {
         try {

@@ -117,7 +117,9 @@
           threeDSecure: true,
           description: "Test Description",
           statement_descriptor: "Sample",
-          metadata:{},
+          metadata:{
+            id:{{id}}
+          },
           receipt:{
             email: false,
             sms: true
@@ -127,11 +129,6 @@
         }
      }
     });
-
-    document.addEventListener('DOMContentLoaded', function(){ 
-     console.log("ok")
-    }, false);
-
     </script>
 
 </body>

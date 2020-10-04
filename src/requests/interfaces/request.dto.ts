@@ -218,3 +218,17 @@ export class CheckOutRequestDto {
 }
 
 
+export class FinishRequestDto {
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly status : string;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly payementReference : string;
+}
+
+
