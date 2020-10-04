@@ -28,7 +28,8 @@
        goSell.showResult({
            callback: response => {
            console.log("callback", response);
-           const putMethod = {
+           if(response.callback.response.code === "000"){
+              const putMethod = {
                 method: 'PUT', // Method itself
                 headers: {
                 'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
@@ -37,11 +38,12 @@
                     payementReference:response.callback.reference.payment,
                     status:"PAID"
                 }) 
+              }
+              fetch('/api/requests/update/reference/'+response.callback.metadata.id , putMethod)
+                .then(response => response.json())  // convert to json
+                .then(json => console.log(json))    //print data to console
+                .catch(err => console.log('Request Failed', err)); // Catch errors
             }
-           fetch('/api/requests/update/reference/'+response.callback.metadata.id , putMethod)
-            .then(response => response.json())  // convert to json
-            .then(json => console.log(json))    //print data to console
-            .catch(err => console.log('Request Failed', err)); // Catch errors
          }
       });
     </script>
