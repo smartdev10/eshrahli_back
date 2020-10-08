@@ -16,11 +16,11 @@ export class AuthStudentController {
       try {
          const student =  await this.studentService.findOneStudentByPhone(data.mobile);
          if (!student) {
-            throw new UnauthorizedException('phone number not found');
+            throw new UnauthorizedException('رقم الهاتف الذي أدخلته لا يطابق أي حساب');
           }else{
             const valid = await compare(data.password,student.password)
             if(!valid){
-               throw new UnauthorizedException('password is not correct');
+               throw new UnauthorizedException('كلمة المرور غير صحيحة');
             }
             const fstudent =  await this.studentService.findOneById(student.id);
             const token  = sign({student} , process.env.ACCESS_TOKEN_SECRET);
