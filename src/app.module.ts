@@ -19,6 +19,8 @@ import { AuthAdminModule } from './authAdmin/auth.module';
 import { TwilioModule } from './twilio/twilio.module';
 import { OneSignalModule } from './onesignal/onesignal.module';
 import { BidsModule } from './bids/bids.module';
+import { RequestService } from './requests/requests.service';
+import { SRequest } from './entities/requests.entity';
 
 @Module({
   imports: [
@@ -58,9 +60,10 @@ import { BidsModule } from './bids/bids.module';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'build'),
-    })
+    }),
+    TypeOrmModule.forFeature([SRequest])
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [RequestService],
 })
 export class AppModule {}

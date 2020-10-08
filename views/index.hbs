@@ -34,11 +34,11 @@
             console.log("onClose Event");
         },
         labels:{
-            cardNumber:"Card Number",
+            cardNumber:"رقم البطاقة",
             expirationDate:"MM/YY",
             cvv:"CVV",
-            cardHolder:"Name on Card",
-            actionButton:"Pay"
+            cardHolder:"الاسم على البطاقة",
+            actionButton:"دفع"
         },
         style: {
             base: {
@@ -70,7 +70,7 @@
         }
       },
       order:{
-        amount: 100,
+        amount: {{total}},
         currency:"SAR",
         items:[{
           id:1,
@@ -83,35 +83,11 @@
             value: '10%'
           },
           total_amount: '000.000'
-        },
-        {
-          id:2,
-          name:'item2',
-          description: 'item2 desc',
-          quantity: '2',
-          amount_per_unit:'00.000',
-          discount: {
-            type: 'P',
-            value: '10%'
-          },
-          total_amount: '000.000'
-        },
-        {
-          id:3,
-          name:'item3',
-          description: 'item3 desc',
-          quantity: '1',
-          amount_per_unit:'00.000',
-          discount: {
-            type: 'P',
-            value: '10%'
-          },
-          total_amount: '000.000'
         }],
         shipping:null,
         taxes: null
       },
-     transaction:{
+      transaction:{
        mode: 'charge',
        charge:{
           saveCard: false,
