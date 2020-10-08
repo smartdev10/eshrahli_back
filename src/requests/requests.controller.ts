@@ -6,7 +6,6 @@ import { SRequest } from 'src/entities/requests.entity';
 import { TeacherService } from 'src/teachers/teachers.service';
 import { OneSignalService } from 'src/onesignal/onesignal.service';
 import { ClientResponse } from 'onesignal-node/lib/types';
-import { CouponService } from 'src/coupons/coupons.service';
 
 @Controller('api/requests')
 export class RequestController {

@@ -25,14 +25,15 @@ export class AuthTeacherController {
       try {
           const teacher =  await this.teacherService.findOneTeacherByPhone(data.mobile);
           if (!teacher) {
-            throw new UnauthorizedException('phone number not found');
+            throw new UnauthorizedException('رقم الهاتف الذي أدخلته لا يطابق أي حساب');
           }else{
             const valid = await compare(data.password,teacher.password)
             const token  = sign({teacher} , process.env.ACCESS_TOKEN_SECRET);
             if(!valid){
-               throw new UnauthorizedException('password ins not valid');
+              throw new UnauthorizedException('كلمة المرور غير صحيحة');
             }
-            return res.status(200).json({message: 'you are logged in' , token});
+            const fteacher =  await this.teacherService.findOneTeacher(teacher.id);
+            return res.status(200).json({message: 'you are logged in' , token , teacher:fteacher});
           }
       } catch (error) {
           throw new HttpException({

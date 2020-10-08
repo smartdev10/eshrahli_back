@@ -17,12 +17,13 @@ export class TeacherService {
         return await this.teacherRepository.findOne(id ,{relations:['requests' , 'levels' , 'subjects' , 'city' , 'nationality']})
     }
 
-    async findOne(id: Teacher) {
-        return await this.teacherRepository.findOne(id)
+    async findOne(teacher: Teacher) {
+        return await this.teacherRepository.findOne(teacher)
     }
 
     async findOneTeacherByPhone(mobile: string) {
         return await this.teacherRepository.findOne({
+            select:['id','password','mobile'],
             where :{
                 mobile
             }
