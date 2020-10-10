@@ -140,7 +140,14 @@ export class TeacherController {
              const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
              return cb(null, `${randomName}${extname(file.originalname)}`)
             }
-        })
+        }),
+        fileFilter:(req, file, callback) => {
+            const ext = extname(file.originalname);
+            if(ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
+                return callback(new Error('Only images are allowed'),false)
+            }
+            callback(null, true)
+          }
     }))
     async updateTeacher(@UploadedFiles() files , @Body() data: UpdateTeacherDto, @Res() res: Response): Promise<Response> {
         try {
