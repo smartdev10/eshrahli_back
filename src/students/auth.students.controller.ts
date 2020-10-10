@@ -124,11 +124,16 @@ export class AuthStudentController {
     async verify(@Body('mobile') mobile : string , @Body('type') type : string , @Body('code') code : string , @Res() res: Response): Promise<Response> {
       try {
           if(type && type === 'new'){
-            const verificationCheck = await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verificationChecks.create({to:mobile , code})
-            if(verificationCheck.valid){
-              return res.status(HttpStatus.OK).json({message: 'Code is Valid'});
+            const student = await this.studentService.findOneStudentByPhone(mobile);
+            if(student){
+               throw new HttpException('this phone number is already registered' ,400);
+            }else{
+              const verificationCheck = await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verificationChecks.create({to:mobile , code})
+              if(verificationCheck.valid){
+                return res.status(HttpStatus.OK).json({message: 'Code is Valid'});
+              }
+              throw new HttpException('Code is Not Valid' ,400);
             }
-            throw new HttpException('Code is Not Valid' ,400);
           }else{
             const student = await this.studentService.findOneStudentByPhone(mobile);
             if(student){

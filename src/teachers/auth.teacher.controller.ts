@@ -1,7 +1,7 @@
 import { Controller , Post , Body , Res , HttpStatus, HttpException, UnauthorizedException, UseInterceptors, UploadedFiles , Put, Param, Inject } from '@nestjs/common';
 import { TeacherService } from './teachers.service';
 import { Response } from 'express';
-import { LoginTeacherDto , UpdateTeacherDto, TeacherDto, CreatePassTeacherDto , ForgotPassTeacherDto } from './interfaces/teacher.dto';
+import { LoginTeacherDto , UpdateTeacherDto, TeacherDto, CreatePassTeacherDto , ForgotPassTeacherDto , CreateTeacherDto } from './interfaces/teacher.dto';
 import { compare } from 'bcryptjs';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { sign } from 'jsonwebtoken';
@@ -10,6 +10,7 @@ import { diskStorage } from  'multer';
 import { LevelsService } from 'src/levels/levels.service';
 import { SubjectsService } from 'src/subjects/subjects.service';
 import { TwilioService } from 'src/twilio/twilio.service';
+import { Teacher } from 'src/entities/teachers.entity';
 
 @Controller('/auth/teachers')
 export class AuthTeacherController {
@@ -35,19 +36,6 @@ export class AuthTeacherController {
             const fteacher =  await this.teacherService.findOneTeacher(teacher.id);
             return res.status(200).json({message: 'you are logged in' , token , teacher:fteacher});
           }
-      } catch (error) {
-          throw new HttpException({
-              status: HttpStatus.BAD_REQUEST,
-              error: error.message,
-          }, 400);
-      }
-    }
-
-    @Post('register')
-    async start(@Body() data : TeacherDto , @Res() res: Response): Promise<Response> {
-      try {
-          const teacher = await this.teacherService.registerTeacher(data);
-          return res.status(200).json({message: 'Teacher Created' , teacher});
       } catch (error) {
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
@@ -92,6 +80,58 @@ export class AuthTeacherController {
       }
     }
 
+    @Post('register')
+    @UseInterceptors(FileFieldsInterceptor([
+      { name: 'personalcard', maxCount: 1 },
+      { name: 'certificate', maxCount: 1 },
+      { name: 'image', maxCount: 1 },
+    ] , {
+      storage: diskStorage({
+          destination: './images/teachers', 
+          filename: (req, file, cb) => {
+           const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
+           return cb(null, `${randomName}${extname(file.originalname)}`)
+          },
+      }),
+      fileFilter:(req, file, callback) => {
+        const ext = extname(file.originalname);
+        if(ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
+            return callback(new Error('Only images are allowed'),false)
+        }
+        callback(null, true)
+      }
+    }))
+    async register(@UploadedFiles() files , @Body() data : CreateTeacherDto , @Res() res: Response): Promise<Response> {
+      try {
+          const formData = Object.assign(new Teacher() , {
+            ...data,
+            personalcard: files["personalcard"][0] ? files["personalcard"][0].filename : "", 
+            certificate:files["certificate"][0] ? files["certificate"][0].filename : "",
+            image:files["image"][0] ? files["image"][0].filename : "",
+          })
+
+          let other_subjects = []
+
+          if(formData.other_subjects){
+              other_subjects = await this.subjectService.findByIds(formData.other_subjects)
+          }
+
+          const levels = await this.levelService.findByIds(formData.levels)
+          const subjects = await this.subjectService.findByIds(formData.subjects)
+          formData.levels = levels
+          formData.subjects = subjects
+          formData.other_subjects = other_subjects
+          await this.teacherService.registerTeacher(formData);
+          return res.status(HttpStatus.OK).json({message: 'Teacher Updated'});
+      } catch (error) {
+          throw new HttpException({
+              status: HttpStatus.BAD_REQUEST,
+              detail: error.detail,
+              error: error.message
+          }, 400);
+      }
+    }
+
     @Put('update/:id')
     @UseInterceptors(FileFieldsInterceptor([
       { name: 'personalcard', maxCount: 1 },
@@ -104,9 +144,16 @@ export class AuthTeacherController {
            const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
            return cb(null, `${randomName}${extname(file.originalname)}`)
           }
-      })
+      }),
+      fileFilter:(req, file, callback) => {
+        const ext = extname(file.originalname);
+        if(ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
+            return callback(new Error('Only images are allowed'),false)
+        }
+        callback(null, true)
+      }
     }))
-    async register(@UploadedFiles() files ,@Param('id') id: number , @Body() data : UpdateTeacherDto , @Res() res: Response): Promise<Response> {
+    async update(@UploadedFiles() files ,@Param('id') id: number , @Body() data : UpdateTeacherDto , @Res() res: Response): Promise<Response> {
       try {
          if(data.password === ''){
            delete data.password

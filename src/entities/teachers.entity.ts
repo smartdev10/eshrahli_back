@@ -51,7 +51,7 @@ export class Teacher {
   @OneToMany(() => Bid, bid => bid.teacher)
   bids:Bid[]
 
-  @Column('varchar' ,{ length: 250 , default: "inactive" })
+  @Column('varchar' ,{ length: 250 , default: "active" })
   status: string;
 
   @Column('varchar' ,{ length: 250 , default:"" })

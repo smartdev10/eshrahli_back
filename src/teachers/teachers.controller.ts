@@ -68,16 +68,34 @@ export class TeacherController {
           formData.levels = levels
           formData.subjects = subjects
           formData.other_subjects = other_subjects
-          await this.teacherService.insertTeacher(formData);
+          await this.teacherService.registerTeacher(formData);
           return res.status(200).json({message: 'Teacher Created'});
       } catch (error) {
-          console.log(error.detail)
+          console.log(error)
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
               detail: error.detail,
               error: error.message,
           }, 400);
       }
+    }
+
+    @Put('update/push/:id')
+    async updateTeacherPushId(@Param('id') id: number , @Body() body: UpdateTeacherDto , @Res() res: Response): Promise<Response> {
+        try {
+            const teacher = await this.teacherService.findOneTeacher(id)
+            if(teacher){
+                const data = Object.assign(teacher , { ...body })
+                await this.teacherService.updateTeacher(data);
+                return res.status(200).json({message: 'Teacher Updated'});
+            }
+            throw new HttpException('Teacher not found' , HttpStatus.BAD_REQUEST)
+        } catch (error) {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: error.message,
+            }, 400);
+        }
     }
 
     @Delete('delete')

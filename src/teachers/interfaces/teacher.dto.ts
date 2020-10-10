@@ -34,6 +34,15 @@ export class TeacherDto {
     readonly mobile: string;
 }
 
+export class UpdateTeacherPushId {
+    
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly push_id: string;
+  
+}
+
 export class CreateTeacherDto {
     
     @IsDefined()
@@ -45,6 +54,11 @@ export class CreateTeacherDto {
     @IsNotEmpty()
     @IsString()
     readonly mobile: string;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    password: string;
 
     @IsDefined()
     @IsNotEmpty()
@@ -135,6 +149,7 @@ export class CreatePassTeacherDto {
 
 
 export class UpdateTeacherDto {
+    
 
     @IsDefined()
     @IsNotEmpty()
