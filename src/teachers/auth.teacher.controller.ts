@@ -147,8 +147,8 @@ export class AuthTeacherController {
       }),
       fileFilter:(req, file, callback) => {
         const ext = extname(file.originalname);
-        if(ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
-            return callback(new Error('Only images are allowed'),false)
+        if(ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg' && ext !== '.pdf') {
+            return callback(new Error('Only images or Pdf files are allowed'),false)
         }
         callback(null, true)
       }
