@@ -147,7 +147,6 @@ export class CreatePassTeacherDto {
 }
 
 
-
 export class UpdateTeacherDto {
     
 

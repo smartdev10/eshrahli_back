@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Res, Delete, Put , Param, Query, HttpStatus, HttpException, UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { TeacherService } from './teachers.service';
 import { Response } from 'express';
-import { UpdateTeacherDto , CreateTeacherDto } from './interfaces/teacher.dto';
+import { UpdateTeacherDto , CreateTeacherDto, UpdateTeacherPushId } from './interfaces/teacher.dto';
 import { Teacher } from 'src/entities/teachers.entity';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -81,7 +81,7 @@ export class TeacherController {
     }
 
     @Put('update/push/:id')
-    async updateTeacherPushId(@Param('id') id: number , @Body() body: UpdateTeacherDto , @Res() res: Response): Promise<Response> {
+    async updateTeacherPushId(@Param('id') id: number , @Body() body: UpdateTeacherPushId , @Res() res: Response): Promise<Response> {
         try {
             const teacher = await this.teacherService.findOneTeacher(id)
             if(teacher){
