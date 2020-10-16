@@ -103,26 +103,31 @@ export class AuthTeacherController {
     }))
     async register(@UploadedFiles() files , @Body() data : CreateTeacherDto , @Res() res: Response): Promise<Response> {
       try {
-          const formData = Object.assign(new Teacher() , {
-            ...data,
-            personalcard: files["personalcard"][0] ? files["personalcard"][0].filename : "", 
-            certificate:files["certificate"][0] ? files["certificate"][0].filename : "",
-            image:files["image"][0] ? files["image"][0].filename : "",
-          })
-
-          let other_subjects = []
-
-          if(formData.other_subjects){
-              other_subjects = await this.subjectService.findByIds(formData.other_subjects)
+          const teacher = await this.teacherService.findOneTeacherByPhone(data.mobile);
+          if(teacher){
+            throw new HttpException('this phone number is already registered' ,400);
+          }else{
+            const formData = Object.assign(new Teacher() , {
+              ...data,
+              personalcard: files["personalcard"][0] ? files["personalcard"][0].filename : "", 
+              certificate:files["certificate"][0] ? files["certificate"][0].filename : "",
+              image:files["image"][0] ? files["image"][0].filename : "",
+            })
+  
+            let other_subjects = []
+  
+            if(formData.other_subjects){
+                other_subjects = await this.subjectService.findByIds(formData.other_subjects)
+            }
+  
+            const levels = await this.levelService.findByIds(formData.levels)
+            const subjects = await this.subjectService.findByIds(formData.subjects)
+            formData.levels = levels
+            formData.subjects = subjects
+            formData.other_subjects = other_subjects
+            await this.teacherService.registerTeacher(formData);
+            return res.status(HttpStatus.OK).json({message: 'Teacher Registered'});
           }
-
-          const levels = await this.levelService.findByIds(formData.levels)
-          const subjects = await this.subjectService.findByIds(formData.subjects)
-          formData.levels = levels
-          formData.subjects = subjects
-          formData.other_subjects = other_subjects
-          await this.teacherService.registerTeacher(formData);
-          return res.status(HttpStatus.OK).json({message: 'Teacher Updated'});
       } catch (error) {
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
@@ -181,19 +186,29 @@ export class AuthTeacherController {
     }
 
     @Post('verify')
-    async verify(@Body('mobile') mobile : string ,@Body('code') code : string , @Res() res: Response): Promise<Response> {
+    async verify(@Body('mobile') mobile : string , @Body('type') type : string , @Body('code') code : string , @Res() res: Response): Promise<Response> {
       try {
-          const teacher = await this.teacherService.findOneTeacherByPhone(mobile);
-          if(teacher){
+          if(type && type === 'new'){
             const verificationCheck = await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID)
             .verificationChecks
-            .create({to:teacher.mobile , code})
+            .create({to:mobile , code})
             if(verificationCheck.valid){
               return res.status(200).json({message: 'Code is Valid'});
             }
             return res.status(HttpStatus.BAD_REQUEST).json({message: 'Code is Not Valid'});
+          }else{
+            const teacher = await this.teacherService.findOneTeacherByPhone(mobile);
+            if(teacher){
+              const verificationCheck = await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID)
+              .verificationChecks
+              .create({to:teacher.mobile , code})
+              if(verificationCheck.valid){
+                return res.status(200).json({message: 'Code is Valid'});
+              }
+              return res.status(HttpStatus.BAD_REQUEST).json({message: 'Code is Not Valid'});
+            }
+            throw new HttpException('Teacher Not Found' ,400);
           }
-          throw new HttpException('Teacher Not Found' ,400);
       } catch (error) {
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,

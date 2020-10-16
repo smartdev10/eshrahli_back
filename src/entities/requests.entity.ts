@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany , OneToOne , ManyToOne} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany  , ManyToOne} from 'typeorm';
 import { Level } from './levels.entity';
 import { Subject } from './subjects.entity';
 import { Coupon } from './coupons.entity';

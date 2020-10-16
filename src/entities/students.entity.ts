@@ -2,7 +2,6 @@ import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateC
 import { hashSync , genSaltSync } from 'bcryptjs';
 import { SRequest } from './requests.entity';
 import { Favorite } from './favorites.entity';
-import { City } from './cities.entity';
 
 @Entity('students')
 export class Student {

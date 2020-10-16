@@ -37,10 +37,14 @@ export class AuthStudentController {
     @Post('register')
     async register(@Body() data : StudentDto , @Res() res: Response): Promise<Response> {
       try {
-          const student = await this.studentService.insertStudent(data);
-          const foundStudent = await this.studentService.findOneById(student.id);
-          
-          return res.status(200).json({ message: 'Student Created' , student:foundStudent });
+          const student = await this.studentService.findOneStudentByPhone(data.mobile);
+          if(student){
+            throw new HttpException('this phone number is already registered' ,400);
+          }else{
+            const student = await this.studentService.insertStudent(data);
+            const foundStudent = await this.studentService.findOneById(student.id);
+            return res.status(200).json({ message: 'Student Created' , student:foundStudent });
+          }
       } catch (error) {
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
