@@ -2,7 +2,7 @@ import { Brackets, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { Teacher } from 'src/entities/teachers.entity';
-import { TeacherDto, UpdateTeacherDto , searchTeacher } from './interfaces/teacher.dto';
+import { TeacherDto, UpdateTeacherDto , searchTeacher, CreatePassTeacherDto } from './interfaces/teacher.dto';
 
 
 @Injectable()
@@ -93,6 +93,10 @@ export class TeacherService {
     }
 
     async updateTeacher(data: UpdateTeacherDto) {
+        return await this.teacherRepository.save(data);
+    }
+
+    async updateTeachetPassword(data: CreatePassTeacherDto) {
         return await this.teacherRepository.save(data);
     }
       

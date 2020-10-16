@@ -142,8 +142,24 @@ export class CreatePassTeacherDto {
     @IsNotEmpty()
     @IsString()
     readonly password: string;
+}
+
+export class ChangePaswordTeacherDto {
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly mobile: string;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly currentPassword: string;
     
-  
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly password: string;
 }
 
 

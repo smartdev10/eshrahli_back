@@ -1,7 +1,7 @@
 import { Controller , Post , Body , Res , HttpStatus, HttpException, UnauthorizedException, UseInterceptors, UploadedFiles , Put, Param, Inject } from '@nestjs/common';
 import { TeacherService } from './teachers.service';
 import { Response } from 'express';
-import { LoginTeacherDto , UpdateTeacherDto, TeacherDto, CreatePassTeacherDto , ForgotPassTeacherDto , CreateTeacherDto } from './interfaces/teacher.dto';
+import { LoginTeacherDto , UpdateTeacherDto, TeacherDto, CreatePassTeacherDto , ForgotPassTeacherDto , CreateTeacherDto, ChangePaswordTeacherDto } from './interfaces/teacher.dto';
 import { compare } from 'bcryptjs';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { sign } from 'jsonwebtoken';
@@ -55,6 +55,29 @@ export class AuthTeacherController {
           throw new HttpException('Teacher Not Found' ,400);
       } catch (error) {
         console.log(error)
+          throw new HttpException({
+              status: HttpStatus.BAD_REQUEST,
+              error: error.message,
+          }, 400);
+      }
+    }
+
+    @Post('change-password')
+    async changePassword(@Body() data : ChangePaswordTeacherDto , @Res() res: Response): Promise<Response> {
+      try {
+          const teacher = await this.teacherService.findOneTeacherByPhone(data.mobile)
+          if(teacher){
+            const valid = await compare(data.currentPassword,teacher.password)
+            if(!valid){
+              throw new HttpException('Current Password Not Correct' ,400);
+            }
+            const { password } = data
+            const formData = Object.assign(teacher , { password })
+            await this.teacherService.updateTeachetPassword(formData);
+            return res.status(HttpStatus.OK).json({message: 'Password Changed'});
+          }
+          throw new HttpException('Teacher Not Found' ,400);
+      } catch (error) {
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,
               error: error.message,
