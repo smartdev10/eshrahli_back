@@ -155,20 +155,24 @@ export class UpdateTeacherDto {
     @IsString()
     readonly id: number;
 
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsString()
     readonly name: string;
 
+    @IsOptional()
     @IsDefined()
     @IsString()
     password: string;
 
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsString()
     readonly nationality: Nationality;
 
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsString()
@@ -193,26 +197,32 @@ export class UpdateTeacherDto {
     @IsArray()
     readonly other_subjects : Subject[];
 
+    @IsOptional()
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsString()
     readonly bankname : string;
 
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsString()
     readonly bankiban : string;
   
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsString()
     readonly mobile: string;
 
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsString()
     readonly gender: string;
 
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsString()

@@ -175,15 +175,15 @@ export class TeacherController {
             let levels = []
             let subjects = []
             let other_subjects = []
-            if(data.levels){
+            if(data?.levels){
                 levels = await this.levelService.findByIds(formData.levels)
             }
             
-            if(data.subjects){
+            if(data?.subjects){
                 subjects = await this.subjectService.findByIds(formData.subjects)
             }
 
-            if(data.other_subjects){
+            if(data?.other_subjects){
                 other_subjects = await this.subjectService.findByIds(formData.other_subjects)
             }
             formData.levels = levels
