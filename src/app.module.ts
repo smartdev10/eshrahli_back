@@ -48,6 +48,11 @@ import { SRequest } from './entities/requests.entity';
      appId:process.env.APP_ID,
      restApiKey:process.env.REST_API_KEY,
     }),
+    OneSignalModule.register({
+      name:'TEACHER_ONSIGNAL',
+      appId:process.env.TEACHER_APP_ID,
+      restApiKey:process.env.TEACHER_REST_API_KEY,
+     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,

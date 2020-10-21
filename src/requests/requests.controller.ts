@@ -55,7 +55,7 @@ export class RequestController {
                   RequestInfo:"test"
                 }
               };
-              response =  await this.onesignalService.client.createNotification(notification)
+              response =  await this.onesignalService.teacherClient.createNotification(notification)
             }
             return res.status(200).json({message: 'Request Dispatched' , request : frequest , teachers , oneSignalResponse:response ? response.body : null });
           }
@@ -87,7 +87,7 @@ export class RequestController {
                   RequestInfo:"test"
                 }
               };
-              response =  await this.onesignalService.client.createNotification(notification)
+              response =  await this.onesignalService.teacherClient.createNotification(notification)
             }
             return res.status(200).json({message: 'Request Created Again' , request , teacher:frequest.teacher , oneSignalResponse:response ? response.body : null });
           }
@@ -124,7 +124,7 @@ export class RequestController {
                 RequestInfo:"test"
               }
             };
-            response =  await this.onesignalService.client.createNotification(notification)
+            response =  await this.onesignalService.teacherClient.createNotification(notification)
           }
           return res.status(200).json({message: 'Request Created' , request : frequest , teachers , oneSignalResponse:response ? response.body : null });
       } catch (error) {
@@ -179,7 +179,7 @@ export class RequestController {
                   RequestInfo:"test"
                 }
               };
-              await this.onesignalService.client.createNotification(notification)
+              await this.onesignalService.teacherClient.createNotification(notification)
           }
           return res.status(200).json({message: 'Request Updated'});
         } catch (error) {
@@ -205,7 +205,7 @@ export class RequestController {
                 RequestInfo:"test"
               }
             };
-            await this.onesignalService.client.createNotification(notification)
+            await this.onesignalService.teacherClient.createNotification(notification)
             return res.status(200).json({message: 'Request Updated'});
           }
           return res.status(200).json({message: 'Request Updated'});
