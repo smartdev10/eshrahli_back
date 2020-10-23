@@ -52,7 +52,7 @@ export class RequestController {
                 },
                 include_player_ids: [...push_ids],
                 data:{
-                  RequestInfo:"test"
+                  request_id:frequest.id
                 }
               };
               response =  await this.onesignalService.client.createNotification(notification)
@@ -84,7 +84,7 @@ export class RequestController {
                 },
                 include_player_ids: [frequest.teacher.push_id],
                 data:{
-                  RequestInfo:"test"
+                  request_id:frequest.id
                 }
               };
               response =  await this.onesignalService.client.createNotification(notification)
@@ -121,7 +121,7 @@ export class RequestController {
               },
               include_player_ids: [...push_ids],
               data:{
-                RequestInfo:"test"
+                request_id:frequest.id
               }
             };
             response =  await this.onesignalService.client.createNotification(notification)
@@ -176,7 +176,7 @@ export class RequestController {
                 },
                 include_player_ids: [teacher.push_id],
                 data:{
-                  RequestInfo:"test"
+                  RequestInfo:"Canceled"
                 }
               };
               await this.onesignalService.client.createNotification(notification)
@@ -202,7 +202,7 @@ export class RequestController {
               },
               include_player_ids: [teacher.push_id],
               data:{
-                RequestInfo:"test"
+                RequestInfo:"Comfirmed"
               }
             };
             await this.onesignalService.client.createNotification(notification)
