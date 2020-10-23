@@ -10,11 +10,24 @@ import { Teacher } from 'src/entities/teachers.entity';
 import { Level } from 'src/entities/levels.entity';
 import { Subject } from 'src/entities/subjects.entity';
 import { OneSignalModule } from 'src/onesignal/onesignal.module';
+import { ConfigService } from '@nestjs/config';
+import OneSignal = require('onesignal-node');
 
 const OneSignalProvider = {
     provide: ONESIGNAL_MODULE_OPTIONS,
     useValue: OneSignalService,
 };
+
+const clientTeacherFactory = {
+    provide: ONESIGNAL_MODULE_OPTIONS,
+    useFactory: (configService: ConfigService) => {
+      return new OneSignal.Client(
+        configService.get('TEACHER_APP_ID'),
+        configService.get('TEACHER_REST_API_KEY')
+      );
+    },
+    inject: [ConfigService],
+  };
 
 @Module({
     imports: [
@@ -29,6 +42,6 @@ const OneSignalProvider = {
         }),
     ],
     controllers: [RequestController],
-    providers: [RequestService , OneSignalService , OneSignalProvider , TeacherService ],
+    providers: [RequestService , OneSignalService , OneSignalProvider , TeacherService, clientTeacherFactory ,ConfigService],
 })
 export class RequestModule {}
