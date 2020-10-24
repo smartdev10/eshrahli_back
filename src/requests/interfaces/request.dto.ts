@@ -1,4 +1,4 @@
-import { IsDefined , IsString , IsNotEmpty, IsLongitude, IsLatitude, IsNumber, IsDateString , IsEnum, IsOptional } from "class-validator";
+import { IsDefined , IsString , IsNotEmpty, IsLongitude, IsLatitude, IsNumber, IsDateString , IsEnum, IsOptional, IsBoolean } from "class-validator";
 import { City } from "src/entities/cities.entity";
 import { Coupon } from "src/entities/coupons.entity";
 import { Level } from "src/entities/levels.entity";
@@ -176,6 +176,12 @@ export class UpdateRequestDto {
     @IsNotEmpty()
     @IsDateString()
     readonly lesson_end_time : Date;
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsBoolean()
+    readonly paid : boolean;
 
     @IsOptional()
     @IsDefined()
