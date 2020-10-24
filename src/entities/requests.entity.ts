@@ -72,6 +72,9 @@ export class SRequest {
   @Column('varchar'  ,{ length: 250 , default : "PENDING" })
   status: string;
 
+  @Column('boolean'  ,{ default:false })
+  paid: boolean;
+
   @Column('text' , { default : "" })
   details: string;
 
