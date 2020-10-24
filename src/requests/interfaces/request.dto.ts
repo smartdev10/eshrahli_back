@@ -157,12 +157,25 @@ export class UpdateRequestDto {
     @IsNotEmpty()
     @IsString()
     readonly status : string;
+    
 
     @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsDateString()
     readonly cancellationDate : Date;
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsDateString()
+    readonly lesson_start_time : Date;
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsDateString()
+    readonly lesson_end_time : Date;
 
     @IsOptional()
     @IsDefined()

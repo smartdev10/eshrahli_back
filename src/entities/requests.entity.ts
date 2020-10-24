@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany  , ManyToOne} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany  , ManyToOne } from 'typeorm';
 import { Level } from './levels.entity';
 import { Subject } from './subjects.entity';
 import { Coupon } from './coupons.entity';
@@ -53,6 +53,12 @@ export class SRequest {
   
   @CreateDateColumn({ type: "timestamp"})
   sessionDate: Date;
+
+  @CreateDateColumn({ type: "timestamp"})
+  lesson_start_time: Date;
+
+  @CreateDateColumn({ type: "timestamp"})
+  lesson_end_time: Date;
 
   @Column('varchar'  ,{ length: 250 , default : "" })
   paymentMethod: string;
