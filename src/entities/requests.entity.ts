@@ -54,10 +54,10 @@ export class SRequest {
   @CreateDateColumn({ type: "timestamp"})
   sessionDate: Date;
 
-  @CreateDateColumn({ type: "timestamp"})
+  @CreateDateColumn({ type: "timestamp" , nullable:true , default: () => "NULL"  })
   lesson_start_time: Date;
 
-  @CreateDateColumn({ type: "timestamp"})
+  @CreateDateColumn({ type: "timestamp" , nullable:true , default: () => "NULL"  })
   lesson_end_time: Date;
 
   @Column('varchar'  ,{ length: 250 , default : "" })
