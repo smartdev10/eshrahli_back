@@ -149,7 +149,8 @@ export class AuthTeacherController {
             formData.subjects = subjects
             formData.other_subjects = other_subjects
             const createdTeacher = await this.teacherService.registerTeacher(formData);
-            return res.status(HttpStatus.OK).json({message: 'Teacher Registered' , teacher:createdTeacher});
+            const fteacher = await this.teacherService.findOneTeacher(createdTeacher.id);
+            return res.status(HttpStatus.OK).json({message: 'Teacher Registered' , teacher:fteacher});
           }
       } catch (error) {
           throw new HttpException({
