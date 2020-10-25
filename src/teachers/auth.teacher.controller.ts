@@ -1,7 +1,7 @@
-import { Controller , Post , Body , Res , HttpStatus, HttpException, UnauthorizedException, UseInterceptors, UploadedFiles , Put, Param, Inject } from '@nestjs/common';
+import { Controller , Post , Body , Res , HttpStatus, HttpException, UnauthorizedException, UseInterceptors, UploadedFiles , Put, Param } from '@nestjs/common';
 import { TeacherService } from './teachers.service';
 import { Response } from 'express';
-import { LoginTeacherDto , UpdateTeacherDto, TeacherDto, CreatePassTeacherDto , ForgotPassTeacherDto , CreateTeacherDto, ChangePaswordTeacherDto } from './interfaces/teacher.dto';
+import { LoginTeacherDto , UpdateTeacherDto, CheckTeacherDto, CreatePassTeacherDto , ForgotPassTeacherDto , CreateTeacherDto, ChangePaswordTeacherDto } from './interfaces/teacher.dto';
 import { compare } from 'bcryptjs';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { sign } from 'jsonwebtoken';
@@ -103,6 +103,25 @@ export class AuthTeacherController {
       }
     }
 
+    @Post('check_number')
+    async check(@Body() data : CheckTeacherDto , @Res() res: Response): Promise<Response> {
+      try {
+          const teacher = await this.teacherService.findOneTeacherByPhone(data.mobile);
+          if(teacher){
+            throw new HttpException('Phone Number Already Taken', HttpStatus.BAD_REQUEST);
+          }else{
+            await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verifications.create({to:data.mobile,channel:'sms'})
+            return res.status(200).json({ message: 'SMS Created' });
+          }
+      } catch (error) {
+          throw new HttpException({
+              status: HttpStatus.BAD_REQUEST,
+              error: error.message,
+          }, 400);
+      }
+    }
+
+
     @Post('register')
     @UseInterceptors(FileFieldsInterceptor([
       { name: 'personalcard', maxCount: 1 },
@@ -117,7 +136,7 @@ export class AuthTeacherController {
           },
       }),
       fileFilter:(req, file, callback) => {
-        const ext = extname(file.originalname);
+        const ext = extname(file.originalname).toLocaleLowerCase();
         if(ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg' && ext !== '.pdf') {
             return callback(new Error('Only images are allowed'),false)
         }

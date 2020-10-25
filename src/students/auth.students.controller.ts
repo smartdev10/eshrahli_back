@@ -56,8 +56,13 @@ export class AuthStudentController {
     @Post('check_number')
     async check(@Body() data : CheckStudentDto , @Res() res: Response): Promise<Response> {
       try {
-          await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verifications.create({to:data.mobile,channel:'sms'})
-          return res.status(200).json({ message: 'SMS Created' });
+          const student = await this.studentService.findOneStudentByPhone(data.mobile);
+          if(student){
+            throw new HttpException('Phone Number Already Taken', HttpStatus.BAD_REQUEST);
+          }else{
+            await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verifications.create({to:data.mobile,channel:'sms'})
+            return res.status(200).json({ message: 'SMS Created' });
+          }
       } catch (error) {
           throw new HttpException({
               status: HttpStatus.BAD_REQUEST,

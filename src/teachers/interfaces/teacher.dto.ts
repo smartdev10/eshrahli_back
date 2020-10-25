@@ -130,6 +130,14 @@ export class ForgotPassTeacherDto {
   
 }
 
+export class CheckTeacherDto {
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly mobile: string;
+  
+}
 
 export class CreatePassTeacherDto {
 
