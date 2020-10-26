@@ -202,7 +202,7 @@ export class RequestController {
             const frequest = await this.requestService.findOneRequest(id);
             const notification = {
               contents: {
-                'ar': `تم تأكيد الطلب`
+                'en': 'Request Confirmed'
               },
               include_player_ids: [teacher.push_id],
               data:{
