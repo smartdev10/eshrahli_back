@@ -5,4 +5,4 @@ export interface IOneSignalModuleOptions {
 }
 
 export const ONESIGNAL_MODULE_OPTIONS = 'ONESIGNAL_MODULE_OPTIONS';
-export const TEACHER_ONSIGNAL = 'TEACHER_ONSIGNAL';
+export const STUDENT_ONSIGNAL = 'STUDENT_ONSIGNAL';

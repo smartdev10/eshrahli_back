@@ -10,9 +10,9 @@ export class RequestService {
     
     constructor(
         @InjectRepository(SRequest)
-        private requestRepository: Repository<SRequest>,
+        private requestRepository: Repository<SRequest>
     ) {}
-
+  
     async findOneRequest(id: number) {
         return await this.requestRepository.findOne({
             where :{

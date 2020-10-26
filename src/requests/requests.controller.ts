@@ -4,7 +4,7 @@ import { Response } from 'express';
 import { RequestDto , CheckOutRequestDto , UpdateRequestDto, RetryDto, ReCallDto, FinishRequestDto } from './interfaces/request.dto';
 import { SRequest } from 'src/entities/requests.entity';
 import { TeacherService } from 'src/teachers/teachers.service';
-import { OneSignalService } from 'src/onesignal/onesignal.service';
+import { TeacherOneSignalService } from 'src/onesignal/teacherSignal.service';
 import { ClientResponse } from 'onesignal-node/lib/types';
 
 @Controller('api/requests')
@@ -12,7 +12,7 @@ export class RequestController {
     constructor(
         private readonly requestService: RequestService , 
         private readonly teacherService: TeacherService , 
-        private readonly onesignalService: OneSignalService , 
+        private readonly onesignalService: TeacherOneSignalService , 
         ) {}
     @Get()
     findAllCategory() : Promise<SRequest[]>{
@@ -48,7 +48,7 @@ export class RequestController {
             if(push_ids.length !== 0 && push_ids.every((push) => push)){
               const notification = {
                 contents: {
-                  'en': `New Request`
+                  'ar': `طلب جديد`
                 },
                 include_player_ids: [...push_ids],
                 data:{
@@ -198,11 +198,11 @@ export class RequestController {
           if(teacher.push_id){
             const notification = {
               contents: {
-                'en': `Request Comfirmed`
+                'en': `Request Confirmed `
               },
               include_player_ids: [teacher.push_id],
               data:{
-                RequestInfo:"Comfirmed"
+                RequestInfo:"Confirmed"
               }
             };
             await this.onesignalService.client.createNotification(notification)

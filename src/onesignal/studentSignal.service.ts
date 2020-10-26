@@ -1,11 +1,11 @@
 import { Injectable, Inject } from '@nestjs/common';
 import OneSignal = require('onesignal-node');
-import { ONESIGNAL_MODULE_OPTIONS , IOneSignalModuleOptions } from './interface/onesignal.config';
+import { IOneSignalModuleOptions , STUDENT_ONSIGNAL } from './interface/onesignal.config';
 
 
 @Injectable()
-export class OneSignalService {
-  constructor(@Inject(ONESIGNAL_MODULE_OPTIONS) private options: IOneSignalModuleOptions) {
+export class StudentOneSignalService {
+  constructor(@Inject(STUDENT_ONSIGNAL) private options: IOneSignalModuleOptions) {
     this.implementOneSignalSdk = new OneSignal.Client(
       this.options.appId,
       this.options.restApiKey,
@@ -17,6 +17,5 @@ export class OneSignalService {
   public get client(): OneSignal.Client {
     return this.implementOneSignalSdk;
   }
-
   
 }
