@@ -37,7 +37,7 @@ const StudentOneSignalProvider = {
         }),
         OneSignalModule.registerStudent({
           appId:process.env.APP_ID,
-          restApiKey:process.env.API_KEY,
+          restApiKey:process.env.REST_API_KEY,
         }),
     ],
     controllers: [RequestController],
