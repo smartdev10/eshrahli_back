@@ -18,10 +18,10 @@ const TeacherOneSignalProvider = {
     useValue: TeacherOneSignalService,
 };
 
-const StudentOneSignalProvider = {
-    provide: STUDENT_ONSIGNAL,
-    useValue: StudentOneSignalService,
-};
+// const StudentOneSignalProvider = {
+//     provide: STUDENT_ONSIGNAL,
+//     useValue: StudentOneSignalService,
+// };
 
 
 
@@ -40,6 +40,6 @@ const StudentOneSignalProvider = {
         })
     ],
     controllers: [RequestController],
-    providers: [RequestService , TeacherOneSignalService , StudentOneSignalService , TeacherOneSignalProvider , StudentOneSignalProvider , TeacherService , ConfigService],
+    providers: [RequestService , TeacherOneSignalService , TeacherOneSignalProvider , TeacherService],
 })
 export class RequestModule {}
