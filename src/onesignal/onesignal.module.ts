@@ -6,7 +6,7 @@ import { IOneSignalModuleOptions, ONESIGNAL_MODULE_OPTIONS,STUDENT_ONSIGNAL } fr
 @Module({})
 export class OneSignalModule {
   static register(options: IOneSignalModuleOptions): DynamicModule {
-    console.log(process.env.TEACHER_APP_ID)
+    console.log(options)
     return {
       module: OneSignalModule,
       providers: [
@@ -20,6 +20,7 @@ export class OneSignalModule {
     };
   }
   static registerStudent(options: IOneSignalModuleOptions): DynamicModule {
+    console.log(options)
     return {
       module: OneSignalModule,
       providers: [

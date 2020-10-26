@@ -37,11 +37,7 @@ const StudentOneSignalProvider = {
         OneSignalModule.register({
             appId:process.env.TEACHER_APP_ID,
             restApiKey:process.env.TEACHER_REST_API_KEY,
-        }),
-        OneSignalModule.registerStudent({
-          appId:process.env.APP_ID,
-          restApiKey:process.env.REST_API_KEY,
-        }),
+        })
     ],
     controllers: [RequestController],
     providers: [RequestService , TeacherOneSignalService , StudentOneSignalService , TeacherOneSignalProvider , StudentOneSignalProvider , TeacherService , ConfigService],
