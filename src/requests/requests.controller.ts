@@ -80,7 +80,7 @@ export class RequestController {
             if(frequest.teacher && frequest.teacher.push_id){
               const notification = {
                 contents: {
-                  'en': `Private Request`
+                  'ar': `طلب جديد`
                 },
                 include_player_ids: [frequest.teacher.push_id],
                 data:{
@@ -117,7 +117,7 @@ export class RequestController {
           if(push_ids.length !== 0 && push_ids.every((push) => push)){
             const notification = {
               contents: {
-                'en': `New Request`
+                'ar': `طلب جديد`
               },
               include_player_ids: [...push_ids],
               data:{
@@ -196,13 +196,14 @@ export class RequestController {
           await this.requestService.checkoutRequest(id, body);
           const teacher = await this.teacherService.findOne(body.teacher)
           if(teacher.push_id){
+            const frequest = await this.requestService.findOneRequest(id);
             const notification = {
               contents: {
-                'en': `Request Confirmed `
+                'ar': `تم تأكيد الطلب`
               },
               include_player_ids: [teacher.push_id],
               data:{
-                RequestInfo:"Confirmed"
+                request_id:frequest.id
               }
             };
             await this.onesignalService.client.createNotification(notification)
