@@ -118,7 +118,7 @@ export class RequestController {
           if(push_ids.length !== 0 && push_ids.every((push) => push)){
             const notification = {
               contents: {
-                'ar': `طلب جديد`
+                'ar': 'طلب جديد'
               },
               include_player_ids: [...push_ids],
               data:{
