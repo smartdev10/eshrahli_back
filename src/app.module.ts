@@ -24,7 +24,8 @@ import { SRequest } from './entities/requests.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath:'.env'
+      envFilePath:'.env',
+      isGlobal: true
     }),
     TeacherModule,
     StudentModule,
