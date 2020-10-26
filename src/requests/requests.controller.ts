@@ -118,7 +118,7 @@ export class RequestController {
           if(push_ids.length !== 0 && push_ids.every((push) => push)){
             const notification = {
               contents: {
-                'en': 'New Request'
+                'en': 'طلب جديد'
               },
               include_player_ids: [...push_ids],
               data:{
@@ -173,13 +173,14 @@ export class RequestController {
           await this.requestService.updateRequest(id, body);
           if(body.status === 'canceled'){
               const teacher = await this.teacherService.findOne(body.teacher)
+              const frequest = await this.requestService.findOneRequest(id);
               const notification = {
                 contents: {
-                  'en': `Request Canceled`
+                  'en': `تم إلغاء الطلب`
                 },
                 include_player_ids: [teacher.push_id],
                 data:{
-                  RequestInfo:"Canceled"
+                  request_id:frequest.id
                 }
               };
               await this.onesignalService.client.createNotification(notification)
@@ -202,7 +203,7 @@ export class RequestController {
             const frequest = await this.requestService.findOneRequest(id);
             const notification = {
               contents: {
-                'en': 'Request Confirmed'
+                'en': 'تم تأكيد الطلب'
               },
               include_player_ids: [teacher.push_id],
               data:{
