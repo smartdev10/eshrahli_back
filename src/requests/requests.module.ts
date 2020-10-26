@@ -5,18 +5,14 @@ import { RequestController } from './requests.controller';
 import { SRequest } from 'src/entities/requests.entity';
 import { ONESIGNAL_MODULE_OPTIONS , STUDENT_ONSIGNAL } from 'src/onesignal/interface/onesignal.config';
 import { TeacherOneSignalService } from 'src/onesignal/teacherSignal.service';
-import { StudentOneSignalService } from 'src/onesignal/studentSignal.service';
 import { TeacherService } from 'src/teachers/teachers.service';
 import { Teacher } from 'src/entities/teachers.entity';
 import { Level } from 'src/entities/levels.entity';
 import { Subject } from 'src/entities/subjects.entity';
 import { OneSignalModule } from 'src/onesignal/onesignal.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import OneSignal = require('onesignal-node');
 
-const TeacherOneSignalProvider = {
-    provide: ONESIGNAL_MODULE_OPTIONS,
-    useValue: TeacherOneSignalService,
-};
 
 // const StudentOneSignalProvider = {
 //     provide: STUDENT_ONSIGNAL,
@@ -40,6 +36,15 @@ const TeacherOneSignalProvider = {
         })
     ],
     controllers: [RequestController],
-    providers: [RequestService , TeacherOneSignalService , TeacherOneSignalProvider , TeacherService],
+    providers: [RequestService , TeacherOneSignalService , {
+        provide: ONESIGNAL_MODULE_OPTIONS,
+        useFactory :(configService : ConfigService) => {
+            return  new OneSignal.Client(
+                configService.get('TEACHER_APP_ID'),
+                configService.get('TEACHER_REST_API_KEY'),
+              )
+        },
+        inject:[ConfigService]
+    } , TeacherService],
 })
 export class RequestModule {}
