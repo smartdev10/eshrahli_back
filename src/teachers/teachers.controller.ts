@@ -50,6 +50,10 @@ export class TeacherController {
     }))
     async createTeacher(@UploadedFiles() files ,@Body() teacherDto : CreateTeacherDto , @Res() res: Response): Promise<Response> {
       try {
+        const teacher = await this.teacherService.findOneTeacherByPhone(teacherDto.mobile);
+        if(teacher){
+          throw new HttpException('this phone number is already registered' ,400);
+        }else{
           const formData = Object.assign(new Teacher() , {
             ...teacherDto,
             personalcard:files["personalcard"][0].filename , 
@@ -70,6 +74,7 @@ export class TeacherController {
           formData.other_subjects = other_subjects
           await this.teacherService.registerTeacher(formData);
           return res.status(200).json({message: 'Teacher Created'});
+        }
       } catch (error) {
           console.log(error)
           throw new HttpException({
