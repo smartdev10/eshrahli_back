@@ -125,6 +125,8 @@ export class RequestController {
               }
             };
             response =  await this.onesignalService.client.createNotification(notification)
+            console.log('created notification')
+            console.log(response)
           }
           return res.status(200).json({message: 'Request Created' , request : frequest , teachers , oneSignalResponse:response ? response.body : null });
       } catch (error) {

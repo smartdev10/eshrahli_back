@@ -41,6 +41,6 @@ const StudentOneSignalProvider = {
         }),
     ],
     controllers: [RequestController],
-    providers: [RequestService , TeacherOneSignalService , StudentOneSignalService , TeacherOneSignalProvider , StudentOneSignalProvider , TeacherService , ConfigService],
+    providers: [RequestService , TeacherOneSignalService , StudentOneSignalService , TeacherOneSignalProvider , StudentOneSignalProvider , TeacherService ],
 })
 export class RequestModule {}
