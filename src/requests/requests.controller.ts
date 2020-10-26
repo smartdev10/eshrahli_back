@@ -113,6 +113,7 @@ export class RequestController {
               subjects:body.subject 
           })
           const push_ids = teachers.map(({push_id})=> push_id ? push_id : '')
+          console.log(push_ids)
           let response : ClientResponse 
           if(push_ids.length !== 0 && push_ids.every((push) => push)){
             const notification = {
