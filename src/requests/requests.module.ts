@@ -11,7 +11,7 @@ import { Teacher } from 'src/entities/teachers.entity';
 import { Level } from 'src/entities/levels.entity';
 import { Subject } from 'src/entities/subjects.entity';
 import { OneSignalModule } from 'src/onesignal/onesignal.module';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 const TeacherOneSignalProvider = {
     provide: ONESIGNAL_MODULE_OPTIONS,
@@ -27,6 +27,9 @@ const StudentOneSignalProvider = {
 
 @Module({
     imports: [
+        ConfigModule.forRoot({
+            envFilePath:'.env'
+        }),
         TypeOrmModule.forFeature([SRequest]), 
         TypeOrmModule.forFeature([Teacher]), 
         TypeOrmModule.forFeature([Level]), 
@@ -35,12 +38,12 @@ const StudentOneSignalProvider = {
             appId:process.env.TEACHER_APP_ID,
             restApiKey:process.env.TEACHER_REST_API_KEY,
         }),
-        // OneSignalModule.registerStudent({
-        //   appId:process.env.APP_ID,
-        //   restApiKey:process.env.REST_API_KEY,
-        // }),
+        OneSignalModule.registerStudent({
+          appId:process.env.APP_ID,
+          restApiKey:process.env.REST_API_KEY,
+        }),
     ],
     controllers: [RequestController],
-    providers: [RequestService , TeacherOneSignalService , StudentOneSignalService , TeacherOneSignalProvider , StudentOneSignalProvider , TeacherService ],
+    providers: [RequestService , TeacherOneSignalService , StudentOneSignalService , TeacherOneSignalProvider , StudentOneSignalProvider , TeacherService , ConfigService],
 })
 export class RequestModule {}
