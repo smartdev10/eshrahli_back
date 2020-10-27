@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , BeforeInsert , BeforeUpdate , OneToMany , ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , BeforeInsert , BeforeUpdate , OneToMany , ManyToOne, DeleteDateColumn } from 'typeorm';
 import { hashSync , genSaltSync } from 'bcryptjs';
 import { SRequest } from './requests.entity';
 import { Favorite } from './favorites.entity';
@@ -41,6 +41,9 @@ export class Student {
 
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" })
   updatedAt: Date;
+
+  @DeleteDateColumn({ type: "timestamp"})
+  deletedAt: Date;
 
   @BeforeInsert()
   async generatePasswordHash(): Promise<void> {

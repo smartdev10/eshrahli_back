@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { CreatePaswordStudentDto, StudentDto } from './interfaces/student.dto';
@@ -72,6 +72,17 @@ export class StudentService {
 
     async deleteStudent(ids: number[]) {
         return await  this.studentRepository.delete(ids);
+    }
+
+    async softDeleteStudent(ids: number[]) {
+        const students = await this.studentRepository.find({
+            where:{
+                id:In(ids)
+            },
+            relations:['requests','favorites' ,'notifications']
+        })
+        console.log(students)
+        return await this.studentRepository.softRemove(students);
     }
 
     async updateStudent(data: StudentDto) {

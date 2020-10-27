@@ -12,6 +12,9 @@ import { Subject } from 'src/entities/subjects.entity';
 import { OneSignalModule } from 'src/onesignal/onesignal.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import OneSignal = require('onesignal-node');
+import { NotificationEntity } from 'src/entities/notifications.entity';
+import { StudentNotificationEntity } from 'src/entities/student_notifications.entity';
+import { NotificationService } from 'src/notifications/notifications.service';
 
 
 // const StudentOneSignalProvider = {
@@ -30,6 +33,8 @@ import OneSignal = require('onesignal-node');
         TypeOrmModule.forFeature([Teacher]), 
         TypeOrmModule.forFeature([Level]), 
         TypeOrmModule.forFeature([Subject]),
+        TypeOrmModule.forFeature([NotificationEntity]),
+        TypeOrmModule.forFeature([StudentNotificationEntity]),
         OneSignalModule.register({
             appId:process.env.TEACHER_APP_ID,
             restApiKey:process.env.TEACHER_REST_API_KEY,
@@ -45,6 +50,6 @@ import OneSignal = require('onesignal-node');
               )
         },
         inject:[ConfigService]
-    } , TeacherService],
+    } , TeacherService , NotificationService],
 })
 export class RequestModule {}

@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany , ManyToOne , OneToOne , JoinColumn , BeforeUpdate , BeforeInsert , ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany , ManyToOne , OneToOne , DeleteDateColumn , BeforeUpdate , BeforeInsert , ManyToMany, JoinTable } from 'typeorm';
 import { Nationality } from './nationalities.entity';
 import { City } from './cities.entity';
 import { Level } from './levels.entity';
@@ -46,7 +46,7 @@ export class Teacher {
   @JoinTable()
   other_subjects:Subject[]
 
-  @OneToMany(() => SRequest, srequest => srequest.teacher,{onDelete:'CASCADE'})
+  @OneToMany(() => SRequest, srequest => srequest.teacher)
   requests:SRequest[]
 
   @OneToMany(type => NotificationEntity, notification => notification.teacher)
@@ -81,6 +81,9 @@ export class Teacher {
 
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" })
   updatedAt: Date;
+
+  @DeleteDateColumn({ type: "timestamp"})
+  deletedAt: Date;
 
   @BeforeInsert()
   async generatePasswordHash(): Promise<void> {

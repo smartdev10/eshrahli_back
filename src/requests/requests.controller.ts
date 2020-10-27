@@ -6,13 +6,15 @@ import { SRequest } from 'src/entities/requests.entity';
 import { TeacherService } from 'src/teachers/teachers.service';
 import { TeacherOneSignalService } from 'src/onesignal/teacherSignal.service';
 import { ClientResponse } from 'onesignal-node/lib/types';
+import { NotificationService } from 'src/notifications/notifications.service';
 
 @Controller('api/requests')
 export class RequestController {
     constructor(
-        private readonly requestService: RequestService , 
-        private readonly teacherService: TeacherService , 
-        private readonly onesignalService: TeacherOneSignalService , 
+        private readonly requestService: RequestService, 
+        private readonly teacherService: TeacherService, 
+        private readonly onesignalService: TeacherOneSignalService, 
+        private readonly notifyService: NotificationService
         ) {}
     @Get()
     findAllCategory() : Promise<SRequest[]>{
@@ -56,6 +58,13 @@ export class RequestController {
                 }
               };
               response =  await this.onesignalService.client.createNotification(notification)
+              for (const teacher of teachers) {
+                await this.notifyService.insertTeacherNotification({
+                  message:"طلب جديد",
+                  teacher,
+                  request:frequest
+                })
+              }
             }
             return res.status(200).json({message: 'Request Dispatched' , request : frequest , teachers , oneSignalResponse:response ? response.body : null });
           }
@@ -88,6 +97,11 @@ export class RequestController {
                 }
               };
               response =  await this.onesignalService.client.createNotification(notification)
+                await this.notifyService.insertTeacherNotification({
+                  message:"طلب جديد",
+                  teacher:frequest.teacher,
+                  request:frequest
+                })
             }
             return res.status(200).json({message: 'Request Created Again' , request , teacher:frequest.teacher , oneSignalResponse:response ? response.body : null });
           }
@@ -126,7 +140,13 @@ export class RequestController {
             };
             response =  await this.onesignalService.client.createNotification(notification)
             console.log('created notification')
-            console.log(response.body)
+            for (const teacher of teachers) {
+              await this.notifyService.insertTeacherNotification({
+                message:"طلب جديد",
+                teacher,
+                request:frequest
+              })
+           }
           }
           return res.status(200).json({message: 'Request Created' , request : frequest , teachers , oneSignalResponse:response ? response.body : null });
       } catch (error) {
@@ -172,17 +192,24 @@ export class RequestController {
           await this.requestService.updateRequest(id, body);
           if(body.status === 'canceled'){
               const teacher = await this.teacherService.findOne(body.teacher)
-              const frequest = await this.requestService.findOneRequest(id);
-              const notification = {
-                contents: {
-                  'en': `تم إلغاء الطلب`
-                },
-                include_player_ids: [teacher.push_id],
-                data:{
-                  request_id:frequest.id
-                }
-              };
-              await this.onesignalService.client.createNotification(notification)
+              if(teacher.push_id){
+                const frequest = await this.requestService.findOneRequest(id);
+                const notification = {
+                  contents: {
+                    'en': `تم إلغاء الطلب`
+                  },
+                  include_player_ids: [teacher.push_id],
+                  data:{
+                    request_id:frequest.id
+                  }
+                };
+                await this.onesignalService.client.createNotification(notification)
+                await this.notifyService.insertTeacherNotification({
+                  message:"تم إلغاء الطلب",
+                  teacher,
+                  request:frequest
+                })
+              }
           }
           return res.status(200).json({message: 'Request Updated'});
         } catch (error) {
@@ -210,6 +237,11 @@ export class RequestController {
               }
             };
             await this.onesignalService.client.createNotification(notification)
+            await this.notifyService.insertTeacherNotification({
+              message:"تم تأكيد الطلب",
+              teacher,
+              request:frequest
+            })
             return res.status(200).json({message: 'Request Updated'});
           }
           return res.status(200).json({message: 'Request Updated'});

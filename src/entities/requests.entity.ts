@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany  , ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany  , ManyToOne, DeleteDateColumn } from 'typeorm';
 import { Level } from './levels.entity';
 import { Subject } from './subjects.entity';
 import { Coupon } from './coupons.entity';
@@ -14,10 +14,10 @@ export class SRequest {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(type => Student, student => student.requests,{onDelete:'CASCADE'})
+  @ManyToOne(type => Student, student => student.requests)
   student: Student;
 
-  @ManyToOne(type => Teacher, teacher => teacher.requests,{onDelete:'CASCADE'})
+  @ManyToOne(type => Teacher, teacher => teacher.requests)
   teacher: Teacher;
 
   @Column('varchar'  ,{ length: 250  })
@@ -106,5 +106,8 @@ export class SRequest {
 
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" })
   updatedAt: Date;
+
+  @DeleteDateColumn({ type: "timestamp"})
+  deletedAt: Date;
 
 }

@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn , CreateDateColumn , UpdateDateColumn ,  ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , CreateDateColumn , UpdateDateColumn , DeleteDateColumn ,  ManyToOne } from 'typeorm';
 import { Teacher } from './teachers.entity';
 import { SRequest } from './requests.entity';
 
@@ -11,10 +11,10 @@ export class NotificationEntity {
   @Column('varchar'  ,{ length: 250 })
   message: string;
 
-  @ManyToOne(type => Teacher , teacher => teacher.notifications , {onDelete:'CASCADE'})
+  @ManyToOne(type => Teacher , teacher => teacher.notifications)
   teacher: Teacher
 
-  @ManyToOne(() => SRequest, request => request.notifications , {onDelete:'CASCADE'})
+  @ManyToOne(() => SRequest, request => request.notifications)
   request: SRequest;
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
@@ -22,4 +22,7 @@ export class NotificationEntity {
 
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" })
   updatedAt: Date;
+
+  @DeleteDateColumn({ type: "timestamp"})
+  deletedAt: Date;
 }

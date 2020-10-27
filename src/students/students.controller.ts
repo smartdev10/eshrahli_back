@@ -64,6 +64,21 @@ export class StudentController {
         }
     }
 
+    @Delete('soft_delete')
+    async softDeleteStudent(@Query('filter') filter, @Res() res: Response): Promise<Response> {
+        try {
+          const { ids } = JSON.parse(filter)
+          await this.studentService.softDeleteStudent(ids);
+          return res.status(200).json({message: 'Student Deleted'});
+        } catch (error) {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: error.message,
+            }, 400);
+        }
+    }
+
+
     @Put('update/push/:id')
     async updateStudentPushId(@Param('id') id: number , @Body() body: UpdateStudentPushId , @Res() res: Response): Promise<Response> {
         try {

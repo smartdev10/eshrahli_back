@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn , CreateDateColumn , UpdateDateColumn ,  ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , CreateDateColumn , UpdateDateColumn ,  ManyToOne , DeleteDateColumn } from 'typeorm';
 import { Student } from './students.entity';
 import { Teacher } from './teachers.entity';
 
@@ -8,7 +8,7 @@ export class Favorite {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(type => Student , student => student.favorites , {onDelete:'CASCADE'})
+  @ManyToOne(type => Student , student => student.favorites)
   student: Student
 
   @ManyToOne(type => Teacher)
@@ -19,4 +19,7 @@ export class Favorite {
 
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" })
   updatedAt: Date;
+  
+  @DeleteDateColumn({ type: "timestamp"})
+  deletedAt: Date;
 }

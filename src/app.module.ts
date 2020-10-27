@@ -20,6 +20,7 @@ import { TwilioModule } from './twilio/twilio.module';
 import { BidsModule } from './bids/bids.module';
 import { RequestService } from './requests/requests.service';
 import { SRequest } from './entities/requests.entity';
+import { NotificationModule } from './notifications/notificatins.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { SRequest } from './entities/requests.entity';
     FavoriteModule,
     AuthAdminModule,
     BidsModule,
+    NotificationModule,
     TwilioModule.register({
       accountSid:process.env.TWILIO_ACCOUNT_SID,
       authToken:process.env.TWILIO_AUTH_TOKEN,

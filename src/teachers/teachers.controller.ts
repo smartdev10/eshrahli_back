@@ -108,7 +108,7 @@ export class TeacherController {
         try {
           const { ids } = JSON.parse(filter)
           await this.teacherService.deleteTeacher(ids);
-          return res.status(200).json({message: 'Teacher Deleted'});
+          return res.status(200).json({message: 'Teachers Deleted'});
         } catch (error) {
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,
@@ -117,6 +117,19 @@ export class TeacherController {
         }
     }
 
+    @Delete('soft_delete')
+    async softDeleteTeacher(@Query('filter') filter, @Res() res: Response): Promise<Response> {
+        try {
+          const { ids } = JSON.parse(filter)
+          await this.teacherService.softDeleteTeacher(ids);
+          return res.status(200).json({message: 'Teachers Deleted'});
+        } catch (error) {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: error.message,
+            }, 400);
+        }
+    }
 
     @Put('status/:id')
     async updateStatus(@Param('id') id: number , @Body('status') status: string , @Res() res: Response): Promise<Response> {

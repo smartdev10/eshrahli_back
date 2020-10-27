@@ -1,4 +1,4 @@
-import { Brackets, Repository } from 'typeorm';
+import { Brackets, In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { Teacher } from 'src/entities/teachers.entity';
@@ -90,6 +90,10 @@ export class TeacherService {
 
     async deleteTeacher(ids: number[]) {
         return await  this.teacherRepository.delete(ids);
+    }
+
+    async softDeleteTeacher(ids: number[]) {
+        return await this.teacherRepository.softDelete(ids);
     }
 
     async updateTeacher(data: UpdateTeacherDto) {
