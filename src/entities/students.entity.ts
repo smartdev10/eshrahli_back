@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateC
 import { hashSync , genSaltSync } from 'bcryptjs';
 import { SRequest } from './requests.entity';
 import { Favorite } from './favorites.entity';
+import { StudentNotificationEntity } from './student_notifications.entity';
 
 @Entity('students')
 export class Student {
@@ -26,10 +27,13 @@ export class Student {
   @Column('varchar'  ,{ length: 250 , default: "" , select:false  })
   password: string;
 
-  @OneToMany(type => Favorite, favorites => favorites.student)
+  @OneToMany(type => Favorite, favorites => favorites.student , {onDelete:'CASCADE'})
   favorites:Favorite[]
 
-  @OneToMany(type => SRequest, srequest => srequest.student)
+  @OneToMany(type => StudentNotificationEntity, notification => notification.student , {onDelete:'CASCADE'})
+  notifications:StudentNotificationEntity[]
+
+  @OneToMany(type => SRequest, srequest => srequest.student ,{onDelete:'CASCADE'})
   requests:SRequest[]
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })

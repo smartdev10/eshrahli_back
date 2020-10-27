@@ -1,9 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn , CreateDateColumn , UpdateDateColumn ,  ManyToOne } from 'typeorm';
-import { Teacher } from './teachers.entity';
 import { SRequest } from './requests.entity';
+import { Student } from './students.entity';
 
-@Entity('notifications')
-export class NotificationEntity {
+@Entity('students_notifications')
+export class StudentNotificationEntity {
   
   @PrimaryGeneratedColumn()
   id: number;
@@ -11,8 +11,8 @@ export class NotificationEntity {
   @Column('varchar'  ,{ length: 250 })
   message: string;
 
-  @ManyToOne(type => Teacher , teacher => teacher.notifications)
-  teacher: Teacher
+  @ManyToOne(type => Student , student => student.notifications)
+  student: Student
 
   @ManyToOne(() => SRequest, request => request.notifications)
   request: SRequest;

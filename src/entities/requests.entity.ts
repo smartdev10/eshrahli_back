@@ -6,6 +6,8 @@ import { Student } from './students.entity';
 import { Teacher } from './teachers.entity';
 import { Bid } from './bids.entity';
 import { City } from './cities.entity';
+import { StudentNotificationEntity } from './student_notifications.entity';
+import { NotificationEntity } from './notifications.entity';
 
 @Entity('srequests')
 export class SRequest {
@@ -32,6 +34,12 @@ export class SRequest {
 
   @OneToMany(() => Bid, bid => bid.request)
   bids:Bid[]
+
+  @OneToMany(() => StudentNotificationEntity, sn => sn.request)
+  student_notifications:StudentNotificationEntity[]
+
+  @OneToMany(() => NotificationEntity, n => n.request)
+  notifications:NotificationEntity[]
 
   @ManyToOne(() => Coupon, coupon => coupon.requests)
   coupon: Coupon;

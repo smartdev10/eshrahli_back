@@ -6,6 +6,7 @@ import { Subject } from './subjects.entity';
 import { hashSync , genSaltSync } from 'bcryptjs';
 import { SRequest } from './requests.entity';
 import { Bid } from './bids.entity';
+import { NotificationEntity } from './notifications.entity';
 
 @Entity('teachers')
 export class Teacher {
@@ -48,7 +49,10 @@ export class Teacher {
   @OneToMany(() => SRequest, srequest => srequest.teacher)
   requests:SRequest[]
 
-  @OneToMany(() => Bid, bid => bid.teacher)
+  @OneToMany(type => NotificationEntity, notification => notification.teacher , {onDelete:'CASCADE'})
+  notifications:NotificationEntity[]
+
+  @OneToMany(() => Bid, bid => bid.teacher , {onDelete:'CASCADE'})
   bids:Bid[]
 
   @Column('varchar' ,{ length: 250 , default: "active" })
