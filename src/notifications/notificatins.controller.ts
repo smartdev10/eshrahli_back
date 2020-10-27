@@ -23,8 +23,10 @@ export class NotificationController {
     async findAllStudentNotifications(@Param('id') id : number ,  @Res() res: Response) : Promise<Response>{
         try {
             const notifications = await this.notifyService.findAllStudentNotifications(id);
+            console.log(notifications)
             return res.status(HttpStatus.OK).json(notifications ? notifications : []);
           } catch (error) {
+            console.log(error)
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,
                 error: error.message,

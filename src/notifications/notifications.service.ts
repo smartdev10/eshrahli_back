@@ -12,7 +12,7 @@ export class NotificationService {
     constructor(
         @InjectRepository(NotificationEntity)
         private notificationRepository: Repository<NotificationEntity>,
-        @InjectRepository(NotificationEntity)
+        @InjectRepository(StudentNotificationEntity)
         private studentNotificationRepository: Repository<StudentNotificationEntity>,
     ) {}
 
@@ -29,7 +29,7 @@ export class NotificationService {
     async findAllStudentNotifications(student:number) {
        return await this.studentNotificationRepository.find({
            where:{
-              student
+             student
            },
            relations:['request']
        });
