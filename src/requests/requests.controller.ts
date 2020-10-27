@@ -112,22 +112,21 @@ export class RequestController {
               levels:body.level,
               subjects:body.subject 
           })
-          const push_ids = teachers.map(({push_id})=> push_id ? push_id : '')
-          console.log(push_ids)
+          const push_ids = teachers.map(({push_id})=> push_id)
           let response : ClientResponse 
-          if(push_ids.length !== 0 && push_ids.every((push) => push)){
+          if(push_ids.length !== 0 && push_ids.every((push) => push !== null && push.length !== 0)){
             const notification = {
               contents: {
                 'en': 'طلب جديد'
               },
-              include_player_ids: [...push_ids],
+              include_player_ids: [...push_ids.filter(push => push !== null && push.length !== 0)],
               data:{
                 request_id:frequest.id
               }
             };
             response =  await this.onesignalService.client.createNotification(notification)
             console.log('created notification')
-            console.log(response)
+            console.log(response.body)
           }
           return res.status(200).json({message: 'Request Created' , request : frequest , teachers , oneSignalResponse:response ? response.body : null });
       } catch (error) {
