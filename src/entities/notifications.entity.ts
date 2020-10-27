@@ -11,10 +11,10 @@ export class NotificationEntity {
   @Column('varchar'  ,{ length: 250 })
   message: string;
 
-  @ManyToOne(type => Teacher , teacher => teacher.notifications)
+  @ManyToOne(type => Teacher , teacher => teacher.notifications , {onDelete:'CASCADE'})
   teacher: Teacher
 
-  @ManyToOne(() => SRequest, request => request.notifications)
+  @ManyToOne(() => SRequest, request => request.notifications , {onDelete:'CASCADE'})
   request: SRequest;
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })

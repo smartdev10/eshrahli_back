@@ -8,7 +8,7 @@ export class Favorite {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(type => Student , student => student.favorites)
+  @ManyToOne(type => Student , student => student.favorites , {onDelete:'CASCADE'})
   student: Student
 
   @ManyToOne(type => Teacher)

@@ -7,10 +7,10 @@ export class Bid {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => SRequest, request => request.bids)
+  @ManyToOne(() => SRequest, request => request.bids , {onDelete:'CASCADE'})
   request: SRequest;
 
-  @ManyToOne(() => Teacher, teacher => teacher.bids)
+  @ManyToOne(() => Teacher, teacher => teacher.bids , {onDelete:'CASCADE'})
   teacher: Teacher;
 
   @Column('float'  ,{ default: 0  })

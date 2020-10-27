@@ -27,13 +27,13 @@ export class Student {
   @Column('varchar'  ,{ length: 250 , default: "" , select:false  })
   password: string;
 
-  @OneToMany(type => Favorite, favorites => favorites.student , {onDelete:'CASCADE'})
+  @OneToMany(type => Favorite, favorites => favorites.student)
   favorites:Favorite[]
 
-  @OneToMany(type => StudentNotificationEntity, notification => notification.student , {onDelete:'CASCADE'})
+  @OneToMany(type => StudentNotificationEntity, notification => notification.student)
   notifications:StudentNotificationEntity[]
 
-  @OneToMany(type => SRequest, srequest => srequest.student ,{onDelete:'CASCADE'})
+  @OneToMany(type => SRequest, srequest => srequest.student)
   requests:SRequest[]
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
