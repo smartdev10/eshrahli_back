@@ -48,7 +48,7 @@ export class RequestController {
             if(push_ids.length !== 0){
               const notification = {
                 contents: {
-                  'ar': `طلب جديد`
+                  'en': `طلب جديد`
                 },
                 include_player_ids: [...push_ids.filter(push => push.length !== 0)],
                 data:{
@@ -80,7 +80,7 @@ export class RequestController {
             if(frequest.teacher && frequest.teacher.push_id){
               const notification = {
                 contents: {
-                  'ar': `طلب جديد`
+                  'en': `طلب جديد`
                 },
                 include_player_ids: [frequest.teacher.push_id],
                 data:{
