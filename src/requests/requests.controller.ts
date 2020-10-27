@@ -50,7 +50,7 @@ export class RequestController {
                 contents: {
                   'ar': `طلب جديد`
                 },
-                include_player_ids: [...push_ids.filter(push => push !== null || push.length !== 0)],
+                include_player_ids: [...push_ids.filter(push => push.length !== 0)],
                 data:{
                   request_id:frequest.id
                 }
@@ -119,7 +119,7 @@ export class RequestController {
               contents: {
                 'en': 'طلب جديد'
               },
-              include_player_ids: [...push_ids.filter(push => push !== null || push.length !== 0)],
+              include_player_ids: [...push_ids.filter(push => push.length !== 0)],
               data:{
                 request_id:frequest.id
               }
