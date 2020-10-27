@@ -43,14 +43,14 @@ export class RequestController {
               levels:frequest.level,
               subjects:frequest.subject 
             })
-            const push_ids = teachers.map(({push_id})=> push_id ? push_id : '')
+            const push_ids = teachers.map(({push_id})=> push_id)
             let response : ClientResponse 
-            if(push_ids.length !== 0 && push_ids.every((push) => push)){
+            if(push_ids.length !== 0){
               const notification = {
                 contents: {
                   'ar': `طلب جديد`
                 },
-                include_player_ids: [...push_ids],
+                include_player_ids: [...push_ids.filter(push => push !== null && push.length !== 0)],
                 data:{
                   request_id:frequest.id
                 }
@@ -114,7 +114,7 @@ export class RequestController {
           })
           const push_ids = teachers.map(({push_id})=> push_id)
           let response : ClientResponse 
-          if(push_ids.length !== 0 && push_ids.every((push) => push !== null && push.length !== 0)){
+          if(push_ids.length !== 0){
             const notification = {
               contents: {
                 'en': 'طلب جديد'
