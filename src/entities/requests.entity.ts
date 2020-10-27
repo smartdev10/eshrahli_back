@@ -14,10 +14,10 @@ export class SRequest {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(type => Student, student => student.requests)
+  @ManyToOne(type => Student, student => student.requests,{onDelete:'CASCADE'})
   student: Student;
 
-  @ManyToOne(type => Teacher, teacher => teacher.requests)
+  @ManyToOne(type => Teacher, teacher => teacher.requests,{onDelete:'CASCADE'})
   teacher: Teacher;
 
   @Column('varchar'  ,{ length: 250  })

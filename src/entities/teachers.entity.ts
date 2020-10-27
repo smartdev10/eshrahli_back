@@ -46,10 +46,10 @@ export class Teacher {
   @JoinTable()
   other_subjects:Subject[]
 
-  @OneToMany(() => SRequest, srequest => srequest.teacher)
+  @OneToMany(() => SRequest, srequest => srequest.teacher,{onDelete:'CASCADE'})
   requests:SRequest[]
 
-  @OneToMany(type => NotificationEntity, notification => notification.teacher , {onDelete:'CASCADE'})
+  @OneToMany(type => NotificationEntity, notification => notification.teacher)
   notifications:NotificationEntity[]
 
   @OneToMany(() => Bid, bid => bid.teacher , {onDelete:'CASCADE'})
