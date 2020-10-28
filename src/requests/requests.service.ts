@@ -38,7 +38,7 @@ export class RequestService {
 
     async findAllRequests() {
        return await this.requestRepository.find({
-          relations:['subject' , 'level' , 'student' , 'teacher' ,'teacher.city' , 'teacher.nationality', 'city'],
+          relations:['subject' , 'level' , 'student' , 'teacher' ,'teacher.city' , 'teacher.nationality', 'city','bids'],
           order :{
             createdAt:"DESC"
           }
