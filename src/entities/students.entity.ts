@@ -12,7 +12,7 @@ export class Student {
   @Column('varchar' , { length: 250 ,default: "" })
   name: string;
 
-  @Column('varchar'  ,{ length: 250 , unique:true })
+  @Column('varchar'  ,{ length: 250 })
   mobile: string;
 
   @Column('varchar'  ,{ length: 250 , default:"active" })

@@ -16,7 +16,7 @@ export class Teacher {
   @Column('varchar' , { length: 250 , nullable : false })
   name: string;
 
-  @Column('varchar' ,{ length: 250 , unique : true })
+  @Column('varchar' ,{ length: 250 })
   mobile: string;
 
   @Column('varchar'  ,{ length: 250 , default:"" })
