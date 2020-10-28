@@ -25,6 +25,9 @@ export class BidsService {
            relations:['request' , 'teacher' , 'teacher.city' , 'teacher.nationality' , 'teacher.subjects' , 'teacher.levels'],
            where :{
                request
+           },
+           order:{
+               createdAt:"DESC"
            }
        });
     }

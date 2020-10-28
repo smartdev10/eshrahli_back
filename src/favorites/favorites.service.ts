@@ -25,6 +25,9 @@ export class FavoriteService {
            where:{
                student
            },
+           order:{
+               createdAt:"DESC"
+           },
            relations :['teacher' , 'teacher.city' , 'teacher.nationality' , 'teacher.subjects' , 'teacher.levels']
        });
     }
