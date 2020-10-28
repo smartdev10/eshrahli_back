@@ -84,12 +84,13 @@ export class RequestController {
           const frequest = await this.requestService.findOneRequest(data.id);
           delete frequest.id
           const request = await this.requestService.recallRequest({...frequest,...data});
+          const newrequest = await this.requestService.findOneRequest(request.id);
           if(frequest){
             const teachers = await this.teacherService.searchTeachers({
-              city:request.city,
-              gender:request.teacher_gender,
-              levels:request.level,
-              subjects:request.subject
+              city:newrequest.city,
+              gender:newrequest.teacher_gender,
+              levels:newrequest.level,
+              subjects:newrequest.subject
             })
             const push_ids = teachers.map(({push_id})=> push_id)
             let response : ClientResponse 
