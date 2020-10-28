@@ -86,7 +86,7 @@ export class RequestController {
           const request = await this.requestService.recallRequest({...frequest,...data});
           const newrequest = await this.requestService.findOneRequest(request.id);
           if(frequest){
-            const teachers = await this.teacherService.searchTeachers({
+            const teachers = await this.teacherService.retrySearchTeachers({
               city:newrequest.city,
               gender:newrequest.teacher_gender,
               levels:newrequest.level,
