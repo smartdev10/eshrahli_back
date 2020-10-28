@@ -88,7 +88,7 @@ export class AuthTeacherController {
     @Post('create-password')
     async createPassword(@Body() data : CreatePassTeacherDto , @Res() res: Response): Promise<Response> {
       try {
-          const teacher = await this.teacherService.findOneTeacher(data.id)
+          const teacher = await this.teacherService.findOneTeacherByPhone(data.mobile)
           if(teacher){
             const formData = Object.assign(teacher , { ...data })
             await this.teacherService.updateTeacher(formData);

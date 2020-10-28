@@ -144,7 +144,7 @@ export class CreatePassTeacherDto {
     @IsDefined()
     @IsNotEmpty()
     @IsNumber()
-    readonly id: number;
+    readonly mobile: string;
     
     @IsDefined()
     @IsNotEmpty()
