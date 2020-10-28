@@ -7,6 +7,7 @@ import { TeacherService } from 'src/teachers/teachers.service';
 import { TeacherOneSignalService } from 'src/onesignal/teacherSignal.service';
 import { ClientResponse } from 'onesignal-node/lib/types';
 import { NotificationService } from 'src/notifications/notifications.service';
+import { StudentOneSignalService } from 'src/onesignal/studentSignal.service';
 
 @Controller('api/requests')
 export class RequestController {
@@ -14,6 +15,7 @@ export class RequestController {
         private readonly requestService: RequestService, 
         private readonly teacherService: TeacherService, 
         private readonly onesignalService: TeacherOneSignalService, 
+        private readonly studentOneSignalService: StudentOneSignalService, 
         private readonly notifyService: NotificationService
         ) {}
     @Get()
@@ -232,6 +234,48 @@ export class RequestController {
                 await this.notifyService.insertTeacherNotification({
                   message:"تم إلغاء الطلب",
                   teacher,
+                  request:frequest
+                })
+              }
+          }
+          if(body.lesson_end_time){
+            const teacher = await this.teacherService.findOne(body.teacher)
+            const frequest = await this.requestService.findOneRequest(id);
+            if(frequest.student.push_id){
+              const notification = {
+                contents: {
+                  'en': `الدرس ${teacher.name} أنهى`
+                },
+                include_player_ids: [frequest.student.push_id],
+                data:{
+                  request_id:frequest.id
+                }
+              };
+              await this.studentOneSignalService.client.createNotification(notification)
+              await this.notifyService.insertStudentNotification({
+                message: `الدرس ${teacher.name} أنهى`,
+                student:frequest.student,
+                request:frequest
+              })
+            }
+          }
+          if(body.lesson_start_time){
+              const teacher = await this.teacherService.findOne(body.teacher)
+              const frequest = await this.requestService.findOneRequest(id);
+              if(frequest.student.push_id){
+                const notification = {
+                  contents: {
+                    'en': `الدرس ${teacher.name} بدأ`
+                  },
+                  include_player_ids: [frequest.student.push_id],
+                  data:{
+                    request_id:frequest.id
+                  }
+                };
+                await this.studentOneSignalService.client.createNotification(notification)
+                await this.notifyService.insertStudentNotification({
+                  message: `الدرس ${teacher.name} بدأ`,
+                  student:frequest.student,
                   request:frequest
                 })
               }

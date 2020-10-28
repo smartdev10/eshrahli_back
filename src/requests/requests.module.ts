@@ -15,6 +15,7 @@ import OneSignal = require('onesignal-node');
 import { NotificationEntity } from 'src/entities/notifications.entity';
 import { StudentNotificationEntity } from 'src/entities/student_notifications.entity';
 import { NotificationService } from 'src/notifications/notifications.service';
+import { StudentOneSignalService } from 'src/onesignal/studentSignal.service';
 
 
 // const StudentOneSignalProvider = {
@@ -41,7 +42,8 @@ import { NotificationService } from 'src/notifications/notifications.service';
         })
     ],
     controllers: [RequestController],
-    providers: [RequestService , TeacherOneSignalService , {
+    providers: [RequestService , TeacherOneSignalService , StudentOneSignalService ,
+    {
         provide: ONESIGNAL_MODULE_OPTIONS,
         useFactory :(configService : ConfigService) => {
             return  new OneSignal.Client(
@@ -50,6 +52,17 @@ import { NotificationService } from 'src/notifications/notifications.service';
               )
         },
         inject:[ConfigService]
-    } , TeacherService , NotificationService],
+    } ,
+    {
+        provide: STUDENT_ONSIGNAL,
+        useFactory :(configService : ConfigService) => {
+            return  new OneSignal.Client(
+                configService.get('APP_ID'),
+                configService.get('REST_API_KEY'),
+              )
+        },
+        inject:[ConfigService]
+    } 
+    , TeacherService , NotificationService],
 })
 export class RequestModule {}

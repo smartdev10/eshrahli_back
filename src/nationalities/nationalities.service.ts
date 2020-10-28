@@ -1,7 +1,6 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
-import { Teacher } from 'src/entities/teachers.entity';
 import { NationaltyDto } from './interfaces/nationality.dto';
 import { Nationality } from 'src/entities/nationalities.entity';
 

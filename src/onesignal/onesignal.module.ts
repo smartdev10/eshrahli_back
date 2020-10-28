@@ -1,7 +1,7 @@
 import { Module, DynamicModule } from '@nestjs/common';
 import { TeacherOneSignalService } from './teacherSignal.service';
-// import { StudentOneSignalService } from './studentSignal.service';
 import { IOneSignalModuleOptions, ONESIGNAL_MODULE_OPTIONS,STUDENT_ONSIGNAL } from './interface/onesignal.config';
+import { StudentOneSignalService } from './studentSignal.service';
 
 @Module({})
 export class OneSignalModule {
@@ -18,18 +18,18 @@ export class OneSignalModule {
       exports: [TeacherOneSignalService],
     };
   }
-  // static registerStudent(options: IOneSignalModuleOptions): DynamicModule {
-  //   console.log(options)
-  //   return {
-  //     module: OneSignalModule,
-  //     providers: [
-  //       {
-  //         provide:STUDENT_ONSIGNAL,
-  //         useValue: options,
-  //       },
-  //       StudentOneSignalService,
-  //     ],
-  //     exports: [StudentOneSignalService],
-  //   };
-  // }
+  static registerStudent(options: IOneSignalModuleOptions): DynamicModule {
+    console.log(options)
+    return {
+      module: OneSignalModule,
+      providers: [
+        {
+          provide:STUDENT_ONSIGNAL,
+          useValue: options,
+        },
+        StudentOneSignalService,
+      ],
+      exports: [StudentOneSignalService],
+    };
+  }
 }
