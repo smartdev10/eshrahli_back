@@ -15,9 +15,7 @@ export class AuthStudentController {
     async login(@Body() data : LoginStudentDto , @Res() res: Response): Promise<Response> {
       try {
          const student =  await this.studentService.findOneStudentByPhone(data.mobile);
-         if (!student) {
-            throw new UnauthorizedException('رقم الهاتف الذي أدخلته لا يطابق أي حساب');
-          }else{
+         if (student) {
             const valid = await compare(data.password,student.password)
             if(!valid){
                throw new UnauthorizedException('كلمة المرور غير صحيحة');
@@ -25,6 +23,8 @@ export class AuthStudentController {
             const fstudent =  await this.studentService.findOneById(student.id);
             const token  = sign({student} , process.env.ACCESS_TOKEN_SECRET);
             return res.status(200).json({message: 'you are logged in' , token , student:fstudent});
+          }else{
+            throw new UnauthorizedException('رقم الهاتف الذي أدخلته لا يطابق أي حساب');
           }
       } catch (error) {
           throw new HttpException({
