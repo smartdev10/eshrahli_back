@@ -67,7 +67,7 @@ export class RequestController {
               }
             }
             return res.status(200).json({message: 'Request Dispatched' , request : frequest , teachers , oneSignalResponse:response ? response.body : null });
-          }
+           }
             throw new HttpException('Request Not Found', HttpStatus.BAD_REQUEST);
       } catch (error) {
           console.log(error)
@@ -82,30 +82,38 @@ export class RequestController {
     async recreateRequest(@Body() data : ReCallDto , @Res() res: Response): Promise<Response> {
       try {
           const frequest = await this.requestService.findOneRequest(data.id);
+          delete frequest.id
+          const request = await this.requestService.recallRequest({...frequest,...data});
           if(frequest){
-            delete frequest.id
-            const request = await this.requestService.recallRequest({...frequest,...data});
-            const newrequest = await this.requestService.findOne(request.id);
+            const teachers = await this.teacherService.searchTeachers({
+              city:request.city,
+              gender:request.teacher_gender,
+              levels:request.level,
+              subjects:request.subject
+            })
+            const push_ids = teachers.map(({push_id})=> push_id)
             let response : ClientResponse 
-            if(frequest.teacher && frequest.teacher.push_id){
+            if(push_ids.length !== 0){
               const notification = {
                 contents: {
                   'en': `طلب جديد`
                 },
-                include_player_ids: [frequest.teacher.push_id],
+                include_player_ids: [...push_ids.filter(push => push.length !== 0)],
                 data:{
-                  request_id:frequest.id
+                  request_id:request.id
                 }
               };
               response =  await this.onesignalService.client.createNotification(notification)
+              for (const teacher of teachers) {
                 await this.notifyService.insertTeacherNotification({
                   message:"طلب جديد",
-                  teacher:frequest.teacher,
+                  teacher,
                   request:frequest
                 })
+              }
             }
-            return res.status(200).json({message: 'Request Created Again' , request , teacher:newrequest.teacher , oneSignalResponse:response ? response.body : null });
-          }
+            return res.status(200).json({message: 'Request Recalled' , request : frequest , teachers , oneSignalResponse:response ? response.body : null });
+           }
           throw new HttpException('Request Not Found', HttpStatus.BAD_REQUEST);
       } catch (error) {
           console.log(error)
