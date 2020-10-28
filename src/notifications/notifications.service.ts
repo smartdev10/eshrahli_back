@@ -31,6 +31,9 @@ export class NotificationService {
            where:{
              student
            },
+           order :{
+            createdAt:"DESC"
+           },
            relations:['request']
        });
     }    
@@ -39,6 +42,9 @@ export class NotificationService {
         return await this.notificationRepository.find({
             where:{
                 teacher
+            },
+            order :{
+                createdAt:"DESC"
             },
             relations:['request']
         });

@@ -84,7 +84,8 @@ export class RequestController {
           const frequest = await this.requestService.findOneRequest(data.id);
           if(frequest){
             delete frequest.id
-            const request = await this.requestService.recallRequest(frequest);
+            const request = await this.requestService.recallRequest({...frequest,...data});
+            const newrequest = await this.requestService.findOne(request.id);
             let response : ClientResponse 
             if(frequest.teacher && frequest.teacher.push_id){
               const notification = {
@@ -103,7 +104,7 @@ export class RequestController {
                   request:frequest
                 })
             }
-            return res.status(200).json({message: 'Request Created Again' , request , teacher:frequest.teacher , oneSignalResponse:response ? response.body : null });
+            return res.status(200).json({message: 'Request Created Again' , request , teacher:newrequest.teacher , oneSignalResponse:response ? response.body : null });
           }
           throw new HttpException('Request Not Found', HttpStatus.BAD_REQUEST);
       } catch (error) {
