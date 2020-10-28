@@ -83,6 +83,19 @@ export class RequestController {
       try {
           const frequest = await this.requestService.findOneRequest(data.id);
           delete frequest.id
+          delete frequest.createdAt
+          delete frequest.updatedAt
+          delete frequest.status
+          delete frequest.lesson_end_time
+          delete frequest.lesson_start_time
+          delete frequest.total
+          delete frequest.paid
+          delete frequest.payementReference
+          delete frequest.paymentMethod
+          delete frequest.zoomLink
+          delete frequest.canceledBy
+          delete frequest.cancellationDate
+          delete frequest.discount_amount
           delete data.id
           const request = await this.requestService.recallRequest({...frequest,...data});
           const newrequest = await this.requestService.findOneRequest(request.id);
