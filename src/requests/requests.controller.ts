@@ -113,7 +113,7 @@ export class RequestController {
                 })
               }
             }
-            return res.status(200).json({message: 'Request Recalled' , request : frequest , teachers , oneSignalResponse:response ? response.body : null });
+            return res.status(200).json({message: 'Request Recalled' , teachers , oneSignalResponse:response ? response.body : null });
            }
           throw new HttpException('Request Not Found', HttpStatus.BAD_REQUEST);
       } catch (error) {
