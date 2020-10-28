@@ -102,7 +102,7 @@ export class ReCallDto {
     @IsDefined()
     @IsNotEmpty()
     @IsNumber()
-    readonly id: number;
+    public id: number;
 
     @IsDefined()
     @IsNotEmpty()
