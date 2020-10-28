@@ -96,6 +96,7 @@ export class RequestController {
           delete frequest.canceledBy
           delete frequest.cancellationDate
           delete frequest.discount_amount
+          delete frequest.bids
           delete data.id
           const request = await this.requestService.recallRequest({...frequest,...data});
           const newrequest = await this.requestService.findOneRequest(request.id);
