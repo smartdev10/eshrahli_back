@@ -83,6 +83,9 @@ export class SRequest {
   @Column('boolean'  ,{ default:false })
   paid: boolean;
 
+  @Column('boolean'  ,{ default:false })
+  is_remote: boolean;
+
   @Column('text' , { default : "" })
   details: string;
 

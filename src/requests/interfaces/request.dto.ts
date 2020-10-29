@@ -54,6 +54,7 @@ export class RequestDto {
     @IsNumber()
     readonly subject: Subject;
 
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsNumber()
