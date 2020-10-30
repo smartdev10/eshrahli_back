@@ -219,6 +219,7 @@ export class RequestController {
     @Put('update/:id')
     async updateRequest(@Param('id') id: number , @Body() body: UpdateRequestDto, @Res() res: Response): Promise<Response> {
         try {
+          const zoomResponse = null
           await this.requestService.updateRequest(id, body);
           const frequest = await this.requestService.findOneRequest(id);
           if(frequest){
@@ -265,9 +266,9 @@ export class RequestController {
                   })
                 }
                 const response = await fetch(`https://api.zoom.us/v2/users/eshrahley@gmail.com/meetings`,init);
-                const json = await response.json();
-                if(json.join_url){
-                  await this.requestService.updateRequest(id, {...frequest,zoomLink:json.join_url , zoomPass:json.password});
+                const zoomResponse = await response.json();
+                if(zoomResponse.join_url){
+                  await this.requestService.updateRequest(id, {...frequest,zoomLink:zoomResponse.join_url , zoomPass:zoomResponse.password});
                 }
               }
             }
@@ -311,7 +312,7 @@ export class RequestController {
                   })
                 }
             }
-            return res.status(200).json({message: 'Request Updated'});
+            return res.status(200).json({message: 'Request Updated' , zoomResponse});
           }
           throw new HttpException('Request Not Found', 400);
         } catch (error) {
