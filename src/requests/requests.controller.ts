@@ -253,7 +253,7 @@ export class RequestController {
                 const init =  { 
                   method: 'post', 
                   headers: {
-                    'Authorization': 'Basic '+access_token, 
+                    'Authorization': 'Bearer '+access_token, 
                     'Content-Type': 'application/json'
                   },
                   body: JSON.stringify({
