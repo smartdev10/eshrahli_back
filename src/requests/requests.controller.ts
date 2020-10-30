@@ -249,6 +249,7 @@ export class RequestController {
                   exp: ((new Date()).getTime() + 5000)
                 };
                 const access_token  = sign(payload, process.env.ZOOM_API_SECRET);
+                console.log(access_token,process.env.ZOOM_APP_KEY,process.env.ZOOM_API_SECRET)
                 const init =  { 
                   method: 'post', 
                   headers: {
