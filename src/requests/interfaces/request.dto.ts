@@ -200,6 +200,12 @@ export class UpdateRequestDto {
     @IsDefined()
     @IsNotEmpty()
     @IsString()
+    public zoomPass : string;
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
     readonly canceledBy : Student | Teacher;
 }
 

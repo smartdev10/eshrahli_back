@@ -249,7 +249,6 @@ export class RequestController {
                   exp: ((new Date()).getTime() + 5000)
                 };
                 const access_token  = sign(payload, process.env.ZOOM_API_SECRET);
-                console.log(access_token,process.env.ZOOM_APP_KEY,process.env.ZOOM_API_SECRET)
                 const init =  { 
                   method: 'post', 
                   headers: {
@@ -258,6 +257,7 @@ export class RequestController {
                   },
                   body: JSON.stringify({
                      start_time: frequest.sessionDate,
+                     timezone:"Asia/Riyadh",
                      settings: {
                       host_video: "true",
                       participant_video: "true"
@@ -266,8 +266,9 @@ export class RequestController {
                 }
                 const response = await fetch(`https://api.zoom.us/v2/users/eshrahley@gmail.com/meetings`,init);
                 const json = await response.json();
-                console.log(json)
-                await this.requestService.updateRequest(id, {...frequest,zoomLink:"test"});
+                if(json.join_url){
+                  await this.requestService.updateRequest(id, {...frequest,zoomLink:json.join_url , zoomPass:json.password});
+                }
               }
             }
             if(frequest.lesson_end_time){
