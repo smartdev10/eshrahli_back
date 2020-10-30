@@ -9,6 +9,7 @@ import { ClientResponse } from 'onesignal-node/lib/types';
 import { NotificationService } from 'src/notifications/notifications.service';
 import { StudentOneSignalService } from 'src/onesignal/studentSignal.service';
 import { sign } from 'jsonwebtoken';
+import fetch from 'node-fetch';
 
 @Controller('api/requests')
 export class RequestController {
