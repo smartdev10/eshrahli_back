@@ -187,6 +187,18 @@ export class UpdateRequestDto {
     @IsOptional()
     @IsDefined()
     @IsNotEmpty()
+    @IsBoolean()
+    public is_remote : boolean;
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    public zoomLink : string;
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
     @IsString()
     readonly canceledBy : Student | Teacher;
 }

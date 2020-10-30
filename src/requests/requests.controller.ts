@@ -8,6 +8,7 @@ import { TeacherOneSignalService } from 'src/onesignal/teacherSignal.service';
 import { ClientResponse } from 'onesignal-node/lib/types';
 import { NotificationService } from 'src/notifications/notifications.service';
 import { StudentOneSignalService } from 'src/onesignal/studentSignal.service';
+import { sign } from 'jsonwebtoken';
 
 @Controller('api/requests')
 export class RequestController {
@@ -147,6 +148,7 @@ export class RequestController {
       try {
           const request = await this.requestService.insertRequest(body);
           const frequest = await this.requestService.findOneRequest(request.id);
+  
           const teachers = await this.teacherService.searchTeachers({
               city:frequest.city,
               gender:body.teacher_gender,
@@ -217,55 +219,61 @@ export class RequestController {
     async updateRequest(@Param('id') id: number , @Body() body: UpdateRequestDto, @Res() res: Response): Promise<Response> {
         try {
           await this.requestService.updateRequest(id, body);
-          if(body.status === 'canceled'){
-              const teacher = await this.teacherService.findOne(body.teacher)
-              if(teacher.push_id){
-                const frequest = await this.requestService.findOneRequest(id);
-                const notification = {
-                  contents: {
-                    'en': `تم إلغاء الطلب`
-                  },
-                  include_player_ids: [teacher.push_id],
-                  data:{
-                    request_id:frequest.id
-                  }
-                };
-                await this.onesignalService.client.createNotification(notification)
-                await this.notifyService.insertTeacherNotification({
-                  message:"تم إلغاء الطلب",
-                  teacher,
-                  request:frequest
-                })
-              }
-          }
-          if(body.lesson_end_time){
-            const teacher = await this.teacherService.findOne(body.teacher)
-            const frequest = await this.requestService.findOneRequest(id);
-            if(frequest.student.push_id){
-              const notification = {
-                contents: {
-                  'en': `الدرس ${teacher.name} أنهى`
-                },
-                include_player_ids: [frequest.student.push_id],
-                data:{
-                  request_id:frequest.id
+          const frequest = await this.requestService.findOneRequest(id);
+          if(frequest){
+              if(frequest.status === 'canceled'){
+                const teacher = await this.teacherService.findOne(body.teacher)
+                if(teacher.push_id){
+                  const notification = {
+                    contents: {
+                      'en': `تم إلغاء الطلب`
+                    },
+                    include_player_ids: [teacher.push_id],
+                    data:{
+                      request_id:frequest.id
+                    }
+                  };
+                  await this.onesignalService.client.createNotification(notification)
+                  await this.notifyService.insertTeacherNotification({
+                    message:"تم إلغاء الطلب",
+                    teacher,
+                    request:frequest
+                  })
                 }
-              };
-              await this.studentOneSignalService.client.createNotification(notification)
-              await this.notifyService.insertStudentNotification({
-                message: `الدرس ${teacher.name} أنهى`,
-                student:frequest.student,
-                request:frequest
-              })
             }
-          }
-          if(body.lesson_start_time){
+            if(frequest.status === "CONFIRMED"){
+              if(frequest.is_remote){
+                const payload = {
+                  iss: process.env.ZOOM_APP_KEY,
+                  exp: ((new Date()).getTime() + 5000)
+                };
+                const access_token  = sign(payload, process.env.ZOOM_API_SECRET);
+                const init =  { 
+                  method: 'post', 
+                  headers: {
+                    'Authorization': 'Basic '+access_token, 
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                     start_time: frequest.sessionDate,
+                     settings: {
+                      host_video: "true",
+                      participant_video: "true"
+                    }
+                  })
+                }
+                const response = await fetch(`https://api.zoom.us/v2/users/eshrahley@gmail.com/meetings`,init);
+                const json = await response.json();
+                console.log(json.join_url)
+                await this.requestService.updateRequest(id, {...frequest,zoomLink:json.join_url});
+              }
+            }
+            if(frequest.lesson_end_time){
               const teacher = await this.teacherService.findOne(body.teacher)
-              const frequest = await this.requestService.findOneRequest(id);
               if(frequest.student.push_id){
                 const notification = {
                   contents: {
-                    'en': `الدرس ${teacher.name} بدأ`
+                    'en': `الدرس ${teacher.name} أنهى`
                   },
                   include_player_ids: [frequest.student.push_id],
                   data:{
@@ -274,13 +282,35 @@ export class RequestController {
                 };
                 await this.studentOneSignalService.client.createNotification(notification)
                 await this.notifyService.insertStudentNotification({
-                  message: `الدرس ${teacher.name} بدأ`,
+                  message: `الدرس ${teacher.name} أنهى`,
                   student:frequest.student,
                   request:frequest
                 })
               }
+            }
+            if(body.lesson_start_time){
+                const teacher = await this.teacherService.findOne(body.teacher)
+                if(frequest.student.push_id){
+                  const notification = {
+                    contents: {
+                      'en': `الدرس ${teacher.name} بدأ`
+                    },
+                    include_player_ids: [frequest.student.push_id],
+                    data:{
+                      request_id:frequest.id
+                    }
+                  };
+                  await this.studentOneSignalService.client.createNotification(notification)
+                  await this.notifyService.insertStudentNotification({
+                    message: `الدرس ${teacher.name} بدأ`,
+                    student:frequest.student,
+                    request:frequest
+                  })
+                }
+            }
+            return res.status(200).json({message: 'Request Updated'});
           }
-          return res.status(200).json({message: 'Request Updated'});
+          throw new HttpException('Request Not Found', 400);
         } catch (error) {
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,
