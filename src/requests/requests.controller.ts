@@ -265,8 +265,8 @@ export class RequestController {
                 }
                 const response = await fetch(`https://api.zoom.us/v2/users/eshrahley@gmail.com/meetings`,init);
                 const json = await response.json();
-                console.log(json.join_url)
-                await this.requestService.updateRequest(id, {...frequest,zoomLink:json.join_url});
+                console.log(json)
+                await this.requestService.updateRequest(id, {...frequest,zoomLink:"test"});
               }
             }
             if(frequest.lesson_end_time){
