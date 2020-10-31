@@ -72,7 +72,7 @@ export class SRequest {
   paymentMethod: string;
 
   @Column('varchar'  ,{ length: 250 , default : "" })
-  payementReference: string;
+  paymentReference: string;
 
   @Column('varchar'  ,{ length: 250 , default : "" })
   zoomLink: string;

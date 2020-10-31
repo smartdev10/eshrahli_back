@@ -94,7 +94,7 @@ export class RequestController {
           delete frequest.lesson_start_time
           delete frequest.total
           delete frequest.paid
-          delete frequest.payementReference
+          delete frequest.paymentReference
           delete frequest.paymentMethod
           delete frequest.zoomLink
           delete frequest.canceledBy

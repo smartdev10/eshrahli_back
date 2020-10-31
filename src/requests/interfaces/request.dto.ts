@@ -245,7 +245,7 @@ export class CheckOutRequestDto {
     @IsDefined()
     @IsNotEmpty()
     @IsString()
-    readonly payementReference : string;
+    readonly paymentReference : string;
 
 
     @IsOptional()
@@ -260,13 +260,18 @@ export class FinishRequestDto {
 
     @IsDefined()
     @IsNotEmpty()
-    @IsString()
-    readonly status : string;
+    @IsBoolean()
+    readonly paid : boolean;
 
     @IsDefined()
     @IsNotEmpty()
     @IsString()
-    readonly payementReference : string;
+    readonly paymentReference : string;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly paymentMethod : string;
 }
 
 
