@@ -244,6 +244,25 @@ export class RequestController {
                 }
             }
             if(frequest.status === "CONFIRMED"){
+              const teacher = await this.teacherService.findOne(frequest.teacher)
+              if(teacher.push_id){
+                const notification = {
+                  contents: {
+                    'en': 'تم تأكيد الطلب'
+                  },
+                  include_player_ids: [teacher.push_id],
+                  data:{
+                    request_id:frequest.id
+                  }
+                };
+                await this.onesignalService.client.createNotification(notification)
+                await this.notifyService.insertTeacherNotification({
+                  message:"تم تأكيد الطلب",
+                  teacher,
+                  request:frequest
+                })
+                return res.status(200).json({message: 'Request Updated'});
+              }
               if(frequest.is_remote){
                 const payload = {
                   iss: process.env.ZOOM_APP_KEY,
@@ -327,26 +346,6 @@ export class RequestController {
     async checkout(@Param('id') id: number , @Body() body: CheckOutRequestDto, @Res() res: Response): Promise<Response> {
         try {
           await this.requestService.checkoutRequest(id, body);
-          const teacher = await this.teacherService.findOne(body.teacher)
-          if(teacher.push_id){
-            const frequest = await this.requestService.findOneRequest(id);
-            const notification = {
-              contents: {
-                'en': 'تم تأكيد الطلب'
-              },
-              include_player_ids: [teacher.push_id],
-              data:{
-                request_id:frequest.id
-              }
-            };
-            await this.onesignalService.client.createNotification(notification)
-            await this.notifyService.insertTeacherNotification({
-              message:"تم تأكيد الطلب",
-              teacher,
-              request:frequest
-            })
-            return res.status(200).json({message: 'Request Updated'});
-          }
           return res.status(200).json({message: 'Request Updated'});
         } catch (error) {
             throw new HttpException({
