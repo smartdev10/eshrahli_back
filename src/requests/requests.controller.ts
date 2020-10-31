@@ -277,7 +277,7 @@ export class RequestController {
               if(frequest.student.push_id){
                 const notification = {
                   contents: {
-                    'en': `الدرس ${teacher.name} أنهى`
+                    'en': `أنهى ${teacher.name} الدرس`
                   },
                   include_player_ids: [frequest.student.push_id],
                   data:{
@@ -286,7 +286,7 @@ export class RequestController {
                 };
                 await this.studentOneSignalService.client.createNotification(notification)
                 await this.notifyService.insertStudentNotification({
-                  message: `الدرس ${teacher.name} أنهى`,
+                  message: `أنهى ${teacher.name} الدرس`,
                   student:frequest.student,
                   request:frequest
                 })
@@ -297,7 +297,7 @@ export class RequestController {
                 if(frequest.student.push_id){
                   const notification = {
                     contents: {
-                      'en': `الدرس ${teacher.name} بدأ`
+                      'en': `بدأ  ${teacher.name} الدرس`
                     },
                     include_player_ids: [frequest.student.push_id],
                     data:{
@@ -306,7 +306,7 @@ export class RequestController {
                   };
                   await this.studentOneSignalService.client.createNotification(notification)
                   await this.notifyService.insertStudentNotification({
-                    message: `الدرس ${teacher.name} بدأ`,
+                    message: `بدأ ${teacher.name} الدرس`,
                     student:frequest.student,
                     request:frequest
                   })
