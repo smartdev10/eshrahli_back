@@ -244,7 +244,7 @@ export class RequestController {
                 }
             }
             if(frequest.status === "CONFIRMED"){
-              const teacher = await this.teacherService.findOne(frequest.teacher)
+              const teacher = await this.teacherService.findOneTeacher(frequest.teacher.id)
               if(teacher.push_id){
                 const notification = {
                   contents: {
