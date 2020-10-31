@@ -11,7 +11,7 @@ export class AppController {
     return "Eshrahli";
   }
 
-  @Get('/payement/:id')
+  @Get('/payment/:id')
   @Render('index')
   async payement(@Param('id') id : number) {
     if(id){
