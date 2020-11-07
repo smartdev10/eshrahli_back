@@ -19,7 +19,6 @@ export class OneSignalModule {
     };
   }
   static registerStudent(options: IOneSignalModuleOptions): DynamicModule {
-    console.log(options)
     return {
       module: OneSignalModule,
       providers: [
