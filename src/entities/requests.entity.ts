@@ -75,6 +75,9 @@ export class SRequest {
   paymentReference: string;
 
   @Column('varchar'  ,{ length: 250 , default : "" })
+  lesson_duration : string;
+
+  @Column('varchar'  ,{ length: 250 , default : "" })
   zoomLink: string;
 
   @Column('varchar'  ,{ length: 250 , default : "" })

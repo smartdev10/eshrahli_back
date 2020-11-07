@@ -1,8 +1,9 @@
-import { Brackets, In, Repository } from 'typeorm';
+import { Between, Brackets, In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { Teacher } from 'src/entities/teachers.entity';
 import { TeacherDto, UpdateTeacherDto , searchTeacher, CreatePassTeacherDto } from './interfaces/teacher.dto';
+import { SRequest } from 'src/entities/requests.entity';
 
 
 @Injectable()
@@ -11,10 +12,24 @@ export class TeacherService {
     constructor(
         @InjectRepository(Teacher)
         private teacherRepository: Repository<Teacher>,
+        @InjectRepository(SRequest)
+        private requestsRepository: Repository<SRequest>,
     ) {}
 
     async findOneTeacher(id: number) {
         return await this.teacherRepository.findOne(id ,{relations:['requests' , 'levels' , 'subjects' , 'city' , 'nationality']})
+    }
+
+    async findOneTeacherRequests(id: number) {
+        const dt = new Date();
+        dt.setDate( dt.getDate() - 14);
+        return await this.requestsRepository.find({
+            where :{
+                id,
+                createdAt : Between(dt.toISOString()  , new Date().toISOString()),
+                status:"COMPLETED"
+            }
+        });
     }
 
     async findOne(teacher: Teacher) {

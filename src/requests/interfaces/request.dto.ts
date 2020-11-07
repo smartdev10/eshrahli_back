@@ -66,6 +66,12 @@ export class RequestDto {
     @IsString()
     readonly details: string;
 
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly lesson_duration: string;
+
     @IsDefined()
     @IsNotEmpty()
     @IsString()
@@ -132,6 +138,12 @@ export class ReCallDto {
     @IsNotEmpty()
     @IsString()
     readonly details: string
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly lesson_duration: string;
 
 }
 
@@ -201,6 +213,12 @@ export class UpdateRequestDto {
     @IsNotEmpty()
     @IsString()
     public zoomPass : string;
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly lesson_duration: string;
 
     @IsOptional()
     @IsDefined()

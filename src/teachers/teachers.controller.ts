@@ -117,6 +117,19 @@ export class TeacherController {
         }
     }
 
+    @Get(':id/earnings')
+    async getearnings(@Param('id') id :number, @Res() res: Response): Promise<Response> {
+        try {
+          const requests = await this.teacherService.findOneTeacherRequests(id)
+          return res.status(200).json({requests});
+        } catch (error) {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: error.message,
+            }, 400);
+        }
+    }
+
     @Delete('soft_delete')
     async softDeleteTeacher(@Query('filter') filter, @Res() res: Response): Promise<Response> {
         try {

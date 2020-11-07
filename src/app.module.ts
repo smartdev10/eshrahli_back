@@ -21,6 +21,7 @@ import { BidsModule } from './bids/bids.module';
 import { RequestService } from './requests/requests.service';
 import { SRequest } from './entities/requests.entity';
 import { NotificationModule } from './notifications/notificatins.module';
+import { SettingModule } from './settings/setting.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { NotificationModule } from './notifications/notificatins.module';
     FavoriteModule,
     AuthAdminModule,
     BidsModule,
+    SettingModule,
     NotificationModule,
     TwilioModule.register({
       accountSid:process.env.TWILIO_ACCOUNT_SID,
