@@ -20,18 +20,18 @@ export class AppController {
             if(requests.length !== 0){
               const data = requests.map((req) => {
                 return {
-                  "اسم الطالب" : req.student.name,
-                  "اسم المدرس" : req.teacher.name,
-                  "موعد الحصة" : req.sessionDate,
-                  "نوع البحث" : req.search_type,
-                  "عدد الطلبة" : req.nstudents,
-                  "المادة الدراسية" : req.subject.name,
-                  "المرحلة الدراسية" : req.level.name,
-                  "طريقة الدفع" : req.paymentMethod,
-                  "مرجع الدفع" : req.paymentReference,
-                  "تفاصيل" : req.details,
-                  "المدينة" : req.city.name,
-                  "المبلغ الإجمالي" : req.total,
+                  "اسم الطالب" : req.student.name || null,
+                  "اسم المدرس" : req.teacher.name || null,
+                  "موعد الحصة" : req.sessionDate || null,
+                  "نوع البحث" : req.search_type || null,
+                  "عدد الطلبة" : req.nstudents || null,
+                  "المادة الدراسية" : req.subject.name || null,
+                  "المرحلة الدراسية" : req.level.name || null,
+                  "طريقة الدفع" : req.paymentMethod || null,
+                  "مرجع الدفع" : req.paymentReference || null,
+                  "تفاصيل" : req.details || null,
+                  "المدينة" : req.city.name || null,
+                  "المبلغ الإجمالي" : req.total || null,
                 }
              })
              const csv = new ObjectsToCsv(data);
