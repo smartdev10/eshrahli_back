@@ -36,6 +36,7 @@ export class AppController {
              })
              const csv = new ObjectsToCsv(data);
              const path = __dirname + `csv/requests-${new Date().toISOString().replace(/:/gi, '-')}.csv`
+             console.log(path)
              await csv.toDisk(path);
              return res.sendFile(path)
             }
