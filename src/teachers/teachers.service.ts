@@ -17,7 +17,7 @@ export class TeacherService {
     ) {}
 
     async findOneTeacher(id: number) {
-        return await this.teacherRepository.findOne(id ,{relations:['requests' , 'levels' , 'subjects' , 'city' , 'nationality']})
+        return await this.teacherRepository.findOne(id ,{relations:['requests' , 'levels' , 'subjects' , 'other_subjects' , 'city' , 'nationality']})
     }
 
     async findOneTeacherRequests(id: number) {
@@ -38,8 +38,7 @@ export class TeacherService {
 
     async findOneTeacherByPhone(mobile: string) {
         return await this.teacherRepository.findOne({
-            relations:['subjects','other_subjects'],
-            select:['password'],
+            select:['id','password','mobile'],
             where :{
                 mobile
             }
