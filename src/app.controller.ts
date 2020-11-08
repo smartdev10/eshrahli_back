@@ -20,13 +20,13 @@ export class AppController {
             if(requests.length !== 0){
               const data = requests.map((req) => {
                 return {
-                  "اسم الطالب" : req.student.name || null,
-                  "اسم المدرس" : req.teacher.name || null,
+                  "اسم الطالب" : req.student?.name || null,
+                  "اسم المدرس" : req.teacher?.name || null,
                   "موعد الحصة" : req.sessionDate || null,
                   "نوع البحث" : req.search_type || null,
                   "عدد الطلبة" : req.nstudents || null,
-                  "المادة الدراسية" : req.subject.name || null,
-                  "المرحلة الدراسية" : req.level.name || null,
+                  "المادة الدراسية" : req.subject?.name || null,
+                  "المرحلة الدراسية" : req.level?.name || null,
                   "طريقة الدفع" : req.paymentMethod || null,
                   "مرجع الدفع" : req.paymentReference || null,
                   "تفاصيل" : req.details || null,
