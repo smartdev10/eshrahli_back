@@ -14,7 +14,7 @@ export class AppController {
   }
 
   @Get('export')
-    async exportRequests(@Param('id') id: number  ,  @Res() res: Response) : Promise<Response>  {
+    async exportRequests(@Param('id') id: number  ,  @Res() res: Response) {
       try {
             const requests =  await this.requestService.findAllRequests();
             if(requests.length !== 0){
@@ -35,8 +35,9 @@ export class AppController {
                 }
              })
              const csv = new ObjectsToCsv(data);
-             await csv.toDisk(`./requests-${new Date().toISOString().replace(':' , '-')}.csv`);
-             return res.status(HttpStatus.OK).json("Exported");
+             const path = `./csv/requests-${new Date().toISOString().replace(/:/gi, '-')}.csv`
+             await csv.toDisk(path);
+             return res.sendFile(path)
             }
             return res.status(HttpStatus.OK).json("Exported");
         } catch (error) {
