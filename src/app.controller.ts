@@ -2,6 +2,7 @@ import { Controller, Get, HttpStatus, Param, Render, Res , HttpException } from 
 import { RequestService } from './requests/requests.service';
 import ObjectsToCsv = require('objects-to-csv');
 import { Response } from 'express';
+import { resolve } from 'path';
 
 @Controller()
 export class AppController {
@@ -35,10 +36,9 @@ export class AppController {
                 }
              })
              const csv = new ObjectsToCsv(data);
-             const path = __dirname + `/../csv/requests-${new Date().toISOString().replace(/:/gi, '-')}.csv`
-             console.log(path)
-             await csv.toDisk(path);
-             return res.redirect(`/requests-${new Date().toISOString().replace(/:/gi, '-')}.csv`)
+             const filePath = __dirname + `/../csv/requests-${new Date().toISOString().replace(/:/gi, '-')}.csv`
+             await csv.toDisk(filePath);
+             return res.sendFile(resolve(filePath))
             }
             return res.status(HttpStatus.OK).json("Exported");
         } catch (error) {
