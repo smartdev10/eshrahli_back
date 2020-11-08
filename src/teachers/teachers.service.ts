@@ -26,7 +26,7 @@ export class TeacherService {
         return await this.requestsRepository.find({
             where :{
                 id,
-                createdAt : Between(dt.toISOString()  , new Date().toISOString()),
+                sessionDate:Between(dt.toISOString()  , new Date().toISOString()),
                 status:"COMPLETED"
             }
         });
