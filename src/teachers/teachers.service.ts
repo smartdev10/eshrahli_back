@@ -39,6 +39,7 @@ export class TeacherService {
     async findOneTeacherByPhone(mobile: string) {
         return await this.teacherRepository.findOne({
             relations:['subjects','other_subjects'],
+            select:['password'],
             where :{
                 mobile
             }
