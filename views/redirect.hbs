@@ -34,7 +34,8 @@
                 body: JSON.stringify({
                     paymentReference:response.callback.reference.payment,
                     paymentMethod:"credit_card",
-                    paid:true
+                    paid:true,
+                    status:"CONFIRMED"
                 }) 
               }
               fetch('/api/requests/update/reference/'+response.callback.metadata.id , putMethod)

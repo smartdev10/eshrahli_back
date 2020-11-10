@@ -209,7 +209,7 @@ export class RequestController {
           await this.requestService.updateReference(id,body);
           const frequest = await this.requestService.findOneRequest(id);
           const teacher = await this.teacherService.findOneTeacher(frequest.teacher.id)
-          if(teacher.push_id && frequest.status === "CONFIRMED"){
+          if(teacher.push_id && body.status === "CONFIRMED"){
             const notification = {
               contents: {
                 'en': 'تم تأكيد الطلب'
