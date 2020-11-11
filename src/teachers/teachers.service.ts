@@ -28,6 +28,9 @@ export class TeacherService {
                 teacher:id,
                 sessionDate:Between(dt.toISOString()  , new Date().toISOString()),
                 status:"COMPLETED"
+            },
+            order:{
+                sessionDate:"DESC"
             }
         });
     }
