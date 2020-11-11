@@ -25,9 +25,12 @@ export class TeacherService {
         dt.setDate( dt.getDate() - 14);
         return await this.requestsRepository.find({
             where :{
-                id,
+                teacher:id,
                 sessionDate:Between(dt.toISOString()  , new Date().toISOString()),
                 status:"COMPLETED"
+            },
+            order:{
+                sessionDate:"DESC"
             }
         });
     }
