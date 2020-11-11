@@ -246,6 +246,11 @@ export class CheckOutRequestDto {
     @IsNumber()
     readonly total : number;
 
+    @IsDefined()
+    @IsNotEmpty()
+    @IsNumber()
+    readonly tax : number;
+
     @IsOptional()
     @IsDefined()
     @IsNotEmpty()

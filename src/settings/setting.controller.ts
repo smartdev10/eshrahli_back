@@ -12,10 +12,10 @@ export class SettingsController {
       return this.settingService.findAllSetting();
     }
 
-    @Get(':id')
-    async findOneSetting(@Param('id') id: number  ,  @Res() res: Response) : Promise<Response>  {
+    @Get(':slug')
+    async findOneSetting(@Param('slug') slug: string  ,  @Res() res: Response) : Promise<Response>  {
       try {
-            const setting =  await this.settingService.findOneSetting(id);
+            const setting =  await this.settingService.findOneSetting(slug);
             return res.status(HttpStatus.OK).json(setting);
         } catch (error) {
             throw new HttpException({

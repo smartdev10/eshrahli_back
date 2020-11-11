@@ -11,6 +11,8 @@ import { Subject } from 'src/entities/subjects.entity';
 import { TwilioService } from 'src/twilio/twilio.service';
 import { TWILIO_CONFIG_TOKEN } from 'src/twilio/constants';
 import { SRequest } from 'src/entities/requests.entity';
+import { Setting } from 'src/entities/settings.entity';
+import { SettingsService } from 'src/settings/setting.service';
 
 
 @Module({
@@ -19,9 +21,10 @@ import { SRequest } from 'src/entities/requests.entity';
         TypeOrmModule.forFeature([Level]), 
         TypeOrmModule.forFeature([Subject]),
         TypeOrmModule.forFeature([SRequest]),
+        TypeOrmModule.forFeature([Setting]),
     ],
     controllers: [ TeacherController, AuthTeacherController ],
-    providers: [ TeacherService , SubjectsService , LevelsService , TwilioService,  
+    providers: [ TeacherService , SubjectsService , LevelsService , TwilioService,  SettingsService,
     {
         provide: TWILIO_CONFIG_TOKEN,
         useValue: TwilioService,

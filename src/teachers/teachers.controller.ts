@@ -8,13 +8,16 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { LevelsService } from 'src/levels/levels.service';
 import { SubjectsService } from 'src/subjects/subjects.service';
+import { SettingsService } from 'src/settings/setting.service';
+import { SRequest } from 'src/entities/requests.entity';
 
 @Controller('api/teachers')
 export class TeacherController {
     constructor(
         private readonly teacherService: TeacherService,
         private readonly levelService: LevelsService,
-        private readonly subjectService: SubjectsService
+        private readonly subjectService: SubjectsService,
+        private readonly settingService: SettingsService
         ) {}
     @Get()
     findAllTeachers() : Promise<Teacher[]>{
@@ -122,6 +125,26 @@ export class TeacherController {
         try {
           const requests = await this.teacherService.findOneTeacherRequests(id)
           return res.status(200).json({requests});
+        } catch (error) {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: error.message,
+            }, 400);
+        }
+    }
+
+    @Get(':id/total')
+    async getGrandTotal(@Param('id') id :number, @Res() res: Response): Promise<Response> {
+        try {
+          const requests = await this.teacherService.findOneTeacherRequests(id)
+          const appComm = await this.settingService.findOneSetting('app-comission')
+          
+          const total = requests.reduce((accumulator : number, currentValue : SRequest) =>  {
+              let grandTotal = currentValue.total - (currentValue.total * currentValue.tax * 0.01) - (currentValue.total * appComm.numberValue * 0.01)
+              return  accumulator + grandTotal
+          },0)
+          
+          return res.status(200).json({total});
         } catch (error) {
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,

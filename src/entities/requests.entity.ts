@@ -48,6 +48,9 @@ export class SRequest {
   discount_amount: number;
 
   @Column('float'  , { default : null})
+  tax: number;
+
+  @Column('float'  , { default : null})
   total: number;
 
   @Column('varchar'  ,{ length: 250 })

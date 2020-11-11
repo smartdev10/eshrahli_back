@@ -13,8 +13,12 @@ export class SettingsService {
         private settingRepository: Repository<Setting>,
     ) {}
 
-    async findOneSetting(id: number) {
-        return await this.settingRepository.findOneOrFail(id)
+    async findOneSetting(slug: string) {
+        return await this.settingRepository.findOne({
+            where :{
+                slug
+            }
+        })
     }
     async insertSetting(data : SettingDto ) {
         return await this.settingRepository.save(data);
