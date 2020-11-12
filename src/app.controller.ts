@@ -96,7 +96,7 @@ export class AppController {
               extraLength: 3, // A bigger number means that columns should be wider
               writeOptions: {} // Style options from https://github.com/SheetJS/sheetjs#writing-options
             }
-            xlsx(columns, content, settings, true) 
+            return xlsx(columns, content, settings, true) 
             }
             return res.redirect('/');
         } catch (error) {
