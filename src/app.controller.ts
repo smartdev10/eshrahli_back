@@ -61,7 +61,6 @@ export class AppController {
               { label: 'اسم المدرس', value: (row:SRequest) => (row.teacher ? row.teacher.name || '' : '') }, // Run functions
               { label: 'موعد الحصة', value: (row:SRequest) => (row.sessionDate ? row.sessionDate || '' : '') }, // Deep props
               { label: 'نوع البحث', value: (row:SRequest) => (row.search_type ? row.search_type || '' : '') }, // Deep props
-              { label: 'موعد الحصة', value: (row:SRequest) => (row.nstudents ? row.nstudents || '' : '') }, // Deep props
               { label: 'عدد الطلبة', value: (row:SRequest) => (row.nstudents ? row.nstudents || '' : '') }, // Deep props
               { label: 'المادة الدراسية', value: (row:SRequest) => (row.subject ? row.subject.name || '' : '') }, // Deep props
               { label: 'المرحلة الدراسية', value: (row:SRequest) => (row.level ? row.level.name || '' : '') }, // Deep props
@@ -75,15 +74,29 @@ export class AppController {
              
             if(requests.length !== 0){
              const filePath = `requests-${new Date().toISOString().replace(/:/gi, '-')}`
+             const content = requests.map(req => {
+                  return {
+                    student:req.student,
+                    teacher:req.teacher,
+                    sessionDate:req.sessionDate,
+                    search_type:req.search_type,
+                    nstudents:req.nstudents,
+                    subject:req.subject,
+                    level:req.level,
+                    paymentMethod:req.paymentMethod,
+                    paymentReference:req.paymentReference,
+                    details:req.details,
+                    city:req.city,
+                    total:req.total
+                  }
+             })
              const settings = {
               sheetName: 'Requests', // The name of the sheet
               fileName: filePath, // The name of the spreadsheet
               extraLength: 3, // A bigger number means that columns should be wider
               writeOptions: {} // Style options from https://github.com/SheetJS/sheetjs#writing-options
             }
-            const buffer =  xlsx(columns, requests, settings, false) 
-            console.log(buffer)
-            return res.send('ok');
+            xlsx(columns, content, settings, true) 
             }
             return res.redirect('/');
         } catch (error) {
