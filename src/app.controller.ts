@@ -4,7 +4,7 @@ import ObjectsToCsv = require('objects-to-csv');
 import { Response } from 'express';
 import { resolve } from 'path';
 import { SRequest } from './entities/requests.entity';
-import xlsx from 'json-as-xlsx';
+import * as xlsx from 'json-as-xlsx';
 
 @Controller()
 export class AppController {
