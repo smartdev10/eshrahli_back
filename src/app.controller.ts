@@ -86,6 +86,7 @@ export class AppController {
             }
             return res.redirect('/');
         } catch (error) {
+          console.log(error)
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,
                 error: error.message,
