@@ -74,22 +74,6 @@ export class AppController {
             ]
              
             if(requests.length !== 0){
-              const content = requests.map((req) => {
-                return {
-                  "اسم الطالب" : req.student?.name || null,
-                  "اسم المدرس" : req.teacher?.name || null,
-                  "موعد الحصة" : req.sessionDate || null,
-                  "نوع البحث" : req.search_type || null,
-                  "عدد الطلبة" : req.nstudents || null,
-                  "المادة الدراسية" : req.subject?.name || null,
-                  "المرحلة الدراسية" : req.level?.name || null,
-                  "طريقة الدفع" : req.paymentMethod || null,
-                  "مرجع الدفع" : req.paymentReference || null,
-                  "تفاصيل" : req.details || null,
-                  "المدينة" : req.city.name || null,
-                  "المبلغ الإجمالي" : req.total || null,
-                }
-             })
              const filePath = `requests-${new Date().toISOString().replace(/:/gi, '-')}`
              var settings = {
               sheetName: 'Requests', // The name of the sheet
@@ -98,7 +82,7 @@ export class AppController {
               writeOptions: {} // Style options from https://github.com/SheetJS/sheetjs#writing-options
             }
              var download = true
-             xlsx(columns, content, settings, download) 
+             xlsx(columns, requests, settings, download) 
             }
             return res.redirect('/');
         } catch (error) {
