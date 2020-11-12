@@ -90,7 +90,7 @@ export class AppController {
                   "المبلغ الإجمالي" : req.total || null,
                 }
              })
-             const filePath = __dirname + `/../csv/requests-${new Date().toISOString().replace(/:/gi, '-')}`
+             const filePath = `requests-${new Date().toISOString().replace(/:/gi, '-')}`
              var settings = {
               sheetName: 'Requests', // The name of the sheet
               fileName: filePath, // The name of the spreadsheet
