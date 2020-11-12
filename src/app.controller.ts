@@ -75,14 +75,15 @@ export class AppController {
              
             if(requests.length !== 0){
              const filePath = `requests-${new Date().toISOString().replace(/:/gi, '-')}`
-             var settings = {
+             const settings = {
               sheetName: 'Requests', // The name of the sheet
               fileName: filePath, // The name of the spreadsheet
               extraLength: 3, // A bigger number means that columns should be wider
               writeOptions: {} // Style options from https://github.com/SheetJS/sheetjs#writing-options
             }
-             var download = true
-             xlsx(columns, requests, settings, download) 
+            const buffer =  xlsx(columns, requests, settings, false) 
+            console.log(buffer)
+            return res.send('ok');
             }
             return res.redirect('/');
         } catch (error) {
