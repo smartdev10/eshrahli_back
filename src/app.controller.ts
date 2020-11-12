@@ -5,6 +5,7 @@ import { Response } from 'express';
 import { resolve } from 'path';
 import { SRequest } from './entities/requests.entity';
 import * as xlsx from 'json-as-xlsx';
+import { writeFileSync } from 'fs';
 
 @Controller()
 export class AppController {
@@ -73,7 +74,6 @@ export class AppController {
             ]
              
             if(requests.length !== 0){
-             const filePath = `requests-${new Date().toISOString().replace(/:/gi, '-')}`
              const content = requests.map(req => {
                   return {
                     student:req.student,
@@ -92,11 +92,13 @@ export class AppController {
              })
              const settings = {
               sheetName: 'Requests', // The name of the sheet
-              fileName: filePath, // The name of the spreadsheet
               extraLength: 3, // A bigger number means that columns should be wider
               writeOptions: {} // Style options from https://github.com/SheetJS/sheetjs#writing-options
             }
-            return xlsx(columns, content, settings, true) 
+            const buffer =  xlsx(columns, content, settings, false) 
+            const filePath = `${__dirname}/../csv/requests-${new Date().toISOString().replace(/:/gi, '-')}.xlsx`
+            writeFileSync(filePath, buffer)
+            return res.download(resolve(filePath))
             }
             return res.redirect('/');
         } catch (error) {
