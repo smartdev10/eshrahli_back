@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   pgadmin:
-    image: dpage/pgadmin4:4.27
+    image: dpage/pgadmin4:4.28
     environment:
       PGADMIN_DEFAULT_PASSWORD : secret
       PGADMIN_DEFAULT_EMAIL : abdeljalil.aitetaleb@gmail.com

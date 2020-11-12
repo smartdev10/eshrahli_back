@@ -3,6 +3,8 @@ import { RequestService } from './requests/requests.service';
 import ObjectsToCsv = require('objects-to-csv');
 import { Response } from 'express';
 import { resolve } from 'path';
+import { SRequest } from './entities/requests.entity';
+import xlsx from 'json-as-xlsx';
 
 @Controller()
 export class AppController {
@@ -41,7 +43,64 @@ export class AppController {
              console.log(resolve(filePath))
              return res.download(resolve(filePath))
             }
-            return res.status(HttpStatus.OK).json("Exported");
+            return res.redirect('/');
+        } catch (error) {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: error.message,
+            }, 400);
+        }
+  }
+
+  @Get('export/xlsx')
+    async exportRequestsXlsx(@Param('id') id: number  ,  @Res() res: Response) {
+      try {
+            const requests =  await this.requestService.findAllRequests();
+            var columns = [
+              { label: 'اسم الطالب',  value: (row:SRequest) => (row.student ? row.student.name || '' : '') }, // Top level data
+              { label: 'اسم المدرس', value: (row:SRequest) => (row.teacher ? row.teacher.name || '' : '') }, // Run functions
+              { label: 'موعد الحصة', value: (row:SRequest) => (row.sessionDate ? row.sessionDate || '' : '') }, // Deep props
+              { label: 'نوع البحث', value: (row:SRequest) => (row.search_type ? row.search_type || '' : '') }, // Deep props
+              { label: 'موعد الحصة', value: (row:SRequest) => (row.nstudents ? row.nstudents || '' : '') }, // Deep props
+              { label: 'عدد الطلبة', value: (row:SRequest) => (row.nstudents ? row.nstudents || '' : '') }, // Deep props
+              { label: 'المادة الدراسية', value: (row:SRequest) => (row.subject ? row.subject.name || '' : '') }, // Deep props
+              { label: 'المرحلة الدراسية', value: (row:SRequest) => (row.level ? row.level.name || '' : '') }, // Deep props
+              { label: 'طريقة الدفع', value: (row:SRequest) => (row.paymentMethod ? row.paymentMethod || '' : '') }, // Deep props
+              { label: 'مرجع الدفع', value: (row:SRequest) => (row.paymentReference ? row.paymentReference|| '' : '') }, // Deep props
+              { label: 'تفاصيل', value: (row:SRequest) => (row.details ? row.details || '' : '') }, // Deep props
+              { label: 'المدينة', value: (row:SRequest) => (row.city ? row.city.name || '' : '') }, // Deep props
+              { label: 'المبلغ الإجمالي', value: (row:SRequest) => (row.total ? row.total|| '' : '') }, // Deep props
+
+            ]
+             
+            if(requests.length !== 0){
+              const content = requests.map((req) => {
+                return {
+                  "اسم الطالب" : req.student?.name || null,
+                  "اسم المدرس" : req.teacher?.name || null,
+                  "موعد الحصة" : req.sessionDate || null,
+                  "نوع البحث" : req.search_type || null,
+                  "عدد الطلبة" : req.nstudents || null,
+                  "المادة الدراسية" : req.subject?.name || null,
+                  "المرحلة الدراسية" : req.level?.name || null,
+                  "طريقة الدفع" : req.paymentMethod || null,
+                  "مرجع الدفع" : req.paymentReference || null,
+                  "تفاصيل" : req.details || null,
+                  "المدينة" : req.city.name || null,
+                  "المبلغ الإجمالي" : req.total || null,
+                }
+             })
+             const filePath = __dirname + `/../csv/requests-${new Date().toISOString().replace(/:/gi, '-')}`
+             var settings = {
+              sheetName: 'Requests', // The name of the sheet
+              fileName: filePath, // The name of the spreadsheet
+              extraLength: 3, // A bigger number means that columns should be wider
+              writeOptions: {} // Style options from https://github.com/SheetJS/sheetjs#writing-options
+            }
+             var download = true
+             xlsx(columns, content, settings, download) 
+            }
+            return res.redirect('/');
         } catch (error) {
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,
