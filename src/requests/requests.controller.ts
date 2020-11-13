@@ -206,64 +206,11 @@ export class RequestController {
     @Put('update/reference/:id')
     async updateReference(@Param('id') id: number , @Body() body: FinishRequestDto, @Res() res: Response): Promise<Response> {
         try {
+          let zoomResponse = null
           await this.requestService.updateReference(id,body);
           const frequest = await this.requestService.findOneRequest(id);
           const teacher = await this.teacherService.findOneTeacher(frequest.teacher.id)
-          if(teacher.push_id && body.status === "CONFIRMED"){
-            const notification = {
-              contents: {
-                'en': 'تم تأكيد الطلب'
-              },
-              include_player_ids: [teacher.push_id],
-              data:{
-                request_id:frequest.id
-              }
-            };
-            await this.onesignalService.client.createNotification(notification)
-            await this.notifyService.insertTeacherNotification({
-              message:"تم تأكيد الطلب",
-              teacher,
-              request:frequest
-            })
-            return res.status(200).json({message: 'Request Updated'});
-          }
-          return res.status(HttpStatus.OK).json({message: 'Request Reference Updated'});
-        } catch (error) {
-            throw new HttpException({
-                status: HttpStatus.BAD_REQUEST,
-                error: error.message,
-            }, 400);
-        }
-    }
-
-    @Put('update/:id')
-    async updateRequest(@Param('id') id: number , @Body() body: UpdateRequestDto, @Res() res: Response): Promise<Response> {
-        try {
-          const zoomResponse = null
-          await this.requestService.updateRequest(id, body);
-          const frequest = await this.requestService.findOneRequest(id);
-          if(frequest){
-              if(frequest.status === 'canceled'){
-                const teacher = await this.teacherService.findOne(body.teacher)
-                if(teacher.push_id){
-                  const notification = {
-                    contents: {
-                      'en': `تم إلغاء الطلب`
-                    },
-                    include_player_ids: [teacher.push_id],
-                    data:{
-                      request_id:frequest.id
-                    }
-                  };
-                  await this.onesignalService.client.createNotification(notification)
-                  await this.notifyService.insertTeacherNotification({
-                    message:"تم إلغاء الطلب",
-                    teacher,
-                    request:frequest
-                  })
-                }
-            }
-            if(frequest.status === "CONFIRMED"){
+          if(teacher.push_id && frequest.status === "CONFIRMED"){
               if(frequest.is_remote){
                 const payload = {
                   iss: process.env.ZOOM_APP_KEY,
@@ -286,11 +233,63 @@ export class RequestController {
                   })
                 }
                 const response = await fetch(`https://api.zoom.us/v2/users/eshrahley@gmail.com/meetings`,init);
-                const zoomResponse = await response.json();
-                if(zoomResponse.join_url){
+                zoomResponse = await response.json();
+                if(zoomResponse && zoomResponse.join_url){
                   await this.requestService.updateRequest(id, {...frequest,zoomLink:zoomResponse.join_url , zoomPass:zoomResponse.password});
                 }
+            }
+            const nfrequest = await this.requestService.findOneRequest(id);
+            const notification = {
+              contents: {
+                'en': 'تم تأكيد الطلب'
+              },
+              include_player_ids: [teacher.push_id],
+              data:{
+                request_id:nfrequest.id
               }
+            };
+            await this.onesignalService.client.createNotification(notification)
+            await this.notifyService.insertTeacherNotification({
+              message:"تم تأكيد الطلب",
+              teacher,
+              request:nfrequest
+            })
+            return res.status(200).json({message: 'Request Updated'});
+          }
+          return res.status(HttpStatus.OK).json({message: 'Request Reference Updated' , zoomResponse});
+        } catch (error) {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: error.message,
+            }, 400);
+        }
+    }
+
+    @Put('update/:id')
+    async updateRequest(@Param('id') id: number , @Body() body: UpdateRequestDto, @Res() res: Response): Promise<Response> {
+        try {
+          await this.requestService.updateRequest(id, body);
+          const frequest = await this.requestService.findOneRequest(id);
+          if(frequest){
+              if(frequest.status === 'canceled'){
+                const teacher = await this.teacherService.findOne(body.teacher)
+                if(teacher.push_id){
+                  const notification = {
+                    contents: {
+                      'en': `تم إلغاء الطلب`
+                    },
+                    include_player_ids: [teacher.push_id],
+                    data:{
+                      request_id:frequest.id
+                    }
+                  };
+                  await this.onesignalService.client.createNotification(notification)
+                  await this.notifyService.insertTeacherNotification({
+                    message:"تم إلغاء الطلب",
+                    teacher,
+                    request:frequest
+                  })
+                }
             }
             if(frequest.lesson_end_time){
               const teacher = await this.teacherService.findOne(body.teacher)
@@ -332,7 +331,7 @@ export class RequestController {
                   })
                 }
             }
-            return res.status(200).json({message: 'Request Updated' , zoomResponse});
+            return res.status(200).json({message: 'Request Updated'});
           }
           throw new HttpException('Request Not Found', 400);
         } catch (error) {
