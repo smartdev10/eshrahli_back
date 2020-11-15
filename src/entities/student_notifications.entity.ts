@@ -14,7 +14,7 @@ export class StudentNotificationEntity {
   @ManyToOne(type => Student , student => student.notifications)
   student: Student
 
-  @ManyToOne(() => SRequest, request => request.student_notifications)
+  @ManyToOne(() => SRequest, request => request.student_notifications , {onDelete:'CASCADE'})
   request: SRequest;
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
