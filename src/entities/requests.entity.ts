@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany  , ManyToOne, DeleteDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn , CreateDateColumn , OneToMany  , ManyToOne, DeleteDateColumn ,  } from 'typeorm';
 import { Level } from './levels.entity';
 import { Subject } from './subjects.entity';
 import { Coupon } from './coupons.entity';
@@ -62,13 +62,13 @@ export class SRequest {
   @Column('varchar'  ,{ length: 250 })
   longitude: string;
   
-  @CreateDateColumn({ type: "timestamp"})
+  @Column({ type: "timestamp"})
   sessionDate: Date;
 
-  @CreateDateColumn({ type: "timestamp" , nullable:true , default: () => "NULL"  })
+  @Column({ type: "timestamp" , nullable:true , default: () => "NULL"  })
   lesson_start_time: Date;
 
-  @CreateDateColumn({ type: "timestamp" , nullable:true , default: () => "NULL"  })
+  @Column({ type: "timestamp" , nullable:true , default: () => "NULL"  })
   lesson_end_time: Date;
 
   @Column('varchar'  ,{ length: 250 , default : "" })
@@ -110,7 +110,7 @@ export class SRequest {
   @Column('varchar' , { length: 250 , default : "male" })
   teacher_gender: string;
 
-  @CreateDateColumn({ type: "timestamp" , nullable:true , default: () => "NULL"  })
+  @Column({ type: "timestamp" , nullable:true , default: () => "NULL"  })
   cancellationDate: Date;
 
   @Column('integer' ,{ default:null })
