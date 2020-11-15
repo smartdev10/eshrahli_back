@@ -80,10 +80,10 @@ export class SRequest {
   @Column('varchar'  ,{ length: 250 , default : "" })
   lesson_duration : string;
 
-  @Column('varchar'  ,{ length: 250 , default : "" })
+  @Column('text'  ,{ default : "" })
   hostZoomLink: string;
 
-  @Column('varchar'  ,{ length: 250 , default : "" })
+  @Column('text'  , {  default : "" })
   clientZoomLink: string;
 
   @Column('varchar'  ,{ length: 250 , default : "" })

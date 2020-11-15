@@ -211,7 +211,6 @@ export class RequestController {
           await this.requestService.updateReference(id,body);
           const frequest = await this.requestService.findOneRequest(id);
           const teacher = await this.teacherService.findOneTeacher(frequest.teacher.id)
-          console.log(teacher.push_id,frequest.status)
           if(teacher.push_id && frequest.status === "CONFIRMED"){
               if(frequest.is_remote){
                 const payload = {
