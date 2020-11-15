@@ -62,13 +62,13 @@ export class SRequest {
   @Column('varchar'  ,{ length: 250 })
   longitude: string;
   
-  @Column({ type: "timestamp"})
+  @Column('time without time zone')
   sessionDate: Date;
 
-  @Column({ type: "timestamp" , nullable:true , default: () => "NULL"  })
+  @Column('time without time zone',{  nullable:true , default: () => "NULL"  })
   lesson_start_time: Date;
 
-  @Column({ type: "timestamp" , nullable:true , default: () => "NULL"  })
+  @Column('time without time zone' ,{  nullable:true , default: () => "NULL"  })
   lesson_end_time: Date;
 
   @Column('varchar'  ,{ length: 250 , default : "" })
@@ -110,7 +110,7 @@ export class SRequest {
   @Column('varchar' , { length: 250 , default : "male" })
   teacher_gender: string;
 
-  @Column({ type: "timestamp" , nullable:true , default: () => "NULL"  })
+  @Column('time without time zone', { nullable:true , default: () => "NULL"  })
   cancellationDate: Date;
 
   @Column('integer' ,{ default:null })
