@@ -81,7 +81,10 @@ export class SRequest {
   lesson_duration : string;
 
   @Column('varchar'  ,{ length: 250 , default : "" })
-  zoomLink: string;
+  hostZoomLink: string;
+
+  @Column('varchar'  ,{ length: 250 , default : "" })
+  clientZoomLink: string;
 
   @Column('varchar'  ,{ length: 250 , default : "" })
   zoomPass: string;

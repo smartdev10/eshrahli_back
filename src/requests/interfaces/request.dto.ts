@@ -206,7 +206,13 @@ export class UpdateRequestDto {
     @IsDefined()
     @IsNotEmpty()
     @IsString()
-    public zoomLink : string;
+    public hostZoomLink : string;
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    public clientZoomLink : string;
 
     @IsOptional()
     @IsDefined()

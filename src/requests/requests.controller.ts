@@ -96,7 +96,8 @@ export class RequestController {
           delete frequest.paid
           delete frequest.paymentReference
           delete frequest.paymentMethod
-          delete frequest.zoomLink
+          delete frequest.hostZoomLink
+          delete frequest.clientZoomLink
           delete frequest.canceledBy
           delete frequest.cancellationDate
           delete frequest.discount_amount
@@ -234,8 +235,8 @@ export class RequestController {
                 }
                 const response = await fetch(`https://api.zoom.us/v2/users/eshrahley@gmail.com/meetings`,init);
                 zoomResponse = await response.json();
-                if(zoomResponse && zoomResponse.join_url){
-                  await this.requestService.updateRequest(id, {...frequest,zoomLink:zoomResponse.join_url , zoomPass:zoomResponse.password});
+                if(zoomResponse && zoomResponse.join_url && zoomResponse.start_url){
+                  await this.requestService.updateRequest(id, {...frequest , hostZoomLink:zoomResponse.start_url, clientZoomLink:zoomResponse.join_url , zoomPass:zoomResponse.password});
                 }
             }
             const nfrequest = await this.requestService.findOneRequest(id);
