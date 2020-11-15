@@ -35,10 +35,10 @@ export class SRequest {
   @OneToMany(() => Bid, bid => bid.request)
   bids:Bid[]
 
-  @OneToMany(() => StudentNotificationEntity, sn => sn.request)
+  @OneToMany(() => StudentNotificationEntity, sn => sn.request , {onDelete:'CASCADE'})
   student_notifications:StudentNotificationEntity[]
 
-  @OneToMany(() => NotificationEntity, n => n.request)
+  @OneToMany(() => NotificationEntity, n => n.request , {onDelete:'CASCADE'})
   notifications:NotificationEntity[]
 
   @ManyToOne(() => Coupon, coupon => coupon.requests)
