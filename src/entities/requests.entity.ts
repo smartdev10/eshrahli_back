@@ -62,7 +62,7 @@ export class SRequest {
   @Column('varchar'  ,{ length: 250 })
   longitude: string;
 
-  @Column('varchar'  ,{ length: 250 })
+  @Column('varchar'  ,{ length: 250 , default:"" })
   date_time: string;
   
   @Column('timestamp with time zone', { nullable:true ,  default: () => "NULL"  })
