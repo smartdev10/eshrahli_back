@@ -26,11 +26,15 @@ export class RequestDto {
     @IsLongitude()
     readonly longitude: string;
 
-    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsDateString()
     readonly sessionDate: Date;
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly date_time: string;
 
     @IsOptional()
     @IsDefined()
@@ -120,6 +124,11 @@ export class ReCallDto {
     @IsNotEmpty()
     @IsDateString()
     readonly sessionDate: Date
+
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    readonly date_time: string;
 
     @IsDefined()
     @IsNotEmpty()

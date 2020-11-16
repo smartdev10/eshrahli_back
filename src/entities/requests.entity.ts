@@ -61,6 +61,9 @@ export class SRequest {
 
   @Column('varchar'  ,{ length: 250 })
   longitude: string;
+
+  @Column('varchar'  ,{ length: 250 })
+  date_time: string;
   
   @Column('timestamp with time zone', { nullable:true ,  default: () => "NULL"  })
   sessionDate: Date;
