@@ -218,8 +218,8 @@ export class TeacherController {
                     certificate:files["certificate"][0].filename || teacher.certificate ,
                     image:files["image"][0].filename || teacher.image ,
                 }) 
-            } catch {
-
+            } catch (err){
+                console.log(err)
             } finally {
                 formData = Object.assign(teacher , { 
                 ...data , id:Number(data.id) , 
