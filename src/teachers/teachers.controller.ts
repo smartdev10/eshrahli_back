@@ -226,9 +226,10 @@ export class TeacherController {
                 personalcard:teacher.personalcard , 
                 image:teacher.image })
             }
-            let levels = []
-            let subjects = []
-            let other_subjects = []
+            let levels = teacher.levels
+            let subjects =  teacher.subjects
+            let other_subjects =  teacher.other_subjects
+
             if(data?.levels){
                 levels = await this.levelService.findByIds(formData.levels)
             }
@@ -240,6 +241,7 @@ export class TeacherController {
             if(data?.other_subjects){
                 other_subjects = await this.subjectService.findByIds(formData.other_subjects)
             }
+            
             formData.levels = levels
             formData.subjects = subjects
             formData.other_subjects = other_subjects
