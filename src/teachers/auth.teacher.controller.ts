@@ -194,7 +194,7 @@ export class AuthTeacherController {
           }
       }),
       fileFilter:(req, file, callback) => {
-        const ext = extname(file.originalname);
+        const ext = extname(file.originalname).toLocaleLowerCase();
         if(ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg' && ext !== '.pdf') {
             return callback(new Error('Only images or Pdf files are allowed'),false)
         }
