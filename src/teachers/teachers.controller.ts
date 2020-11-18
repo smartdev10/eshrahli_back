@@ -205,7 +205,6 @@ export class TeacherController {
     }))
     async updateTeacher(@UploadedFiles() files , @Body() data: UpdateTeacherDto, @Res() res: Response): Promise<Response> {
         try {
-            console.log(files["image"][0])
             if(data.password === ''){
                 delete data.password
             }
