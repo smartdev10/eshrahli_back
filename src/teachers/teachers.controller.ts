@@ -205,6 +205,7 @@ export class TeacherController {
     }))
     async updateTeacher(@UploadedFiles() files , @Body() data: UpdateTeacherDto, @Res() res: Response): Promise<Response> {
         try {
+            console.log(files["image"][0])
             if(data.password === ''){
                 delete data.password
             }
@@ -215,7 +216,7 @@ export class TeacherController {
                     ...data,
                     personalcard:files["personalcard"][0].filename || teacher.personalcard  , 
                     certificate:files["certificate"][0].filename || teacher.certificate ,
-                    image:files["image"][0].filename || teacher.certificate ,
+                    image:files["image"][0].filename || teacher.image ,
                 }) 
             } catch {
 
