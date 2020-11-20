@@ -177,7 +177,7 @@ export class RequestController {
                 teacher,
                 request:frequest
               })
-           }
+            }
           }
           return res.status(200).json({message: 'Request Created' , request : frequest , teachers , oneSignalResponse:response ? response.body : null });
       } catch (error) {
@@ -211,6 +211,7 @@ export class RequestController {
           await this.requestService.updateReference(id,body);
           const frequest = await this.requestService.findOneRequest(id);
           const teacher = await this.teacherService.findOneTeacher(frequest.teacher.id)
+
           if(teacher.push_id && frequest.status === "CONFIRMED"){
               if(frequest.is_remote){
                 const payload = {
@@ -255,7 +256,30 @@ export class RequestController {
               teacher,
               request:nfrequest
             })
-            return res.status(200).json({message: 'Request Reference Updated' ,zoomResponse});
+
+           const bids = nfrequest.bids.filter(bid => bid.teacher.id !== teacher.id)
+           if(bids.length !== 0){
+              for (const bid of bids) {
+                if(bid.teacher && bid.teacher.push_id.length !== 0){
+                  const notification = {
+                    contents: {
+                      'en': "شكرا لك، تم رفض عرضك بسبب السعر"
+                    },
+                    include_player_ids: [bid.teacher.push_id],
+                    data:{
+                      request_id:nfrequest.id
+                    }
+                  };
+                  await this.onesignalService.client.createNotification(notification)
+                  await this.notifyService.insertTeacherNotification({
+                    message:"شكرا لك، تم رفض عرضك بسبب السعر",
+                    teacher:bid.teacher,
+                    request:nfrequest
+                  })
+                }
+             }
+           }
+           return res.status(200).json({message: 'Request Reference Updated' ,zoomResponse});
           }
           return res.status(HttpStatus.OK).json({message: 'Request Reference Updated' , zoomResponse});
         } catch (error) {

@@ -63,14 +63,28 @@ export class TeacherService {
 
     async retrySearchTeachers(searchData : searchTeacher) { 
         if(searchData.levels){
+            if(searchData.city){
+                return  await this.teacherRepository
+                .createQueryBuilder('teacher')
+                .innerJoinAndSelect('teacher.city','city')
+                .leftJoinAndSelect('teacher.levels', 'level')
+                .leftJoinAndSelect('teacher.other_subjects', 'other')
+                .leftJoinAndSelect('teacher.subjects', 'subject')
+                .where('gender = :gender', { gender: searchData.gender })
+                .andWhere('city.id = :city' , { city: searchData.city.id })
+                .andWhere('level.id = :level', { level: searchData.levels.id })
+                .andWhere(new Brackets(qb => {
+                   qb.andWhere('other.id = :other' , { other: searchData.subjects.id })
+                   .orWhere('subject.id = :subject' , { subject: searchData.subjects.id })
+                }))
+                .getMany();
+            }
             return  await this.teacherRepository
             .createQueryBuilder('teacher')
-            .innerJoinAndSelect('teacher.city','city')
             .leftJoinAndSelect('teacher.levels', 'level')
             .leftJoinAndSelect('teacher.other_subjects', 'other')
             .leftJoinAndSelect('teacher.subjects', 'subject')
             .where('gender = :gender', { gender: searchData.gender })
-            .andWhere('city.id = :city' , { city: searchData.city.id })
             .andWhere('level.id = :level', { level: searchData.levels.id })
             .andWhere(new Brackets(qb => {
                qb.andWhere('other.id = :other' , { other: searchData.subjects.id })
@@ -78,13 +92,25 @@ export class TeacherService {
             }))
             .getMany();
         } 
+        if(searchData.city){
+            return  await this.teacherRepository
+            .createQueryBuilder('teacher')
+            .innerJoinAndSelect('teacher.city','city')
+            .leftJoinAndSelect('teacher.other_subjects', 'other')
+            .leftJoinAndSelect('teacher.subjects', 'subject')
+            .where('gender = :gender', { gender: searchData.gender })
+            .andWhere('city.id = :city' , { city: searchData.city.id })
+            .andWhere(new Brackets(qb => {
+            qb.andWhere('other.id = :other' , { other: searchData.subjects.id })
+            .orWhere('subject.id = :subject' , { subject: searchData.subjects.id })
+            }))
+            .getMany();   
+        }
         return  await this.teacherRepository
         .createQueryBuilder('teacher')
-        .innerJoinAndSelect('teacher.city','city')
         .leftJoinAndSelect('teacher.other_subjects', 'other')
         .leftJoinAndSelect('teacher.subjects', 'subject')
         .where('gender = :gender', { gender: searchData.gender })
-        .andWhere('city.id = :city' , { city: searchData.city.id })
         .andWhere(new Brackets(qb => {
            qb.andWhere('other.id = :other' , { other: searchData.subjects.id })
            .orWhere('subject.id = :subject' , { subject: searchData.subjects.id })
@@ -94,14 +120,28 @@ export class TeacherService {
 
     async searchTeachers(searchData : searchTeacher) { 
        if(searchData.levels){
+          if(searchData.city){
+                return  await this.teacherRepository
+                .createQueryBuilder('teacher')
+                .innerJoinAndSelect('teacher.city','city')
+                .leftJoinAndSelect('teacher.levels', 'level')
+                .leftJoinAndSelect('teacher.other_subjects', 'other')
+                .leftJoinAndSelect('teacher.subjects', 'subject')
+                .where('gender = :gender', { gender: searchData.gender })
+                .andWhere('city.id = :city' , { city: searchData.city.id })
+                .andWhere('level.id = :level', { level: searchData.levels })
+                .andWhere(new Brackets(qb => {
+                qb.andWhere('other.id = :other' , { other: searchData.subjects })
+                .orWhere('subject.id = :subject' , { subject: searchData.subjects })
+                }))
+                .getMany();
+           }
             return  await this.teacherRepository
             .createQueryBuilder('teacher')
-            .innerJoinAndSelect('teacher.city','city')
             .leftJoinAndSelect('teacher.levels', 'level')
             .leftJoinAndSelect('teacher.other_subjects', 'other')
             .leftJoinAndSelect('teacher.subjects', 'subject')
             .where('gender = :gender', { gender: searchData.gender })
-            .andWhere('city.id = :city' , { city: searchData.city.id })
             .andWhere('level.id = :level', { level: searchData.levels })
             .andWhere(new Brackets(qb => {
             qb.andWhere('other.id = :other' , { other: searchData.subjects })
@@ -109,13 +149,26 @@ export class TeacherService {
             }))
             .getMany();
        }   
-       return  await this.teacherRepository
+
+       if(searchData.city){
+            return  await this.teacherRepository
+            .createQueryBuilder('teacher')
+            .innerJoinAndSelect('teacher.city','city')
+            .leftJoinAndSelect('teacher.other_subjects', 'other')
+            .leftJoinAndSelect('teacher.subjects', 'subject')
+            .where('gender = :gender', { gender: searchData.gender })
+            .andWhere('city.id = :city' , { city: searchData.city.id })
+            .andWhere(new Brackets(qb => {
+                qb.andWhere('other.id = :other' , { other: searchData.subjects })
+                .orWhere('subject.id = :subject' , { subject: searchData.subjects })
+            }))
+            .getMany();  
+       }
+        return  await this.teacherRepository
         .createQueryBuilder('teacher')
-        .innerJoinAndSelect('teacher.city','city')
         .leftJoinAndSelect('teacher.other_subjects', 'other')
         .leftJoinAndSelect('teacher.subjects', 'subject')
         .where('gender = :gender', { gender: searchData.gender })
-        .andWhere('city.id = :city' , { city: searchData.city.id })
         .andWhere(new Brackets(qb => {
             qb.andWhere('other.id = :other' , { other: searchData.subjects })
             .orWhere('subject.id = :subject' , { subject: searchData.subjects })

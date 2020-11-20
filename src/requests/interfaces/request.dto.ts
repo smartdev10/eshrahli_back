@@ -42,6 +42,7 @@ export class RequestDto {
     @IsNumber()
     readonly teacher: Teacher;
 
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsNumber()
@@ -115,6 +116,7 @@ export class ReCallDto {
     @IsNumber()
     public id: number;
 
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsNumber()
