@@ -259,7 +259,9 @@ export class RequestController {
 
            const bids = nfrequest.bids.filter(bid => bid.teacher.id !== teacher.id)
            if(bids.length !== 0){
+             console.log(bids)
               for (const bid of bids) {
+                console.log(bid,bid.teacher)
                 if(bid.teacher && bid.teacher.push_id.length !== 0){
                   const notification = {
                     contents: {
