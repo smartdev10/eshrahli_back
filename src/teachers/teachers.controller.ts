@@ -213,9 +213,9 @@ export class TeacherController {
             try {
                 formData = Object.assign(teacher , {
                     ...data,
-                    personalcard:files["personalcard"] ? files["personalcard"][0].filename : teacher.personalcard  , 
-                    certificate:files["certificate"] ? files["certificate"][0].filename : teacher.certificate ,
-                    image:files["image"] ? files["image"][0].filename : teacher.image ,
+                    personalcard:files && files["personalcard"] ? files["personalcard"][0].filename : teacher.personalcard  , 
+                    certificate:files && files["certificate"] ? files["certificate"][0].filename : teacher.certificate ,
+                    image:files && files["image"] ? files["image"][0].filename : teacher.image ,
                 }) 
             } catch (err){
                 console.log(err)
