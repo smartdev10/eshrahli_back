@@ -316,46 +316,46 @@ export class RequestController {
                   })
                 }
             }
-            if(frequest.lesson_end_time){
-              const teacher = await this.teacherService.findOne(body.teacher)
-              if(frequest.student.push_id){
-                const notification = {
-                  contents: {
-                    'en': `أنهى ${teacher.name} الدرس`
-                  },
-                  include_player_ids: [frequest.student.push_id],
-                  data:{
-                    request_id:frequest.id
-                  }
-                };
-                await this.studentOneSignalService.client.createNotification(notification)
-                await this.notifyService.insertStudentNotification({
-                  message: `أنهى ${teacher.name} الدرس`,
-                  student:frequest.student,
-                  request:frequest
-                })
-              }
-            }
-            if(body.lesson_start_time){
-                const teacher = await this.teacherService.findOne(body.teacher)
-                if(frequest.student.push_id){
-                  const notification = {
-                    contents: {
-                      'en': `بدأ  ${teacher.name} الدرس`
-                    },
-                    include_player_ids: [frequest.student.push_id],
-                    data:{
-                      request_id:frequest.id
-                    }
-                  };
-                  await this.studentOneSignalService.client.createNotification(notification)
-                  await this.notifyService.insertStudentNotification({
-                    message: `بدأ ${teacher.name} الدرس`,
-                    student:frequest.student,
-                    request:frequest
-                  })
-                }
-            }
+            // if(frequest.lesson_end_time){
+            //   const teacher = await this.teacherService.findOne(body.teacher)
+            //   if(frequest.student.push_id){
+            //     const notification = {
+            //       contents: {
+            //         'en': `أنهى ${teacher.name} الدرس`
+            //       },
+            //       include_player_ids: [frequest.student.push_id],
+            //       data:{
+            //         request_id:frequest.id
+            //       }
+            //     };
+            //     await this.studentOneSignalService.client.createNotification(notification)
+            //     await this.notifyService.insertStudentNotification({
+            //       message: `أنهى ${teacher.name} الدرس`,
+            //       student:frequest.student,
+            //       request:frequest
+            //     })
+            //   }
+            // }
+            // if(body.lesson_start_time){
+            //     const teacher = await this.teacherService.findOne(body.teacher)
+            //     if(frequest.student.push_id){
+            //       const notification = {
+            //         contents: {
+            //           'en': `بدأ  ${teacher.name} الدرس`
+            //         },
+            //         include_player_ids: [frequest.student.push_id],
+            //         data:{
+            //           request_id:frequest.id
+            //         }
+            //       };
+            //       await this.studentOneSignalService.client.createNotification(notification)
+            //       await this.notifyService.insertStudentNotification({
+            //         message: `بدأ ${teacher.name} الدرس`,
+            //         student:frequest.student,
+            //         request:frequest
+            //       })
+            //     }
+            // }
             return res.status(200).json({message: 'Request Updated'});
           }
           throw new HttpException('Request Not Found', 400);
