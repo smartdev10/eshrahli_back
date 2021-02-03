@@ -151,9 +151,9 @@ export class AuthTeacherController {
           }else{
             const formData = Object.assign(new Teacher() , {
               ...data,
-              personalcard: files["personalcard"][0] ? files["personalcard"][0].filename : "", 
-              certificate:files["certificate"][0] ? files["certificate"][0].filename : "",
-              image:files["image"][0] ? files["image"][0].filename : "",
+              // personalcard: files["personalcard"][0] ? files["personalcard"][0].filename : "", 
+              // certificate:files["certificate"][0] ? files["certificate"][0].filename : "",
+              image:files["image"] && files["image"][0] ? files["image"][0].filename : "",
             })
   
             let other_subjects = []
