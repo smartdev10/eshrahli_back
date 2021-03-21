@@ -1,4 +1,4 @@
-import { Controller , Post , Body , Res , HttpStatus, HttpException, UnauthorizedException, UseInterceptors, UploadedFiles , Put, Param } from '@nestjs/common';
+import { Controller , Post , Body , Res , HttpStatus,HttpService, HttpException, UnauthorizedException, UseInterceptors, UploadedFiles , Put, Param } from '@nestjs/common';
 import { TeacherService } from './teachers.service';
 import { Response } from 'express';
 import { LoginTeacherDto , UpdateTeacherDto, CheckTeacherDto, CreatePassTeacherDto , ForgotPassTeacherDto , CreateTeacherDto, ChangePaswordTeacherDto } from './interfaces/teacher.dto';
@@ -18,7 +18,8 @@ export class AuthTeacherController {
       private readonly teacherService: TeacherService, 
       private readonly levelService: LevelsService, 
       private readonly subjectService: SubjectsService,
-      private readonly twilioService: TwilioService
+      private readonly twilioService: TwilioService,
+      private readonly httpService: HttpService
       ) {}
    
     @Post('login')
@@ -110,8 +111,20 @@ export class AuthTeacherController {
           if(teacher){
             throw new HttpException('Phone Number Already Taken', HttpStatus.BAD_REQUEST);
           }else{
-            await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verifications.create({to:data.mobile,channel:'sms'})
-            return res.status(200).json({ message: 'SMS Created' });
+             const seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+             await this.httpService.post('http://api.yamamah.com/SendSMS' , {
+              "Username":"966555757773",
+              "Password":"Expertto@6032",
+              "Tagname": "ESHRAHLEY",
+              "RecepientNumber": data.mobile,
+              "VariableList": "",
+              "ReplacementList": "",
+              "Message": seq,
+              "SendDateTime": 0,
+              "EnableDR": false
+            }).toPromise()
+            // await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verifications.create({to:data.mobile,channel:'sms'})
+            return res.status(200).json({ message: 'SMS Created' , code : seq });
           }
       } catch (error) {
           throw new HttpException({
