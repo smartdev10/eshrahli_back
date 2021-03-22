@@ -24,7 +24,7 @@ import { SettingsService } from 'src/settings/setting.service';
         TypeOrmModule.forFeature([Setting]),
     ],
     controllers: [ TeacherController, AuthTeacherController ],
-    providers: [ TeacherService , SubjectsService , LevelsService , TwilioService,  SettingsService, HttpService
+    providers: [ TeacherService , SubjectsService , LevelsService , TwilioService,  SettingsService, HttpService ,
     {
         provide: TWILIO_CONFIG_TOKEN,
         useValue: TwilioService,
