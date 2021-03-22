@@ -72,7 +72,7 @@ export class AuthStudentController {
               "RecepientNumber": data.mobile,
               "VariableList": "",
               "ReplacementList": "",
-              "Message": seq,
+              "Message": seq +" رمز التحقق",
               "SendDateTime": 0,
               "EnableDR": false
             }).toPromise()
