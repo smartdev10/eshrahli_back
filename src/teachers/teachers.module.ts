@@ -1,4 +1,4 @@
-import { HttpService, Module } from '@nestjs/common';
+import { HttpModule, HttpService, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Teacher } from 'src/entities/teachers.entity';
 import { TeacherService } from './teachers.service';
@@ -22,6 +22,7 @@ import { SettingsService } from 'src/settings/setting.service';
         TypeOrmModule.forFeature([Subject]),
         TypeOrmModule.forFeature([SRequest]),
         TypeOrmModule.forFeature([Setting]),
+        HttpModule
     ],
     controllers: [ TeacherController, AuthTeacherController ],
     providers: [ TeacherService , SubjectsService , LevelsService , TwilioService,  SettingsService, HttpService ,

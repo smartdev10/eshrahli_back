@@ -1,4 +1,4 @@
-import { HttpService, Module } from '@nestjs/common';
+import { HttpModule, HttpService, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StudentService } from './students.service';
 import { StudentController } from './students.controller';
@@ -18,6 +18,7 @@ const TwilioProvider = {
     imports: [
         TypeOrmModule.forFeature([Student]),
         TypeOrmModule.forFeature([SRequest]),
+        HttpModule
     ],
     controllers: [StudentController,AuthStudentController],
     providers: [StudentService , TwilioService , HttpService , TwilioProvider],
