@@ -25,7 +25,7 @@ import { SettingsService } from 'src/settings/setting.service';
         HttpModule
     ],
     controllers: [ TeacherController, AuthTeacherController ],
-    providers: [ TeacherService , SubjectsService , LevelsService , TwilioService,  SettingsService, HttpService ,
+    providers: [ TeacherService , SubjectsService , LevelsService , TwilioService,  SettingsService,
     {
         provide: TWILIO_CONFIG_TOKEN,
         useValue: TwilioService,

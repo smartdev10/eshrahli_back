@@ -21,6 +21,6 @@ const TwilioProvider = {
         HttpModule
     ],
     controllers: [StudentController,AuthStudentController],
-    providers: [StudentService , TwilioService , HttpService , TwilioProvider],
+    providers: [StudentService , TwilioService , TwilioProvider],
 })
 export class StudentModule {}
