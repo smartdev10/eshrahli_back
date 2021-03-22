@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { HttpService, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Teacher } from 'src/entities/teachers.entity';
 import { TeacherService } from './teachers.service';
@@ -24,7 +24,7 @@ import { SettingsService } from 'src/settings/setting.service';
         TypeOrmModule.forFeature([Setting]),
     ],
     controllers: [ TeacherController, AuthTeacherController ],
-    providers: [ TeacherService , SubjectsService , LevelsService , TwilioService,  SettingsService,
+    providers: [ TeacherService , SubjectsService , LevelsService , TwilioService,  SettingsService, HttpService
     {
         provide: TWILIO_CONFIG_TOKEN,
         useValue: TwilioService,

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { HttpService, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StudentService } from './students.service';
 import { StudentController } from './students.controller';
@@ -20,6 +20,6 @@ const TwilioProvider = {
         TypeOrmModule.forFeature([SRequest]),
     ],
     controllers: [StudentController,AuthStudentController],
-    providers: [StudentService , TwilioService , TwilioProvider],
+    providers: [StudentService , TwilioService , HttpService , TwilioProvider],
 })
 export class StudentModule {}
