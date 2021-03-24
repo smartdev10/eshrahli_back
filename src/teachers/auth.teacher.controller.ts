@@ -50,8 +50,19 @@ export class AuthTeacherController {
       try {
           const teacher = await this.teacherService.findOneTeacherByPhone(data.mobile)
           if(teacher){
-            await this.twilioService.client.verify.services(process.env.TWILIO_SERVICE_ID).verifications.create({to:teacher.mobile,channel:'sms'})
-            return res.status(200).json({message: 'Verification Code Sent'});
+            const seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+            await this.httpService.post('http://api.yamamah.com/SendSMS' , {
+             "Username":"966555757773",
+             "Password":"Expertto@6032",
+             "Tagname": "ESHRAHLEY",
+             "RecepientNumber": data.mobile,
+             "VariableList": "",
+             "ReplacementList": "",
+             "Message": seq + " رمز التحقق",
+             "SendDateTime": 0,
+             "EnableDR": false
+           }).toPromise()
+           return res.status(200).json({ message: 'SMS Created' , code : seq });
           }
           throw new HttpException('Teacher Not Found' ,400);
       } catch (error) {
